@@ -4,6 +4,7 @@ import socket
 import warnings
 from collections import defaultdict
 from contextlib import suppress
+from contextvars import ContextVar
 from typing import Dict, List, Optional
 
 import aiohttp
@@ -17,6 +18,11 @@ from bot.async_stats import AsyncStatsClient
 
 log = logging.getLogger('bot')
 LOCALHOST = "127.0.0.1"
+
+current_user_ctx = ContextVar("author")
+current_channel_ctx = ContextVar("channel")
+current_message_ctx = ContextVar("message")
+current_event_ctx = ContextVar("event")
 
 
 class Bot(commands.Bot):
@@ -301,6 +307,30 @@ class Bot(commands.Bot):
 
         for alias in getattr(command, "root_aliases", ()):
             self.all_commands.pop(alias, None)
+
+    def dispatch(self, event_name: str, *args, **kwargs) -> None:
+        """Inject context tracking to the Bot dispatch system."""
+        if event_name == "command":
+            ctx: commands.Context = args[0]
+            current_channel_ctx.set(ctx.channel.id)
+            current_user_ctx.set(ctx.author.id)
+            current_message_ctx.set(ctx.message.id)
+
+        if event_name in {
+            "message",
+            "raw_message_delete",
+            "raw_message_edit",
+            "raw_reaction_add",
+            "raw_reaction_remove"
+        }:
+            current_event_ctx.set(event_name)
+
+        super().dispatch(event_name, *args, **kwargs)
+
+    @property
+    def guild(self) -> discord.Guild:
+        """Return an instance of the primary guild."""
+        return self.get_guild(constants.Guild.id)
 
 
 def _create_redis_session(loop: asyncio.AbstractEventLoop) -> RedisSession:
