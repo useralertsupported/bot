@@ -96,7 +96,7 @@ class ValidFilterListType(Converter):
         Raise a BadArgument if the API can't respond.
         """
         try:
-            valid_types = await bot.api_client.get('bot/filter-lists/get-types')
+            valid_types = await bot.api_client.get("bot/filter-lists/get-types")
         except ResponseCodeError:
             raise BadArgument("Cannot validate list_type: Unable to fetch valid types from API.")
 
@@ -120,7 +120,7 @@ class ValidFilterListType(Converter):
                 list_type = list_type[:-1]
 
             else:
-                valid_types_list = '\n'.join([f"• {type_.lower()}" for type_ in valid_types])
+                valid_types_list = "\n".join([f"• {type_.lower()}" for type_ in valid_types])
                 raise BadArgument(
                     f"You have provided an invalid list type!\n\n"
                     f"Please provide one of the following: \n{valid_types_list}"
@@ -165,7 +165,7 @@ class ValidURL(Converter):
                         f"HTTP GET on `{url}` returned status `{resp.status}`, expected 200"
                     )
         except CertificateError:
-            if url.startswith('https'):
+            if url.startswith("https"):
                 raise BadArgument(
                     f"Got a `CertificateError` for URL `{url}`. Does it support HTTPS?"
                 )
@@ -345,9 +345,9 @@ class OffTopicName(Converter):
         If `from_unicode` is True, the name is translated from a discord-safe format, back to normalized text.
         """
         if from_unicode:
-            table = str.maketrans(cls.ALLOWED_CHARACTERS, '𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹ǃ？’’-')
+            table = str.maketrans(cls.ALLOWED_CHARACTERS, "𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹ǃ？’’-")
         else:
-            table = str.maketrans('𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹ǃ？’’-', cls.ALLOWED_CHARACTERS)
+            table = str.maketrans("𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹ǃ？’’-", cls.ALLOWED_CHARACTERS)
 
         return name.translate(table)
 

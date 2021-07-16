@@ -29,7 +29,7 @@ class APIClientTests(unittest.IsolatedAsyncioTestCase):
 
     def test_response_code_error_initialization_with_json(self):
         """Test the initialization of `ResponseCodeError` with json."""
-        json_data = {'hello': 'world'}
+        json_data = {"hello": "world"}
         error = api.ResponseCodeError(
             response=self.error_api_response,
             response_json=json_data,
@@ -39,7 +39,7 @@ class APIClientTests(unittest.IsolatedAsyncioTestCase):
 
     def test_response_code_error_string_representation_with_nonempty_response_json(self):
         """Test the string representation of `ResponseCodeError` initialized with json."""
-        json_data = {'hello': 'world'}
+        json_data = {"hello": "world"}
         error = api.ResponseCodeError(
             response=self.error_api_response,
             response_json=json_data
@@ -48,7 +48,7 @@ class APIClientTests(unittest.IsolatedAsyncioTestCase):
 
     def test_response_code_error_initialization_with_text(self):
         """Test the initialization of `ResponseCodeError` with text."""
-        text_data = 'Lemon will eat your soul'
+        text_data = "Lemon will eat your soul"
         error = api.ResponseCodeError(
             response=self.error_api_response,
             response_text=text_data,
@@ -58,7 +58,7 @@ class APIClientTests(unittest.IsolatedAsyncioTestCase):
 
     def test_response_code_error_string_representation_with_nonempty_response_text(self):
         """Test the string representation of `ResponseCodeError` initialized with text."""
-        text_data = 'Lemon will eat your soul'
+        text_data = "Lemon will eat your soul"
         error = api.ResponseCodeError(
             response=self.error_api_response,
             response_text=text_data

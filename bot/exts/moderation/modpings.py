@@ -60,13 +60,13 @@ class ModPings(Cog):
         log.trace(f"Re-applying role to mod with ID {mod.id}.")
         await mod.add_roles(self.moderators_role, reason="Pings off period expired.")
 
-    @group(name='modpings', aliases=('modping',), invoke_without_command=True)
+    @group(name="modpings", aliases=("modping",), invoke_without_command=True)
     @has_any_role(*MODERATION_ROLES)
     async def modpings_group(self, ctx: Context) -> None:
         """Allow the removal and re-addition of the pingable moderators role."""
         await ctx.send_help(ctx.command)
 
-    @modpings_group.command(name='off')
+    @modpings_group.command(name="off")
     @has_any_role(*MODERATION_ROLES)
     async def off_command(self, ctx: Context, duration: Expiry) -> None:
         """
@@ -108,7 +108,7 @@ class ModPings(Cog):
         embed.set_footer(text="Moderators role has been removed until", icon_url=Icons.green_checkmark)
         await ctx.send(embed=embed)
 
-    @modpings_group.command(name='on')
+    @modpings_group.command(name="on")
     @has_any_role(*MODERATION_ROLES)
     async def on_command(self, ctx: Context) -> None:
         """Re-apply the pingable moderators role."""

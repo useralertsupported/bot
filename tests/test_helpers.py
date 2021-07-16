@@ -144,13 +144,13 @@ class DiscordMocksTests(unittest.TestCase):
     def test_mocks_allows_access_to_attributes_part_of_spec(self):
         """Accessing attributes that are valid for the objects they mock should succeed."""
         mocks = (
-            (helpers.MockGuild(), 'name'),
-            (helpers.MockRole(), 'hoist'),
-            (helpers.MockMember(), 'display_name'),
-            (helpers.MockBot(), 'user'),
-            (helpers.MockContext(), 'invoked_with'),
-            (helpers.MockTextChannel(), 'last_message'),
-            (helpers.MockMessage(), 'mention_everyone'),
+            (helpers.MockGuild(), "name"),
+            (helpers.MockRole(), "hoist"),
+            (helpers.MockMember(), "display_name"),
+            (helpers.MockBot(), "user"),
+            (helpers.MockContext(), "invoked_with"),
+            (helpers.MockTextChannel(), "last_message"),
+            (helpers.MockMessage(), "mention_everyone"),
         )
 
         for mock, valid_attribute in mocks:
@@ -161,8 +161,8 @@ class DiscordMocksTests(unittest.TestCase):
                     msg = f"accessing valid attribute `{valid_attribute}` raised an AttributeError"
                     self.fail(msg)
 
-    @unittest.mock.patch(f'{__name__}.DiscordMocksTests.subTest')
-    @unittest.mock.patch(f'{__name__}.getattr')
+    @unittest.mock.patch(f"{__name__}.DiscordMocksTests.subTest")
+    @unittest.mock.patch(f"{__name__}.getattr")
     def test_mock_allows_access_to_attributes_test(self, mock_getattr, mock_subtest):
         """The valid attribute test should raise an AssertionError after an AttributeError."""
         mock_getattr.side_effect = AttributeError
@@ -333,9 +333,9 @@ class MockObjectTests(unittest.TestCase):
             (helpers.MockBot, "owner_id"),
             (helpers.MockContext, "command_failed"),
             (helpers.MockMessage, "mention_everyone"),
-            (helpers.MockEmoji, 'managed'),
-            (helpers.MockPartialEmoji, 'url'),
-            (helpers.MockReaction, 'me'),
+            (helpers.MockEmoji, "managed"),
+            (helpers.MockPartialEmoji, "url"),
+            (helpers.MockReaction, "me"),
         )
 
         for mock_type, valid_attribute in test_values:

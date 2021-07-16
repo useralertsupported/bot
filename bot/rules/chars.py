@@ -15,7 +15,7 @@ async def apply(
 
     total_recent_chars = sum(len(msg.content) for msg in relevant_messages)
 
-    if total_recent_chars > config['max']:
+    if total_recent_chars > config["max"]:
         return (
             f"sent {total_recent_chars} characters in {config['interval']}s",
             (last_message.author,),

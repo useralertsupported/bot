@@ -41,7 +41,7 @@ ROLE_MENTION_RE = re.compile(r"<@&\d+>")
 class Reviewer:
     """Schedules, formats, and publishes reviews of helper nominees."""
 
-    def __init__(self, name: str, bot: Bot, pool: 'TalentPool'):
+    def __init__(self, name: str, bot: Bot, pool: "TalentPool"):
         self.bot = bot
         self._pool = pool
         self._review_scheduler = Scheduler(name)
@@ -66,7 +66,7 @@ class Reviewer:
         log.trace(f"Scheduling review of user with ID {user_id}")
 
         user_data = self._pool.watched_users.get(user_id)
-        inserted_at = isoparse(user_data['inserted_at']).replace(tzinfo=None)
+        inserted_at = isoparse(user_data["inserted_at"]).replace(tzinfo=None)
         review_at = inserted_at + timedelta(days=MAX_DAYS_IN_POOL)
 
         # If it's over a day overdue, it's probably an old nomination and shouldn't be automatically reviewed.
@@ -121,7 +121,7 @@ class Reviewer:
 
         current_nominations = "\n\n".join(
             f"**<@{entry['actor']}>:** {entry['reason'] or '*no reason given*'}"
-            for entry in nomination['entries'][::-1]
+            for entry in nomination["entries"][::-1]
         )
         current_nominations = f"**Nominated by:**\n{current_nominations}"
 
@@ -269,8 +269,8 @@ class Reviewer:
         """
         log.trace(f"Fetching the infraction data for {member.id}'s review")
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'user__id': str(member.id), 'ordering': '-inserted_at'}
+            "bot/infractions/expanded",
+            params={"user__id": str(member.id), "ordering": "-inserted_at"}
         )
 
         log.trace(f"{len(infraction_list)} infractions found for {member.id}, formatting review.")
@@ -301,7 +301,7 @@ class Reviewer:
             infractions += ", with the last infraction issued "
 
         # Infractions were ordered by time since insertion descending.
-        infractions += get_time_delta(infraction_list[0]['inserted_at'])
+        infractions += get_time_delta(infraction_list[0]["inserted_at"])
 
         return f"They have {infractions}."
 
@@ -315,7 +315,7 @@ class Reviewer:
         """
         formatted = infr_type.replace("_", " ")
         if count > 1:
-            if infr_type.endswith(('ch', 'sh')):
+            if infr_type.endswith(("ch", "sh")):
                 formatted += "e"
             formatted += "s"
 
@@ -345,7 +345,7 @@ class Reviewer:
 
         nomination_times = f"{num_entries} times" if num_entries > 1 else "once"
         rejection_times = f"{len(history)} times" if len(history) > 1 else "once"
-        end_time = time_since(isoparse(history[0]['ended_at']).replace(tzinfo=None), max_units=2)
+        end_time = time_since(isoparse(history[0]["ended_at"]).replace(tzinfo=None), max_units=2)
 
         review = (
             f"They were nominated **{nomination_times}** before"

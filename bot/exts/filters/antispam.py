@@ -22,21 +22,20 @@ from bot.exts.utils.jams import CATEGORY_NAME as JAM_CATEGORY_NAME
 from bot.utils import lock, scheduling
 from bot.utils.messages import format_user, send_attachments
 
-
 log = logging.getLogger(__name__)
 
 RULE_FUNCTION_MAPPING = {
-    'attachments': rules.apply_attachments,
-    'burst': rules.apply_burst,
+    "attachments": rules.apply_attachments,
+    "burst": rules.apply_burst,
     # burst shared is temporarily disabled due to a bug
     # 'burst_shared': rules.apply_burst_shared,
-    'chars': rules.apply_chars,
-    'discord_emojis': rules.apply_discord_emojis,
-    'duplicates': rules.apply_duplicates,
-    'links': rules.apply_links,
-    'mentions': rules.apply_mentions,
-    'newlines': rules.apply_newlines,
-    'role_mentions': rules.apply_role_mentions,
+    "chars": rules.apply_chars,
+    "discord_emojis": rules.apply_discord_emojis,
+    "duplicates": rules.apply_duplicates,
+    "links": rules.apply_links,
+    "mentions": rules.apply_mentions,
+    "newlines": rules.apply_newlines,
+    "role_mentions": rules.apply_role_mentions,
 }
 
 
@@ -78,7 +77,7 @@ class DeletionContext:
         )
 
         # For multiple messages or those with excessive newlines, use the logs API
-        if len(self.messages) > 1 or 'newlines' in self.rules:
+        if len(self.messages) > 1 or "newlines" in self.rules:
             url = await modlog.upload_log(self.messages.values(), actor_id, self.attachments)
             mod_alert_message += f"A complete log of the offending messages can be found [here]({url})"
         else:
@@ -110,7 +109,7 @@ class AntiSpam(Cog):
     def __init__(self, bot: Bot, validation_errors: Dict[str, str]) -> None:
         self.bot = bot
         self.validation_errors = validation_errors
-        role_id = AntiSpamConfig.punishment['role_id']
+        role_id = AntiSpamConfig.punishment["role_id"]
         self.muted_role = Object(role_id)
         self.expiration_date_converter = Duration()
 
@@ -158,9 +157,9 @@ class AntiSpam(Cog):
         # Fetch the rule configuration with the highest rule interval.
         max_interval_config = max(
             AntiSpamConfig.rules.values(),
-            key=itemgetter('interval')
+            key=itemgetter("interval")
         )
-        max_interval = max_interval_config['interval']
+        max_interval = max_interval_config["interval"]
 
         # Store history messages since `interval` seconds ago in a list to prevent unnecessary API calls.
         earliest_relevant_at = datetime.utcnow() - timedelta(seconds=max_interval)
@@ -174,7 +173,7 @@ class AntiSpam(Cog):
             rule_function = RULE_FUNCTION_MAPPING[rule_name]
 
             # Create a list of messages that were sent in the interval that the rule cares about.
-            latest_interesting_stamp = datetime.utcnow() - timedelta(seconds=rule_config['interval'])
+            latest_interesting_stamp = datetime.utcnow() - timedelta(seconds=rule_config["interval"])
             messages_for_rule = [
                 msg for msg in relevant_messages if msg.created_at > latest_interesting_stamp
             ]
@@ -219,7 +218,7 @@ class AntiSpam(Cog):
     async def punish(self, msg: Message, member: Member, reason: str) -> None:
         """Punishes the given member for triggering an antispam rule."""
         if not any(role.id == self.muted_role.id for role in member.roles):
-            remove_role_after = AntiSpamConfig.punishment['remove_after']
+            remove_role_after = AntiSpamConfig.punishment["remove_after"]
 
             # Get context and make sure the bot becomes the actor of infraction by patching the `author` attributes
             context = await self.bot.get_context(msg)
@@ -228,7 +227,7 @@ class AntiSpam(Cog):
             # Since we're going to invoke the tempmute command directly, we need to manually call the converter.
             dt_remove_role_after = await self.expiration_date_converter.convert(context, f"{remove_role_after}S")
             await context.invoke(
-                self.bot.get_command('tempmute'),
+                self.bot.get_command("tempmute"),
                 member,
                 dt_remove_role_after,
                 reason=reason
@@ -276,7 +275,7 @@ def validate_config(rules_: Mapping = AntiSpamConfig.rules) -> Dict[str, str]:
             )
             validation_errors[name] = f"`{name}` is not recognized as an antispam rule."
             continue
-        for required_key in ('interval', 'max'):
+        for required_key in ("interval", "max"):
             if required_key not in config:
                 log.error(
                     f"`{required_key}` is required but was not "

@@ -27,16 +27,16 @@ async def update_names(bot: Bot) -> None:
 
         try:
             channel_0_name, channel_1_name, channel_2_name = await bot.api_client.get(
-                'bot/off-topic-channel-names', params={'random_items': 3}
+                "bot/off-topic-channel-names", params={"random_items": 3}
             )
         except ResponseCodeError as e:
             log.error(f"Failed to get new off topic channel names: code {e.response.status}")
             continue
         channel_0, channel_1, channel_2 = (bot.get_channel(channel_id) for channel_id in CHANNELS)
 
-        await channel_0.edit(name=f'ot0-{channel_0_name}')
-        await channel_1.edit(name=f'ot1-{channel_1_name}')
-        await channel_2.edit(name=f'ot2-{channel_2_name}')
+        await channel_0.edit(name=f"ot0-{channel_0_name}")
+        await channel_1.edit(name=f"ot1-{channel_1_name}")
+        await channel_2.edit(name=f"ot2-{channel_2_name}")
         log.debug(
             "Updated off-topic channel names to"
             f" {channel_0_name}, {channel_1_name} and {channel_2_name}"
@@ -64,13 +64,13 @@ class OffTopicNames(Cog):
             coro = update_names(self.bot)
             self.updater_task = self.bot.loop.create_task(coro)
 
-    @group(name='otname', aliases=('otnames', 'otn'), invoke_without_command=True)
+    @group(name="otname", aliases=("otnames", "otn"), invoke_without_command=True)
     @has_any_role(*MODERATION_ROLES)
     async def otname_group(self, ctx: Context) -> None:
         """Add or list items from the off-topic channel name rotation."""
         await ctx.send_help(ctx.command)
 
-    @otname_group.command(name='add', aliases=('a',))
+    @otname_group.command(name="add", aliases=("a",))
     @has_any_role(*MODERATION_ROLES)
     async def add_command(self, ctx: Context, *, name: OffTopicName) -> None:
         """
@@ -78,7 +78,7 @@ class OffTopicNames(Cog):
 
         The name is not added if it is too similar to an existing name.
         """
-        existing_names = await self.bot.api_client.get('bot/off-topic-channel-names')
+        existing_names = await self.bot.api_client.get("bot/off-topic-channel-names")
         close_match = difflib.get_close_matches(name, existing_names, n=1, cutoff=0.8)
 
         if close_match:
@@ -93,7 +93,7 @@ class OffTopicNames(Cog):
         else:
             await self._add_name(ctx, name)
 
-    @otname_group.command(name='forceadd', aliases=('fa',))
+    @otname_group.command(name="forceadd", aliases=("fa",))
     @has_any_role(*MODERATION_ROLES)
     async def force_add_command(self, ctx: Context, *, name: OffTopicName) -> None:
         """Forcefully adds a new off-topic name to the rotation."""
@@ -101,21 +101,21 @@ class OffTopicNames(Cog):
 
     async def _add_name(self, ctx: Context, name: str) -> None:
         """Adds an off-topic channel name to the site storage."""
-        await self.bot.api_client.post('bot/off-topic-channel-names', params={'name': name})
+        await self.bot.api_client.post("bot/off-topic-channel-names", params={"name": name})
 
         log.info(f"{ctx.author} added the off-topic channel name '{name}'")
         await ctx.send(f":ok_hand: Added `{name}` to the names list.")
 
-    @otname_group.command(name='delete', aliases=('remove', 'rm', 'del', 'd'))
+    @otname_group.command(name="delete", aliases=("remove", "rm", "del", "d"))
     @has_any_role(*MODERATION_ROLES)
     async def delete_command(self, ctx: Context, *, name: OffTopicName) -> None:
         """Removes a off-topic name from the rotation."""
-        await self.bot.api_client.delete(f'bot/off-topic-channel-names/{name}')
+        await self.bot.api_client.delete(f"bot/off-topic-channel-names/{name}")
 
         log.info(f"{ctx.author} deleted the off-topic channel name '{name}'")
         await ctx.send(f":ok_hand: Removed `{name}` from the names list.")
 
-    @otname_group.command(name='list', aliases=('l',))
+    @otname_group.command(name="list", aliases=("l",))
     @has_any_role(*MODERATION_ROLES)
     async def list_command(self, ctx: Context) -> None:
         """
@@ -123,7 +123,7 @@ class OffTopicNames(Cog):
 
         Restricted to Moderator and above to not spoil the surprise.
         """
-        result = await self.bot.api_client.get('bot/off-topic-channel-names')
+        result = await self.bot.api_client.get("bot/off-topic-channel-names")
         lines = sorted(f"• {name}" for name in result)
         embed = Embed(
             title=f"Known off-topic names (`{len(result)}` total)",
@@ -135,7 +135,7 @@ class OffTopicNames(Cog):
             embed.description = "Hmmm, seems like there's nothing here yet."
             await ctx.send(embed=embed)
 
-    @otname_group.command(name='search', aliases=('s',))
+    @otname_group.command(name="search", aliases=("s",))
     @has_any_role(*MODERATION_ROLES)
     async def search_command(self, ctx: Context, *, query: OffTopicName) -> None:
         """Search for an off-topic name."""
@@ -144,7 +144,7 @@ class OffTopicNames(Cog):
         # Map normalized names to returned names for search purposes
         result = {
             OffTopicName.translate_name(name, from_unicode=False).lower(): name
-            for name in await self.bot.api_client.get('bot/off-topic-channel-names')
+            for name in await self.bot.api_client.get("bot/off-topic-channel-names")
         }
 
         # Search normalized keys

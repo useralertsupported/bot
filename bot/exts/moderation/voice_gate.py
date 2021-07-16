@@ -8,7 +8,6 @@ from async_rediscache import RedisCache
 from discord import Colour, Member, VoiceState
 from discord.ext.commands import Cog, Context, command
 
-
 from bot.api import ResponseCodeError
 from bot.bot import Bot
 from bot.constants import Channels, Event, MODERATION_ROLES, Roles, VoiceGate as GateConf
@@ -178,7 +177,7 @@ class VoiceGate(Cog):
         if failed:
             embed = discord.Embed(
                 title="Voice Gate failed",
-                description=FAILED_MESSAGE.format(reasons="\n".join(f'• You {reason}.' for reason in failed_reasons)),
+                description=FAILED_MESSAGE.format(reasons="\n".join(f"• You {reason}." for reason in failed_reasons)),
                 color=Colour.red()
             )
             try:

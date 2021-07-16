@@ -45,7 +45,7 @@ EVAL_ROLES = (Roles.helpers, Roles.moderators, Roles.admins, Roles.owners, Roles
 
 SIGKILL = 9
 
-REEVAL_EMOJI = '\U0001f501'  # :repeat:
+REEVAL_EMOJI = "\U0001f501"  # :repeat:
 REEVAL_TIMEOUT = 30
 
 
@@ -85,7 +85,7 @@ class Snekbox(Cog):
             blocks = [block for block in match if block.group("block")]
 
             if len(blocks) > 1:
-                code = '\n'.join(block.group("code") for block in blocks)
+                code = "\n".join(block.group("code") for block in blocks)
                 info = "several code blocks"
             else:
                 match = match[0] if len(blocks) == 0 else blocks[0]
@@ -164,7 +164,7 @@ class Snekbox(Cog):
         lines = output.count("\n")
 
         if lines > 0:
-            output = [f"{i:03d} | {line}" for i, line in enumerate(output.split('\n'), 1)]
+            output = [f"{i:03d} | {line}" for i, line in enumerate(output.split("\n"), 1)]
             output = output[:11]  # Limiting to only 11 lines
             output = "\n".join(output)
 
@@ -236,13 +236,13 @@ class Snekbox(Cog):
         with contextlib.suppress(NotFound):
             try:
                 _, new_message = await self.bot.wait_for(
-                    'message_edit',
+                    "message_edit",
                     check=_predicate_eval_message_edit,
                     timeout=REEVAL_TIMEOUT
                 )
                 await ctx.message.add_reaction(REEVAL_EMOJI)
                 await self.bot.wait_for(
-                    'reaction_add',
+                    "reaction_add",
                     check=_predicate_emoji_reaction,
                     timeout=10
                 )

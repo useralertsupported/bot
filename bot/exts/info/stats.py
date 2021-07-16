@@ -41,7 +41,7 @@ class Stats(Cog):
                 # of them for interesting statistics to be drawn out of this.
                 return
 
-        reformatted_name = message.channel.name.replace('-', '_')
+        reformatted_name = message.channel.name.replace("-", "_")
 
         if CHANNEL_NAME_OVERRIDES.get(message.channel.id):
             reformatted_name = CHANNEL_NAME_OVERRIDES.get(message.channel.id)

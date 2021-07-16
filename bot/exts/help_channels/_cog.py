@@ -543,7 +543,7 @@ class HelpChannels(commands.Cog):
     @staticmethod
     def _serialise_session_participants(participants: set[int]) -> str:
         """Convert a set to a comma separated string."""
-        return ','.join(str(p) for p in participants)
+        return ",".join(str(p) for p in participants)
 
     @staticmethod
     def _deserialise_session_participants(s: str) -> set[int]:

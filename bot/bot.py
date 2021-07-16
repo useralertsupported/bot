@@ -15,7 +15,7 @@ from sentry_sdk import push_scope
 from bot import api, constants
 from bot.async_stats import AsyncStatsClient
 
-log = logging.getLogger('bot')
+log = logging.getLogger("bot")
 LOCALHOST = "127.0.0.1"
 
 
@@ -84,7 +84,7 @@ class Bot(commands.Bot):
 
     async def cache_filter_list_data(self) -> None:
         """Cache all the data in the FilterList on the site."""
-        full_cache = await self.api_client.get('bot/filter-lists')
+        full_cache = await self.api_client.get("bot/filter-lists")
 
         for item in full_cache:
             self.insert_item_into_filter_list_cache(item)

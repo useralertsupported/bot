@@ -40,7 +40,7 @@ class ModManagement(commands.Cog):
 
     # region: Edit infraction commands
 
-    @commands.group(name='infraction', aliases=('infr', 'infractions', 'inf', 'i'), invoke_without_command=True)
+    @commands.group(name="infraction", aliases=("infr", "infractions", "inf", "i"), invoke_without_command=True)
     async def infraction_group(self, ctx: Context) -> None:
         """Infraction manipulation commands."""
         await ctx.send_help(ctx.command)
@@ -84,7 +84,7 @@ class ModManagement(commands.Cog):
 
         await self.infraction_edit(ctx, infraction, duration, reason=reason)
 
-    @infraction_group.command(name='edit', aliases=('e',))
+    @infraction_group.command(name="edit", aliases=("e",))
     async def infraction_edit(
         self,
         ctx: Context,
@@ -122,23 +122,23 @@ class ModManagement(commands.Cog):
         confirm_messages = []
         log_text = ""
 
-        if duration is not None and not infraction['active']:
+        if duration is not None and not infraction["active"]:
             if reason is None:
                 await ctx.send(":x: Cannot edit the expiration of an expired infraction.")
                 return
             confirm_messages.append("expiry unchanged (infraction already expired)")
         elif isinstance(duration, str):
-            request_data['expires_at'] = None
+            request_data["expires_at"] = None
             confirm_messages.append("marked as permanent")
         elif duration is not None:
-            request_data['expires_at'] = duration.isoformat()
-            expiry = time.format_infraction_with_duration(request_data['expires_at'])
+            request_data["expires_at"] = duration.isoformat()
+            expiry = time.format_infraction_with_duration(request_data["expires_at"])
             confirm_messages.append(f"set to expire on {expiry}")
         else:
             confirm_messages.append("expiry unchanged")
 
         if reason:
-            request_data['reason'] = reason
+            request_data["reason"] = reason
             confirm_messages.append("set a new reason")
             log_text += f"""
                 Previous reason: {infraction['reason']}
@@ -149,18 +149,18 @@ class ModManagement(commands.Cog):
 
         # Update the infraction
         new_infraction = await self.bot.api_client.patch(
-            f'bot/infractions/{infraction_id}',
+            f"bot/infractions/{infraction_id}",
             json=request_data,
         )
 
         # Re-schedule infraction if the expiration has been updated
-        if 'expires_at' in request_data:
+        if "expires_at" in request_data:
             # A scheduled task should only exist if the old infraction wasn't permanent
-            if infraction['expires_at']:
-                self.infractions_cog.scheduler.cancel(new_infraction['id'])
+            if infraction["expires_at"]:
+                self.infractions_cog.scheduler.cancel(new_infraction["id"])
 
             # If the infraction was not marked as permanent, schedule a new expiration task
-            if request_data['expires_at']:
+            if request_data["expires_at"]:
                 self.infractions_cog.schedule_expiration(new_infraction)
 
             log_text += f"""
@@ -168,11 +168,11 @@ class ModManagement(commands.Cog):
                 New expiry: {new_infraction['expires_at'] or "Permanent"}
             """.rstrip()
 
-        changes = ' & '.join(confirm_messages)
+        changes = " & ".join(confirm_messages)
         await ctx.send(f":ok_hand: Updated infraction #{infraction_id}: {changes}")
 
         # Get information about the infraction's user
-        user_id = new_infraction['user']
+        user_id = new_infraction["user"]
         user = ctx.guild.get_member(user_id)
 
         if user:
@@ -197,7 +197,7 @@ class ModManagement(commands.Cog):
     # endregion
     # region: Search infractions
 
-    @infraction_group.group(name="search", aliases=('s',), invoke_without_command=True)
+    @infraction_group.group(name="search", aliases=("s",), invoke_without_command=True)
     async def infraction_search_group(self, ctx: Context, query: t.Union[UserMention, Snowflake, str]) -> None:
         """Searches for infractions in the database."""
         if isinstance(query, int):
@@ -209,8 +209,8 @@ class ModManagement(commands.Cog):
     async def search_user(self, ctx: Context, user: t.Union[discord.User, proxy_user]) -> None:
         """Search for infractions by member."""
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'user__id': str(user.id)}
+            "bot/infractions/expanded",
+            params={"user__id": str(user.id)}
         )
 
         user = self.bot.get_user(user.id)
@@ -229,8 +229,8 @@ class ModManagement(commands.Cog):
     async def search_reason(self, ctx: Context, reason: str) -> None:
         """Search for infractions by their reason. Use Re2 for matching."""
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'search': reason}
+            "bot/infractions/expanded",
+            params={"search": reason}
         )
         embed = discord.Embed(
             title=f"Infractions matching `{reason}` ({len(infraction_list)} total)",
@@ -279,7 +279,7 @@ class ModManagement(commands.Cog):
             user_str = messages.format_user(user_obj)
         else:
             # Use the user data retrieved from the DB.
-            name = escape_markdown(user['name'])
+            name = escape_markdown(user["name"])
             user_str = f"<@{user['id']}> ({name}#{user['discriminator']:04})"
 
         if active:

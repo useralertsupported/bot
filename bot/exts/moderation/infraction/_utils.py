@@ -33,8 +33,8 @@ APPEAL_EMAIL = "appeals@pythondiscord.com"
 INFRACTION_TITLE = "Please review our rules"
 INFRACTION_APPEAL_EMAIL_FOOTER = f"To appeal this infraction, send an e-mail to {APPEAL_EMAIL}"
 INFRACTION_APPEAL_MODMAIL_FOOTER = (
-    'If you would like to discuss or appeal this infraction, '
-    'send a message to the ModMail bot'
+    "If you would like to discuss or appeal this infraction, "
+    "send a message to the ModMail bot"
 )
 INFRACTION_AUTHOR_NAME = "Infraction information"
 
@@ -57,15 +57,15 @@ async def post_user(ctx: Context, user: UserSnowflake) -> t.Optional[dict]:
         log.debug("The user being added to the DB is not a Member or User object.")
 
     payload = {
-        'discriminator': int(getattr(user, 'discriminator', 0)),
-        'id': user.id,
-        'in_guild': False,
-        'name': getattr(user, 'name', 'Name unknown'),
-        'roles': []
+        "discriminator": int(getattr(user, "discriminator", 0)),
+        "id": user.id,
+        "in_guild": False,
+        "name": getattr(user, "name", "Name unknown"),
+        "roles": []
     }
 
     try:
-        response = await ctx.bot.api_client.post('bot/users', json=payload)
+        response = await ctx.bot.api_client.post("bot/users", json=payload)
         log.info(f"User {user.id} added to the DB.")
         return response
     except ResponseCodeError as e:
@@ -98,15 +98,15 @@ async def post_infraction(
         "active": active
     }
     if expires_at:
-        payload['expires_at'] = expires_at.isoformat()
+        payload["expires_at"] = expires_at.isoformat()
 
     # Try to apply the infraction. If it fails because the user doesn't exist, try to add it.
     for should_post_user in (True, False):
         try:
-            response = await ctx.bot.api_client.post('bot/infractions', json=payload)
+            response = await ctx.bot.api_client.post("bot/infractions", json=payload)
             return response
         except ResponseCodeError as e:
-            if e.status == 400 and 'user' in e.response_json:
+            if e.status == 400 and "user" in e.response_json:
                 # Only one attempt to add the user to the database, not two:
                 if not should_post_user or await post_user(ctx, user) is None:
                     return
@@ -132,11 +132,11 @@ async def get_active_infraction(
     log.trace(f"Checking if {user} has active infractions of type {infr_type}.")
 
     active_infractions = await ctx.bot.api_client.get(
-        'bot/infractions',
+        "bot/infractions",
         params={
-            'active': 'true',
-            'type': infr_type,
-            'user__id': str(user.id)
+            "active": "true",
+            "type": infr_type,
+            "user__id": str(user.id)
         }
     )
     if active_infractions:
@@ -182,7 +182,7 @@ async def notify_infraction(
     embed.url = RULES_URL
 
     embed.set_footer(
-        text=INFRACTION_APPEAL_EMAIL_FOOTER if infr_type == 'Ban' else INFRACTION_APPEAL_MODMAIL_FOOTER
+        text=INFRACTION_APPEAL_EMAIL_FOOTER if infr_type == "Ban" else INFRACTION_APPEAL_MODMAIL_FOOTER
     )
 
     return await send_private_embed(user, embed)

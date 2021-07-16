@@ -10,7 +10,7 @@ class AsyncStatsClient(StatsClientBase):
     def __init__(
         self,
         loop: asyncio.AbstractEventLoop,
-        host: str = 'localhost',
+        host: str = "localhost",
         port: int = 8125,
         prefix: str = None
     ):
@@ -36,4 +36,4 @@ class AsyncStatsClient(StatsClientBase):
 
     async def _async_send(self, data: str) -> None:
         """Send data to the statsd server using the async transport."""
-        self._transport.sendto(data.encode('ascii'), self._addr)
+        self._transport.sendto(data.encode("ascii"), self._addr)

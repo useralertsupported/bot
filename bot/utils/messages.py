@@ -96,7 +96,7 @@ async def wait_for_deletion(
     )
 
     with contextlib.suppress(asyncio.TimeoutError):
-        await bot.instance.wait_for('reaction_add', check=check, timeout=timeout)
+        await bot.instance.wait_for("reaction_add", check=check, timeout=timeout)
         await message.delete()
 
 
@@ -115,11 +115,11 @@ async def send_attachments(
     embed which links to them. Extra kwargs will be passed to send() when sending the attachment.
     """
     webhook_send_kwargs = {
-        'username': message.author.display_name,
-        'avatar_url': message.author.avatar_url,
+        "username": message.author.display_name,
+        "avatar_url": message.author.avatar_url,
     }
     webhook_send_kwargs.update(kwargs)
-    webhook_send_kwargs['username'] = sub_clyde(webhook_send_kwargs['username'])
+    webhook_send_kwargs["username"] = sub_clyde(webhook_send_kwargs["username"])
 
     large = []
     urls = []

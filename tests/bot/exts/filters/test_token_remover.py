@@ -118,9 +118,9 @@ class TokenRemoverTests(unittest.IsolatedAsyncioTestCase):
 
     def test_mod_log_property(self):
         """The `mod_log` property should ask the bot to return the `ModLog` cog."""
-        self.bot.get_cog.return_value = 'lemon'
+        self.bot.get_cog.return_value = "lemon"
         self.assertEqual(self.cog.mod_log, self.bot.get_cog.return_value)
-        self.bot.get_cog.assert_called_once_with('ModLog')
+        self.bot.get_cog.assert_called_once_with("ModLog")
 
     async def test_on_message_edit_uses_on_message(self):
         """The edit listener should delegate handling of the message to the normal listener."""

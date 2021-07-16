@@ -15,7 +15,7 @@ async def apply(
 
     total_recent_mentions = sum(len(msg.mentions) for msg in relevant_messages)
 
-    if total_recent_mentions > config['max']:
+    if total_recent_mentions > config["max"]:
         return (
             f"sent {total_recent_mentions} mentions in {config['interval']}s",
             (last_message.author,),

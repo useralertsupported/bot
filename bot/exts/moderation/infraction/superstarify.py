@@ -112,7 +112,7 @@ class Superstarify(InfractionScheduler, Cog):
         member: Member,
         duration: t.Optional[Expiry],
         *,
-        reason: str = '',
+        reason: str = "",
     ) -> None:
         """
         Temporarily force a random superstar name (like Taylor Swift) to be the user's nickname.
@@ -140,7 +140,7 @@ class Superstarify(InfractionScheduler, Cog):
 
         # Post the infraction to the API
         old_nick = member.display_name
-        infraction_reason = f'Old nickname: {old_nick}. {reason}'
+        infraction_reason = f"Old nickname: {old_nick}. {reason}"
         infraction = await _utils.post_infraction(ctx, member, "superstar", infraction_reason, duration, active=True)
         id_ = infraction["id"]
 
@@ -173,7 +173,7 @@ class Superstarify(InfractionScheduler, Cog):
 
         successful = await self.apply_infraction(
             ctx, infraction, member, action(),
-            user_reason=user_message(reason=f'**Additional details:** {reason}\n\n' if reason else ''),
+            user_reason=user_message(reason=f"**Additional details:** {reason}\n\n" if reason else ""),
             additional_info=nickname_info
         )
 
@@ -183,7 +183,7 @@ class Superstarify(InfractionScheduler, Cog):
             embed = Embed(
                 title="Superstarified!",
                 colour=constants.Colours.soft_orange,
-                description=user_message(reason='')
+                description=user_message(reason="")
             )
             await ctx.send(embed=embed)
 

@@ -55,18 +55,18 @@ class ModLog(Cog, name="ModLog"):
             attachments = []
 
         response = await self.bot.api_client.post(
-            'bot/deleted-messages',
+            "bot/deleted-messages",
             json={
-                'actor': actor_id,
-                'creation': datetime.utcnow().isoformat(),
-                'deletedmessage_set': [
+                "actor": actor_id,
+                "creation": datetime.utcnow().isoformat(),
+                "deletedmessage_set": [
                     {
-                        'id': message.id,
-                        'author': message.author.id,
-                        'channel_id': message.channel.id,
-                        'content': message.content.replace("\0", ""),  # Null chars cause 400.
-                        'embeds': [embed.to_dict() for embed in message.embeds],
-                        'attachments': attachment,
+                        "id": message.id,
+                        "author": message.author.id,
+                        "channel_id": message.channel.id,
+                        "content": message.content.replace("\0", ""),  # Null chars cause 400.
+                        "embeds": [embed.to_dict() for embed in message.embeds],
+                        "attachments": attachment,
                     }
                     for message, attachment in zip_longest(messages, attachments, fillvalue=[])
                 ]
@@ -654,12 +654,12 @@ class ModLog(Cog, name="ModLog"):
         content_after: t.List[str] = []
 
         for index, (diff_type, words) in enumerate(diff_groups):
-            sub = ' '.join(words)
-            if diff_type == '-':
+            sub = " ".join(words)
+            if diff_type == "-":
                 content_before.append(f"[{sub}](http://o.hi)")
-            elif diff_type == '+':
+            elif diff_type == "+":
                 content_after.append(f"[{sub}](http://o.hi)")
-            elif diff_type == ' ':
+            elif diff_type == " ":
                 if len(words) > 2:
                     sub = (
                         f"{words[0] if index > 0 else ''}"

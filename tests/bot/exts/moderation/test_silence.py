@@ -560,10 +560,10 @@ class SilenceTests(unittest.IsolatedAsyncioTestCase):
         new_overwrite_dict = dict(self.text_overwrite)
 
         # Remove 'send_messages' & 'add_reactions' keys because they were changed by the method.
-        del prev_overwrite_dict['send_messages']
-        del prev_overwrite_dict['add_reactions']
-        del new_overwrite_dict['send_messages']
-        del new_overwrite_dict['add_reactions']
+        del prev_overwrite_dict["send_messages"]
+        del prev_overwrite_dict["add_reactions"]
+        del new_overwrite_dict["send_messages"]
+        del new_overwrite_dict["add_reactions"]
 
         self.assertDictEqual(prev_overwrite_dict, new_overwrite_dict)
 
@@ -574,10 +574,10 @@ class SilenceTests(unittest.IsolatedAsyncioTestCase):
         new_overwrite_dict = dict(self.voice_overwrite)
 
         # Remove 'connect' & 'speak' keys because they were changed by the method.
-        del prev_overwrite_dict['connect']
-        del prev_overwrite_dict['speak']
-        del new_overwrite_dict['connect']
-        del new_overwrite_dict['speak']
+        del prev_overwrite_dict["connect"]
+        del prev_overwrite_dict["speak"]
+        del new_overwrite_dict["connect"]
+        del new_overwrite_dict["speak"]
 
         self.assertDictEqual(prev_overwrite_dict, new_overwrite_dict)
 
@@ -806,10 +806,10 @@ class UnsilenceTests(unittest.IsolatedAsyncioTestCase):
                 new_overwrite_dict = dict(self.text_overwrite)
 
                 # Remove these keys because they were modified by the unsilence.
-                del prev_overwrite_dict['send_messages']
-                del prev_overwrite_dict['add_reactions']
-                del new_overwrite_dict['send_messages']
-                del new_overwrite_dict['add_reactions']
+                del prev_overwrite_dict["send_messages"]
+                del prev_overwrite_dict["add_reactions"]
+                del new_overwrite_dict["send_messages"]
+                del new_overwrite_dict["add_reactions"]
 
                 self.assertDictEqual(prev_overwrite_dict, new_overwrite_dict)
 
@@ -824,10 +824,10 @@ class UnsilenceTests(unittest.IsolatedAsyncioTestCase):
                 new_overwrite_dict = dict(self.voice_overwrite)
 
                 # Remove these keys because they were modified by the unsilence.
-                del prev_overwrite_dict['connect']
-                del prev_overwrite_dict['speak']
-                del new_overwrite_dict['connect']
-                del new_overwrite_dict['speak']
+                del prev_overwrite_dict["connect"]
+                del prev_overwrite_dict["speak"]
+                del new_overwrite_dict["connect"]
+                del new_overwrite_dict["speak"]
 
                 self.assertDictEqual(prev_overwrite_dict, new_overwrite_dict)
 

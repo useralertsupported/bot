@@ -17,7 +17,7 @@ async def apply(
     )
     total_recent_attachments = sum(len(msg.attachments) for msg in relevant_messages)
 
-    if total_recent_attachments > config['max']:
+    if total_recent_attachments > config["max"]:
         return (
             f"sent {total_recent_attachments} attachments in {config['interval']}s",
             (last_message.author,),

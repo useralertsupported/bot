@@ -39,13 +39,13 @@ class APIClient:
 
     def __init__(self, **session_kwargs):
         auth_headers = {
-            'Authorization': f"Token {Keys.site_api}"
+            "Authorization": f"Token {Keys.site_api}"
         }
 
-        if 'headers' in session_kwargs:
-            session_kwargs['headers'].update(auth_headers)
+        if "headers" in session_kwargs:
+            session_kwargs["headers"].update(auth_headers)
         else:
-            session_kwargs['headers'] = auth_headers
+            session_kwargs["headers"] = auth_headers
 
         # aiohttp will complain if APIClient gets instantiated outside a coroutine. Thankfully, we
         # don't and shouldn't need to do that, so we can avoid scheduling a task to create it.

@@ -29,13 +29,13 @@ async def apply(
         max_newline_group = 0
 
     # Check first for total newlines, if this passes then check for large groupings
-    if total_recent_newlines > config['max']:
+    if total_recent_newlines > config["max"]:
         return (
             f"sent {total_recent_newlines} newlines in {config['interval']}s",
             (last_message.author,),
             relevant_messages
         )
-    elif max_newline_group > config['max_consecutive']:
+    elif max_newline_group > config["max_consecutive"]:
         return (
             f"sent {max_newline_group} consecutive newlines in {config['interval']}s",
             (last_message.author,),

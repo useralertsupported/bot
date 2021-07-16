@@ -4,7 +4,6 @@ from typing import Dict, Iterable, List, Optional, Tuple
 from discord import Member, Message
 from emoji import demojize
 
-
 DISCORD_EMOJI_RE = re.compile(r"<:\w+:\d+>|:\w+:")
 CODE_BLOCK_RE = re.compile(r"```.*?```", flags=re.DOTALL)
 
@@ -26,7 +25,7 @@ async def apply(
         for msg in relevant_messages
     )
 
-    if total_emojis > config['max']:
+    if total_emojis > config["max"]:
         return (
             f"sent {total_emojis} emojis in {config['interval']}s",
             (last_message.author,),

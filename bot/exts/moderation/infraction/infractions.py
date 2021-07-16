@@ -91,7 +91,7 @@ class Infractions(InfractionScheduler, commands.Cog):
         """
         await self.apply_ban(ctx, user, reason, expires_at=duration)
 
-    @command(aliases=('pban',))
+    @command(aliases=("pban",))
     async def purgeban(
         self,
         ctx: Context,
@@ -107,7 +107,7 @@ class Infractions(InfractionScheduler, commands.Cog):
         """
         await self.apply_ban(ctx, user, reason, 1, expires_at=duration)
 
-    @command(aliases=('vban',))
+    @command(aliases=("vban",))
     async def voiceban(
         self,
         ctx: Context,
@@ -223,7 +223,7 @@ class Infractions(InfractionScheduler, commands.Cog):
 
         await self.apply_infraction(ctx, infraction, user)
 
-    @command(hidden=True, aliases=['shadowban', 'sban'])
+    @command(hidden=True, aliases=["shadowban", "sban"])
     async def shadow_ban(self, ctx: Context, user: FetchedMember, *, reason: t.Optional[str] = None) -> None:
         """Permanently ban a user for the given reason without notifying the user."""
         await self.apply_ban(ctx, user, reason, hidden=True)
@@ -339,7 +339,7 @@ class Infractions(InfractionScheduler, commands.Cog):
                 log.trace("Tempban ignored as it cannot overwrite an active ban.")
                 return
 
-            if active_infraction.get('expires_at') is None:
+            if active_infraction.get("expires_at") is None:
                 log.trace("Permaban already exists, notify.")
                 await ctx.send(f":x: User is already permanently banned (#{active_infraction['id']}).")
                 return
@@ -361,7 +361,7 @@ class Infractions(InfractionScheduler, commands.Cog):
         action = ctx.guild.ban(user, reason=reason, delete_message_days=purge_days)
         await self.apply_infraction(ctx, infraction, user, action)
 
-        if infraction.get('expires_at') is not None:
+        if infraction.get("expires_at") is not None:
             log.trace(f"Ban isn't permanent; user {user} won't be unwatched by Big Brother.")
             return
 
