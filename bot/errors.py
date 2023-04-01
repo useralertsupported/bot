@@ -43,7 +43,7 @@ class InvalidInfractedUserError(Exception):
         super().__init__(reason)
 
 
-class InvalidInfraction(ConversionError):
+class InvalidInfractionError(ConversionError):
     """
     Raised by the Infraction converter when trying to fetch an invalid infraction id.
 
@@ -57,7 +57,7 @@ class InvalidInfraction(ConversionError):
         super().__init__(converter, original)
 
 
-class BrandingMisconfiguration(RuntimeError):
+class BrandingMisconfigurationError(RuntimeError):
     """Raised by the Branding cog when a misconfigured event is encountered."""
 
     pass

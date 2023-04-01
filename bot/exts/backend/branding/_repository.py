@@ -5,7 +5,7 @@ import frontmatter
 
 from bot.bot import Bot
 from bot.constants import Keys
-from bot.errors import BrandingMisconfiguration
+from bot.errors import BrandingMisconfigurationError
 from bot.log import get_logger
 
 # Base URL for requests into the branding repository.
@@ -137,7 +137,7 @@ class BrandingRepository:
         attrs, description = frontmatter.parse(raw_file, encoding="UTF-8")
 
         if not description:
-            raise BrandingMisconfiguration("No description found in 'meta.md'!")
+            raise BrandingMisconfigurationError("No description found in 'meta.md'!")
 
         if attrs.get("fallback", False):
             return MetaFile(is_fallback=True, start_date=None, end_date=None, description=description)
@@ -146,7 +146,7 @@ class BrandingRepository:
         end_date_raw = attrs.get("end_date")
 
         if None in (start_date_raw, end_date_raw):
-            raise BrandingMisconfiguration("Non-fallback event doesn't have start and end dates defined!")
+            raise BrandingMisconfigurationError("Non-fallback event doesn't have start and end dates defined!")
 
         # We extend the configured month & day with an arbitrary leap year, allowing a datetime object to exist.
         # This may raise errors if misconfigured. We let the caller handle such cases.
@@ -166,15 +166,15 @@ class BrandingRepository:
         missing_assets = {"meta.md", "server_icons", "banners"} - contents.keys()
 
         if missing_assets:
-            raise BrandingMisconfiguration(f"Directory is missing following assets: {missing_assets}")
+            raise BrandingMisconfigurationError(f"Directory is missing following assets: {missing_assets}")
 
         server_icons = await self.fetch_directory(contents["server_icons"].path, types=("file",))
         banners = await self.fetch_directory(contents["banners"].path, types=("file",))
 
         if len(server_icons) == 0:
-            raise BrandingMisconfiguration("Found no server icons!")
+            raise BrandingMisconfigurationError("Found no server icons!")
         if len(banners) == 0:
-            raise BrandingMisconfiguration("Found no server banners!")
+            raise BrandingMisconfigurationError("Found no server banners!")
 
         meta_bytes = await self.fetch_file(contents["meta.md"].download_url)
 

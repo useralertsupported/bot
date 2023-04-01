@@ -150,7 +150,7 @@ class GroupView(CommandView):
             self.add_item(SubcommandButton(help_command, subcommand, label=subcommand.name))
 
 
-class HelpQueryNotFound(ValueError):
+class HelpQueryNotFoundError(ValueError):
     """
     Raised when a HelpSession Query doesn't match a command or cog.
 
@@ -244,11 +244,11 @@ class CustomHelpCommand(HelpCommand):
         choices.update(cog.category for cog in self.context.bot.cogs.values() if hasattr(cog, "category"))
         return choices
 
-    async def command_not_found(self, query: str) -> "HelpQueryNotFound":
+    async def command_not_found(self, query: str) -> "HelpQueryNotFoundError":
         """
         Handles when a query does not match a valid command, group, cog or category.
 
-        Will return an instance of the `HelpQueryNotFound` exception with the error message and possible matches.
+        Will return an instance of the `HelpQueryNotFoundError` exception with the error message and possible matches.
         """
         choices = list(await self.get_all_help_choices())
         result = process.extract(default_process(query), choices, scorer=fuzz.ratio, score_cutoff=60, processor=None)
@@ -257,9 +257,9 @@ class CustomHelpCommand(HelpCommand):
         if len(query) >= 100:
             query = query[:100] + "..."
 
-        return HelpQueryNotFound(f'Query "{query}" not found.', {choice[0]: choice[1] for choice in result})
+        return HelpQueryNotFoundError(f'Query "{query}" not found.', {choice[0]: choice[1] for choice in result})
 
-    async def subcommand_not_found(self, command: Command, string: str) -> "HelpQueryNotFound":
+    async def subcommand_not_found(self, command: Command, string: str) -> "HelpQueryNotFoundError":
         """
         Redirects the error to `command_not_found`.
 
@@ -267,7 +267,7 @@ class CustomHelpCommand(HelpCommand):
         """
         return await self.command_not_found(f"{command.qualified_name} {string}")
 
-    async def send_error_message(self, error: HelpQueryNotFound) -> None:
+    async def send_error_message(self, error: HelpQueryNotFoundError) -> None:
         """Send the error message to the channel."""
         embed = Embed(colour=Colour.red(), title=str(error))
 

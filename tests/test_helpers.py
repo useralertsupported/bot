@@ -186,7 +186,7 @@ class DiscordMocksTests(unittest.TestCase):
         for mock in mocks:
             with self.subTest(mock=mock):
                 with self.assertRaises(AttributeError):
-                    mock.the_cake_is_a_lie
+                    mock.the_cake_is_a_lie  # noqa: B018
 
     def test_mocks_use_mention_when_provided_as_kwarg(self):
         """The mock should use the passed `mention` instead of the default one if present."""

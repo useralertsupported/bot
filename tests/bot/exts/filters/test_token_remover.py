@@ -133,7 +133,7 @@ class TokenRemoverTests(unittest.IsolatedAsyncioTestCase):
     async def test_on_message_takes_action(self, find_token_in_message, take_action):
         """Should take action if a valid token is found when a message is sent."""
         cog = TokenRemover(self.bot)
-        found_token = "foobar"
+        found_token = "foobar"  # noqa: S105
         find_token_in_message.return_value = found_token
 
         await cog.on_message(self.msg)
@@ -269,8 +269,8 @@ class TokenRemoverTests(unittest.IsolatedAsyncioTestCase):
 
     def test_regex_matches_multiple_valid(self):
         """Should support multiple matches in the middle of a string."""
-        token_1 = "NDY3MjIzMjMwNjUwNzc3NjQx.XsyWGg.uFNEQPCc4ePwGh7egG8UicQssz8"
-        token_2 = "NDcyMjY1OTQzMDYyNDEzMzMy.XsyWMw.l8XPnDqb0lp-EiQ2g_0xVFT1pyc"
+        token_1 = "NDY3MjIzMjMwNjUwNzc3NjQx.XsyWGg.uFNEQPCc4ePwGh7egG8UicQssz8"  # noqa: S105
+        token_2 = "NDcyMjY1OTQzMDYyNDEzMzMy.XsyWMw.l8XPnDqb0lp-EiQ2g_0xVFT1pyc"  # noqa: S105
         message = f"garbage {token_1} hello {token_2} world"
 
         results = token_remover.TOKEN_RE.finditer(message)

@@ -1,13 +1,9 @@
 """
-Loads bot configuration from environment variables
-and `.env` files. By default, this simply loads the
-default configuration defined thanks to the `default`
-keyword argument in each instance of the `Field` class
-If two files called `.env` and `.env.server` are found
-in the project directory, the values will be loaded
-from both of them, thus overlooking the predefined defaults.
-Any settings left out in the custom user configuration
-will default to the values passed to the `default` kwarg.
+Loads bot configuration from environment variables and `.env` files.
+
+By default, the values defined in the classes are used, these can be superceded by an env var with the same name.
+
+`.env` and `.env.server` files are used to populate env vars, if present.
 """
 import os
 from enum import Enum
@@ -16,7 +12,11 @@ from pydantic import BaseModel, BaseSettings, root_validator
 
 
 class EnvConfig(BaseSettings):
+    """Our default configuration for models that should load from .env files."""
+
     class Config:
+        """Specify what .env files to load, and how to load them."""
+
         env_file = ".env.server", ".env",
         env_file_encoding = 'utf-8'
         env_nested_delimiter = '__'
@@ -226,8 +226,9 @@ Guild = _Guild()
 
 class Event(Enum):
     """
-    Event names. This does not include every event (for example, raw
-    events aren't here), but only events used in ModLog for now.
+    Discord.py event names.
+
+    This does not include every event (for example, raw events aren't here), only events used in ModLog for now.
     """
 
     guild_channel_create = "guild_channel_create"
@@ -251,6 +252,8 @@ class Event(Enum):
 
 
 class ThreadArchiveTimes(Enum):
+    """The time periods threads can have the archive time set to."""
+
     HOUR = 60
     DAY = 1440
     THREE_DAY = 4320
@@ -258,6 +261,8 @@ class ThreadArchiveTimes(Enum):
 
 
 class Webhook(BaseModel):
+    """A base class for all webhooks."""
+
     id: int
     channel: int
 
@@ -316,7 +321,8 @@ class _Colours(EnvConfig):
     yellow = 0xffd241
 
     @root_validator(pre=True)
-    def parse_hex_values(cls, values):
+    def parse_hex_values(cls, values: dict) -> dict:  # noqa: N805
+        """Convert hex strings to ints."""
         for key, value in values.items():
             values[key] = int(value, 16)
         return values
@@ -337,16 +343,21 @@ Free = _Free()
 
 
 class Rule(BaseModel):
+    """A base class for all rules."""
+
     interval: int
     max: int
 
 
-# Some help in choosing an appropriate name for this is appreciated
 class ExtendedRule(Rule):
+    """A rule with extended configuration options."""
+
     max_consecutive: int
 
 
 class Rules(BaseModel):
+    """Automod rules."""
+
     attachments: Rule = Rule(interval=10, max=6)
     burst: Rule = Rule(interval=10, max=7)
     chars: Rule = Rule(interval=5, max=4_200)
@@ -641,7 +652,7 @@ class _Icons(EnvConfig):
     superstarify = "https://cdn.discordapp.com/emojis/636288153044516874.png"
     unsuperstarify = "https://cdn.discordapp.com/emojis/636288201258172446.png"
 
-    token_removed = "https://cdn.discordapp.com/emojis/470326273298792469.png"
+    token_removed = "https://cdn.discordapp.com/emojis/470326273298792469.png"  # noqa: S105
 
     user_ban = "https://cdn.discordapp.com/emojis/469952898026045441.png"
     user_timeout = "https://cdn.discordapp.com/emojis/472472640100106250.png"

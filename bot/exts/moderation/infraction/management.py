@@ -12,7 +12,7 @@ from bot import constants
 from bot.bot import Bot
 from bot.converters import DurationOrExpiry, Infraction, MemberOrUser, Snowflake, UnambiguousUser
 from bot.decorators import ensure_future_timestamp
-from bot.errors import InvalidInfraction
+from bot.errors import InvalidInfractionError
 from bot.exts.moderation.infraction import _utils
 from bot.exts.moderation.infraction.infractions import Infractions
 from bot.exts.moderation.modlog import ModLog
@@ -466,7 +466,7 @@ class ModManagement(commands.Cog):
                 await ctx.send(str(error.errors[0]))
                 error.handled = True
 
-        elif isinstance(error, InvalidInfraction):
+        elif isinstance(error, InvalidInfractionError):
             if error.infraction_arg.isdigit():
                 await ctx.send(f":x: Could not find an infraction with id `{error.infraction_arg}`.")
             else:

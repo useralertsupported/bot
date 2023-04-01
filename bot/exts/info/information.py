@@ -438,7 +438,8 @@ class Information(Cog):
             activity_output.append(f"{user_activity['activity_blocks']:,}" or "No activity")
 
             activity_output = "\n".join(
-                f"{name}: {metric}" for name, metric in zip(["Messages", "Activity blocks"], activity_output)
+                f"{name}: {metric}"
+                for name, metric in zip(["Messages", "Activity blocks"], activity_output, strict=False)
             )
 
         return ("Activity", activity_output)

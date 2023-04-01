@@ -17,7 +17,7 @@ from pydis_core.utils.regex import DISCORD_INVITE
 
 from bot import exts, instance as bot_instance
 from bot.constants import URLs
-from bot.errors import InvalidInfraction
+from bot.errors import InvalidInfractionError
 from bot.exts.info.doc import _inventory_parser
 from bot.exts.info.tags import TagIdentifier
 from bot.log import get_logger
@@ -546,7 +546,7 @@ class Infraction(Converter):
                 return await ctx.bot.api_client.get(f"bot/infractions/{arg}/expanded")
             except ResponseCodeError as e:
                 if e.status == 404:
-                    raise InvalidInfraction(
+                    raise InvalidInfractionError(
                         converter=Infraction,
                         original=e,
                         infraction_arg=arg

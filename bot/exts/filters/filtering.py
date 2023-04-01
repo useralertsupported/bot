@@ -49,8 +49,9 @@ DAYS_BETWEEN_ALERTS = 3
 OFFENSIVE_MSG_DELETE_TIME = timedelta(days=Filter.offensive_msg_delete_days)
 
 # Autoban
-LINK_PASSWORD = "https://support.discord.com/hc/en-us/articles/218410947-I-forgot-my-Password-Where-can-I-set-a-new-one"
-LINK_2FA = "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication"
+DISCORD_ARTICLE_URL = "https://support.discord.com/hc/en-us/articles"
+LINK_PASSWORD = DISCORD_ARTICLE_URL + "/218410947-I-forgot-my-Password-Where-can-I-set-a-new-one"
+LINK_2FA = DISCORD_ARTICLE_URL + "/219576828-Setting-up-Two-Factor-Authentication"
 AUTO_BAN_REASON = (
     "Your account has been used to send links to a phishing website. You have been automatically banned. "
     "If you are not aware of sending them, that means your account has been compromised.\n\n"
