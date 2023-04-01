@@ -123,7 +123,7 @@ class CommandView(ui.View):
             if any(role.id in constants.MODERATION_ROLES for role in interaction.user.roles):
                 return True
 
-            elif interaction.user.id == self.context.author.id:
+            if interaction.user.id == self.context.author.id:
                 return True
 
         return False
@@ -340,8 +340,7 @@ class CustomHelpCommand(HelpCommand):
             )
         if return_as_list:
             return details
-        else:
-            return "".join(details)
+        return "".join(details)
 
     async def format_group_help(self, group: Group) -> tuple[Embed, Optional[CommandView]]:
         """Formats help for a group command."""
@@ -398,8 +397,7 @@ class CustomHelpCommand(HelpCommand):
                 if command.cog.category:
                     return f"**{command.cog.category}**"
             return f"**{command.cog_name}**"
-        else:
-            return "**\u200bNo Category:**"
+        return "**\u200bNo Category:**"
 
     async def send_category_help(self, category: Category) -> None:
         """

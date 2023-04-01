@@ -230,8 +230,7 @@ def _create_markdown(signatures: Optional[List[str]], description: Iterable[Tag]
     if signatures is not None:
         signature = "".join(f"```py\n{signature}```" for signature in _truncate_signatures(signatures))
         return f"{signature}\n{description}"
-    else:
-        return description
+    return description
 
 
 def get_symbol_markdown(soup: BeautifulSoup, symbol_data: DocItem) -> Optional[str]:

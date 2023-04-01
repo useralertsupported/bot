@@ -133,7 +133,8 @@ class Extension(Converter):
 
         if argument in bot_instance.all_extensions:
             return argument
-        elif (qualified_arg := f"{exts.__name__}.{argument}") in bot_instance.all_extensions:
+
+        if (qualified_arg := f"{exts.__name__}.{argument}") in bot_instance.all_extensions:
             return qualified_arg
 
         matches = []
@@ -148,10 +149,10 @@ class Extension(Converter):
                 f":x: `{argument}` is an ambiguous extension name. "
                 f"Please use one of the following fully-qualified names.```\n{names}```"
             )
-        elif matches:
+
+        if matches:
             return matches[0]
-        else:
-            raise BadArgument(f":x: Could not find the extension `{argument}`.")
+        raise BadArgument(f":x: Could not find the extension `{argument}`.")
 
 
 class PackageName(Converter):
@@ -261,7 +262,8 @@ class Snowflake(IDConverter):
 
         if time < DISCORD_EPOCH_DT:
             raise BadArgument(f"{error}: timestamp is before the Discord epoch.")
-        elif (datetime.now(timezone.utc) - time).days < -1:
+
+        if (datetime.now(timezone.utc) - time).days < -1:
             raise BadArgument(f"{error}: timestamp is too far into the future.")
 
         return snowflake
@@ -388,7 +390,7 @@ class OffTopicName(Converter):
         if not (2 <= len(argument) <= 96):
             raise BadArgument("Channel name must be between 2 and 96 chars long")
 
-        elif not all(c.isalnum() or c in self.ALLOWED_CHARACTERS for c in argument):
+        if not all(c.isalnum() or c in self.ALLOWED_CHARACTERS for c in argument):
             raise BadArgument(
                 "Channel name must only consist of "
                 "alphanumeric characters, minus signs or apostrophes."
@@ -496,8 +498,7 @@ class UnambiguousUser(UserConverter):
         """Convert the `argument` to a `discord.User`."""
         if _is_an_unambiguous_user_argument(argument):
             return await super().convert(ctx, argument)
-        else:
-            raise BadArgument(AMBIGUOUS_ARGUMENT_MSG.format(argument=argument))
+        raise BadArgument(AMBIGUOUS_ARGUMENT_MSG.format(argument=argument))
 
 
 class UnambiguousMember(MemberConverter):
@@ -512,8 +513,7 @@ class UnambiguousMember(MemberConverter):
         """Convert the `argument` to a `discord.Member`."""
         if _is_an_unambiguous_user_argument(argument):
             return await super().convert(ctx, argument)
-        else:
-            raise BadArgument(AMBIGUOUS_ARGUMENT_MSG.format(argument=argument))
+        raise BadArgument(AMBIGUOUS_ARGUMENT_MSG.format(argument=argument))
 
 
 class Infraction(Converter):
@@ -538,20 +538,18 @@ class Infraction(Converter):
                 raise BadArgument(
                     "Couldn't find most recent infraction; you have never given an infraction."
                 )
-            else:
-                return infractions[0]
+            return infractions[0]
 
-        else:
-            try:
-                return await ctx.bot.api_client.get(f"bot/infractions/{arg}/expanded")
-            except ResponseCodeError as e:
-                if e.status == 404:
-                    raise InvalidInfractionError(
-                        converter=Infraction,
-                        original=e,
-                        infraction_arg=arg
-                    )
-                raise e
+        try:
+            return await ctx.bot.api_client.get(f"bot/infractions/{arg}/expanded")
+        except ResponseCodeError as e:
+            if e.status == 404:
+                raise InvalidInfractionError(
+                    converter=Infraction,
+                    original=e,
+                    infraction_arg=arg
+                )
+            raise e
 
 
 if t.TYPE_CHECKING:

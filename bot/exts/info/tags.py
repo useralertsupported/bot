@@ -59,8 +59,7 @@ class TagIdentifier(NamedTuple):
     def __str__(self) -> str:
         if self.group is not None:
             return f"{self.group} {self.name}"
-        else:
-            return self.name
+        return self.name
 
     @classmethod
     def from_string(cls, string: str) -> TagIdentifier:
@@ -68,8 +67,7 @@ class TagIdentifier(NamedTuple):
         split_string = string.removeprefix(constants.Bot.prefix).split(" ", maxsplit=2)
         if len(split_string) == 1:
             return cls(None, split_string[0])
-        else:
-            return cls(split_string[0], split_string[1])
+        return cls(split_string[0], split_string[1])
 
 
 class Tag:
@@ -228,18 +226,17 @@ class Tags(Cog):
             )
             return tag.embed
 
-        else:
-            if not filtered_tags:
-                return None
-            suggested_tags_text = "\n".join(
-                f"**\N{RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK}** {identifier}"
-                for identifier, tag in filtered_tags
-                if not tag.on_cooldown_in(channel)
-            )
-            return Embed(
-                title="Did you mean ...",
-                description=suggested_tags_text
-            )
+        if not filtered_tags:
+            return None
+        suggested_tags_text = "\n".join(
+            f"**\N{RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK}** {identifier}"
+            for identifier, tag in filtered_tags
+            if not tag.on_cooldown_in(channel)
+        )
+        return Embed(
+            title="Did you mean ...",
+            description=suggested_tags_text
+        )
 
     def accessible_tags(self, member: Member) -> list[str]:
         """Return a formatted list of tags that are accessible by `member`; groups first, and alphabetically sorted."""

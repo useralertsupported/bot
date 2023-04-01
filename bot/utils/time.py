@@ -67,12 +67,11 @@ def _stringify_time_unit(value: int, unit: str) -> str:
     """
     if unit == "seconds" and value == 0:
         return "0 seconds"
-    elif value == 1:
+    if value == 1:
         return f"{value} {unit[:-1]}"
-    elif value == 0:
+    if value == 0:
         return f"less than a {unit[:-1]}"
-    else:
-        return f"{value} {unit}"
+    return f"{value} {unit}"
 
 
 def discord_timestamp(timestamp: Timestamp, format: TimestampFormats = TimestampFormats.DATE_TIME) -> str:
@@ -266,9 +265,7 @@ def parse_duration_string(duration: str) -> Optional[relativedelta]:
         return None
 
     duration_dict = {unit: int(amount) for unit, amount in match.groupdict(default=0).items()}
-    delta = relativedelta(**duration_dict)
-
-    return delta
+    return relativedelta(**duration_dict)
 
 
 def relativedelta_to_timedelta(delta: relativedelta) -> datetime.timedelta:
@@ -351,8 +348,7 @@ def unpack_duration(
 
     if isinstance(duration_or_expiry, relativedelta):
         return origin, origin + duration_or_expiry
-    else:
-        return origin, duration_or_expiry
+    return origin, duration_or_expiry
 
 
 def round_delta(delta: relativedelta) -> relativedelta:

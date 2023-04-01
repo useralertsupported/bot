@@ -167,8 +167,8 @@ async def get_active_infraction(
             log.trace(f"{user} has active infractions of type {infr_type}.")
             await send_active_infraction_message(ctx, active_infractions[0])
         return active_infractions[0]
-    else:
-        log.trace(f"{user} does not have active infractions of type {infr_type}.")
+    log.trace(f"{user} does not have active infractions of type {infr_type}.")
+    return None
 
 
 async def send_active_infraction_message(ctx: Context, infraction: Infraction) -> None:

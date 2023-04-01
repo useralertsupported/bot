@@ -138,12 +138,12 @@ def redirect_output(
                 await func(self, ctx, *args, **kwargs)
                 return
 
-            elif channels and ctx.channel.id not in channels:
+            if channels and ctx.channel.id not in channels:
                 log.trace(f"{ctx.author} used {ctx.command} in a channel that can bypass output redirection")
                 await func(self, ctx, *args, **kwargs)
                 return
 
-            elif categories and ctx.channel.category.id not in categories:
+            if categories and ctx.channel.category.id not in categories:
                 log.trace(f"{ctx.author} used {ctx.command} in a category that can bypass output redirection")
                 await func(self, ctx, *args, **kwargs)
                 return
@@ -214,9 +214,9 @@ def respect_role_hierarchy(member_arg: function.Argument) -> t.Callable:
                     "someone with an equal or higher top role."
                 )
                 return None
-            else:
-                log.trace(f"{func.__name__}: {target.top_role=} < {actor.top_role=}; calling func")
-                return await func(*args, **kwargs)
+
+            log.trace(f"{func.__name__}: {target.top_role=} < {actor.top_role=}; calling func")
+            return await func(*args, **kwargs)
         return wrapper
     return decorator
 

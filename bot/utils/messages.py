@@ -47,14 +47,14 @@ def reaction_check(
     if user.id in allowed_users or is_moderator:
         log.trace(f"Allowed reaction {reaction} by {user} on {reaction.message.id}.")
         return True
-    else:
-        log.trace(f"Removing reaction {reaction} by {user} on {reaction.message.id}: disallowed user.")
-        scheduling.create_task(
-            reaction.message.remove_reaction(reaction.emoji, user),
-            suppressed_exceptions=(discord.HTTPException,),
-            name=f"remove_reaction-{reaction}-{reaction.message.id}-{user}"
-        )
-        return False
+
+    log.trace(f"Removing reaction {reaction} by {user} on {reaction.message.id}: disallowed user.")
+    scheduling.create_task(
+        reaction.message.remove_reaction(reaction.emoji, user),
+        suppressed_exceptions=(discord.HTTPException,),
+        name=f"remove_reaction-{reaction}-{reaction.message.id}-{user}"
+    )
+    return False
 
 
 async def wait_for_deletion(
@@ -227,8 +227,7 @@ def sub_clyde(username: Optional[str]) -> Optional[str]:
 
     if username:
         return re.sub(r"(clyd)(e)", replace_e, username, flags=re.I)
-    else:
-        return username  # Empty string or None
+    return username  # Empty string or None
 
 
 async def send_denial(ctx: Context, reason: str) -> discord.Message:

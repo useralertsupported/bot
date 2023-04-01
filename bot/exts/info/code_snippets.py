@@ -62,8 +62,7 @@ class CodeSnippets(Cog):
         async with self.bot.http_session.get(url, raise_for_status=True, **kwargs) as response:
             if response_format == 'text':
                 return await response.text()
-            elif response_format == 'json':
-                return await response.json()
+            return await response.json()
 
     def _find_ref(self, path: str, refs: tuple) -> tuple:
         """Loops through all branches and tags to find the required ref."""

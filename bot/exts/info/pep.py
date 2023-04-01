@@ -132,15 +132,15 @@ class PythonEnhancementProposals(Cog):
             # Taken from https://github.com/python/peps/blob/master/pep0/pep.py#L179
             pep_header = HeaderParser().parse(StringIO(pep_content))
             return self.generate_pep_embed(pep_header, pep_nr), True
-        else:
-            log.trace(
-                f"The user requested PEP {pep_nr}, but the response had an unexpected status code: {response.status}."
-            )
-            return Embed(
-                title="Unexpected error",
-                description="Unexpected HTTP error during PEP search. Please let us know.",
-                colour=Colour.red()
-            ), False
+
+        log.trace(
+            f"The user requested PEP {pep_nr}, but the response had an unexpected status code: {response.status}."
+        )
+        return Embed(
+            title="Unexpected error",
+            description="Unexpected HTTP error during PEP search. Please let us know.",
+            colour=Colour.red()
+        ), False
 
     @command(name='pep', aliases=('get_pep', 'p'))
     async def pep_command(self, ctx: Context, pep_number: int) -> None:

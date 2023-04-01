@@ -478,8 +478,7 @@ class Snekbox(Cog):
 
             if job_name == "timeit":
                 return EvalJob(self.prepare_timeit_input(codeblocks))
-            else:
-                return EvalJob.from_code("\n".join(codeblocks))
+            return EvalJob.from_code("\n".join(codeblocks))
 
         return None
 

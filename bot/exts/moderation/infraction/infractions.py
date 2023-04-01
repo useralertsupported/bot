@@ -626,10 +626,13 @@ class Infractions(InfractionScheduler, commands.Cog):
 
         if infraction["type"] == "timeout":
             return await self.pardon_timeout(user_id, guild, reason, notify=notify)
-        elif infraction["type"] == "ban":
+
+        if infraction["type"] == "ban":
             return await self.pardon_ban(user_id, guild, reason)
-        elif infraction["type"] == "voice_mute":
+
+        if infraction["type"] == "voice_mute":
             return await self.pardon_voice_mute(user_id, guild, notify=notify)
+        return None
 
     # endregion
 

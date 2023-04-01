@@ -35,7 +35,8 @@ async def apply(
             (last_message.author,),
             relevant_messages
         )
-    elif max_newline_group > config['max_consecutive']:
+
+    if max_newline_group > config['max_consecutive']:
         return (
             f"sent {max_newline_group} consecutive newlines in {config['interval']}s",
             (last_message.author,),

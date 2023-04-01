@@ -58,8 +58,7 @@ class DuckPond(Cog):
         """Check if the emoji is a valid duck emoji."""
         if isinstance(emoji, str):
             return emoji == "🦆"
-        else:
-            return hasattr(emoji, "name") and emoji.name.startswith("ducky_")
+        return hasattr(emoji, "name") and emoji.name.startswith("ducky_")
 
     async def count_ducks(self, message: Message) -> int:
         """

@@ -662,12 +662,12 @@ class Filtering(Cog):
                         # If `embed.url` does not exist or if `embed.url` is not part of the content
                         # of the message, it's unlikely to be an auto-generated embed by Discord.
                         return msg.embeds
-                    else:
-                        log.trace(
-                            "Found a rich embed sent by a regular user account, "
-                            "but it was likely just an automatic URL embed."
-                        )
-                        return False
+
+                    log.trace(
+                        "Found a rich embed sent by a regular user account, "
+                        "but it was likely just an automatic URL embed."
+                    )
+                    return False
         return False
 
     @staticmethod

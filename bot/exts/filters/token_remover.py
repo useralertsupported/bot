@@ -136,8 +136,8 @@ class TokenRemover(Cog):
                 user_name=str(user),
                 kind="BOT" if user.bot else "USER",
             ), True
-        else:
-            return UNKNOWN_USER_LOG_MESSAGE.format(user_id=user_id), False
+
+        return UNKNOWN_USER_LOG_MESSAGE.format(user_id=user_id), False
 
     @staticmethod
     def format_log_message(msg: Message, token: Token) -> str:
@@ -205,9 +205,9 @@ class TokenRemover(Cog):
         # is not checked.
         if timestamp + TOKEN_EPOCH >= DISCORD_EPOCH:
             return True
-        else:
-            log.debug(f"Invalid token timestamp '{b64_content}': smaller than Discord epoch")
-            return False
+
+        log.debug(f"Invalid token timestamp '{b64_content}': smaller than Discord epoch")
+        return False
 
     @staticmethod
     def is_maybe_valid_hmac(b64_content: str) -> bool:
@@ -224,8 +224,7 @@ class TokenRemover(Cog):
                 " case-insensitively unique characters"
             )
             return False
-        else:
-            return True
+        return True
 
 
 async def setup(bot: Bot) -> None:

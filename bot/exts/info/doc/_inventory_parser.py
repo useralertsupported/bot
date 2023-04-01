@@ -97,7 +97,7 @@ async def _fetch_inventory(url: str) -> InventoryDict:
         if inventory_version == 1:
             return await _load_v1(stream)
 
-        elif inventory_version == 2:
+        if inventory_version == 2:
             if b"zlib" not in await stream.readline():
                 raise InvalidHeaderError("'zlib' not found in header of compressed inventory.")
             return await _load_v2(stream)

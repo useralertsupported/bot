@@ -154,7 +154,8 @@ class ErrorHandler(Cog):
         if command.startswith("shh"):
             await ctx.invoke(silence_command, duration_or_channel=channel, duration=duration, kick=kick)
             return True
-        elif command.startswith("unshh"):
+
+        if command.startswith("unshh"):
             await ctx.invoke(self.bot.get_command("unsilence"), channel=channel)
             return True
         return False

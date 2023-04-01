@@ -31,11 +31,10 @@ class ThreadBumper(commands.Cog):
         ) as response:
             if response.status == 204:
                 return True
-            elif response.status == 404:
+            if response.status == 404:
                 return False
-            else:
-                # A status other than 204/404 is undefined behaviour from site. Raise error for investigation.
-                raise ResponseCodeError(response, response.text())
+            # A status other than 204/404 is undefined behaviour from site. Raise error for investigation.
+            raise ResponseCodeError(response, response.text())
 
     async def unarchive_threads_not_manually_archived(self, threads: list[discord.Thread]) -> None:
         """

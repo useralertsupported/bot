@@ -267,23 +267,23 @@ class LinePaginator(Paginator):
             if isinstance(ctx, discord.Interaction):
                 return await ctx.response.send_message(embed=embed)
             return await ctx.send(embed=embed)
+
+        if footer_text:
+            embed.set_footer(text=f"{footer_text} (Page {current_page + 1}/{len(paginator.pages)})")
         else:
-            if footer_text:
-                embed.set_footer(text=f"{footer_text} (Page {current_page + 1}/{len(paginator.pages)})")
-            else:
-                embed.set_footer(text=f"Page {current_page + 1}/{len(paginator.pages)}")
-            log.trace(f"Setting embed footer to '{embed.footer.text}'")
+            embed.set_footer(text=f"Page {current_page + 1}/{len(paginator.pages)}")
+        log.trace(f"Setting embed footer to '{embed.footer.text}'")
 
-            if url:
-                embed.url = url
-                log.trace(f"Setting embed url to '{url}'")
+        if url:
+            embed.url = url
+            log.trace(f"Setting embed url to '{url}'")
 
-            log.debug("Sending first page to channel...")
-            if isinstance(ctx, discord.Interaction):
-                await ctx.response.send_message(embed=embed)
-                message = await ctx.original_response()
-            else:
-                message = await ctx.send(embed=embed)
+        log.debug("Sending first page to channel...")
+        if isinstance(ctx, discord.Interaction):
+            await ctx.response.send_message(embed=embed)
+            message = await ctx.original_response()
+        else:
+            message = await ctx.send(embed=embed)
 
         log.debug("Adding emoji reactions to message...")
 
@@ -313,7 +313,8 @@ class LinePaginator(Paginator):
             if str(reaction.emoji) == DELETE_EMOJI:
                 log.debug("Got delete reaction")
                 return await message.delete()
-            elif reaction.emoji in PAGINATION_EMOJI:
+
+            if reaction.emoji in PAGINATION_EMOJI:
                 total_pages = len(paginator.pages)
                 try:
                     await message.remove_reaction(reaction.emoji, user)
@@ -356,8 +357,7 @@ class LinePaginator(Paginator):
                     if e.code == 50083:
                         # Trying to act on an archived thread, just ignore and abort
                         break
-                    else:
-                        raise e
+                    raise e
 
         log.debug("Ending pagination and clearing reactions.")
         with suppress(discord.NotFound):

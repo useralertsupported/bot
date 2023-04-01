@@ -79,8 +79,8 @@ def _get_no_ticks_message(content: str) -> Optional[str]:
             "helps improve the legibility and makes it easier for us to help you.\n\n"
             f"**To do this, use the following method:**\n{example_blocks}"
         )
-    else:
-        log.trace("Aborting missing code block instructions: content is not Python code.")
+    log.trace("Aborting missing code block instructions: content is not Python code.")
+    return None
 
 
 def _get_bad_lang_message(content: str) -> Optional[str]:
@@ -95,7 +95,7 @@ def _get_bad_lang_message(content: str) -> Optional[str]:
     info = _parsing.parse_bad_language(content)
     if not info:
         log.trace("Aborting bad language instructions: language specified isn't Python.")
-        return
+        return None
 
     lines = []
     language = info.language
@@ -120,8 +120,8 @@ def _get_bad_lang_message(content: str) -> Optional[str]:
             f"It looks like you incorrectly specified a language for your code block.\n\n{lines}"
             f"\n\n**Here is an example of how it should look:**\n{example_blocks}"
         )
-    else:
-        log.trace("Nothing wrong with the language specifier; no instructions to return.")
+    log.trace("Nothing wrong with the language specifier; no instructions to return.")
+    return None
 
 
 def _get_no_lang_message(content: str) -> Optional[str]:
@@ -142,8 +142,8 @@ def _get_no_lang_message(content: str) -> Optional[str]:
             "it easier for us to help you.\n\n"
             f"**To do this, use the following method:**\n{example_blocks}"
         )
-    else:
-        log.trace("Aborting missing language instructions: content is not Python code.")
+    log.trace("Aborting missing language instructions: content is not Python code.")
+    return None
 
 
 def get_instructions(content: str) -> Optional[str]:

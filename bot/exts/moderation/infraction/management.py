@@ -170,7 +170,8 @@ class ModManagement(commands.Cog):
             else:
                 await ctx.send(":x: Cannot edit the expiration of an expired infraction.")
             return
-        elif isinstance(duration, str):
+
+        if isinstance(duration, str):
             request_data['expires_at'] = None
             confirm_messages.append("marked as permanent")
         elif duration is not None:

@@ -182,19 +182,17 @@ class DocCog(commands.Cog):
                 # Instead of renaming the current symbol, rename the symbol with which it conflicts.
                 self.doc_symbols[new_name] = self.doc_symbols[symbol_name]
                 return symbol_name
-            else:
-                return new_name
+            return new_name
 
         # When there's a conflict, and the package names of the items differ, use the package name as a prefix.
         if package_name != item.package:
             if package_name in PRIORITY_PACKAGES:
                 return rename(item.package, rename_extant=True)
-            else:
-                return rename(package_name)
+            return rename(package_name)
 
         # If the symbol's group is a non-priority group from FORCE_PREFIX_GROUPS,
         # add it as a prefix to disambiguate the symbols.
-        elif group_name in FORCE_PREFIX_GROUPS:
+        if group_name in FORCE_PREFIX_GROUPS:
             if item.group in FORCE_PREFIX_GROUPS:
                 needs_moving = FORCE_PREFIX_GROUPS.index(group_name) < FORCE_PREFIX_GROUPS.index(item.group)
             else:
@@ -203,8 +201,7 @@ class DocCog(commands.Cog):
 
         # If the above conditions didn't pass, either the existing symbol has its group in FORCE_PREFIX_GROUPS,
         # or deciding which item to rename would be arbitrary, so we rename the existing symbol.
-        else:
-            return rename(item.group, rename_extant=True)
+        return rename(item.group, rename_extant=True)
 
     async def refresh_inventories(self) -> None:
         """Refresh internal documentation inventories."""

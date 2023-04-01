@@ -115,10 +115,11 @@ class Reminders(Cog):
         """
         if await has_no_roles_check(ctx, *STAFF_PARTNERS_COMMUNITY_ROLES):
             return False, "members/roles"
-        elif await has_no_roles_check(ctx, *MODERATION_ROLES):
+
+        if await has_no_roles_check(ctx, *MODERATION_ROLES):
             return all(isinstance(mention, (discord.User, discord.Member)) for mention in mentions), "roles"
-        else:
-            return True, ""
+
+        return True, ""
 
     @staticmethod
     async def validate_mentions(ctx: Context, mentions: t.Iterable[Mentionable]) -> bool:
@@ -131,9 +132,9 @@ class Reminders(Cog):
 
         if not mentions or mentions_allowed:
             return True
-        else:
-            await send_denial(ctx, f"You can't mention other {disallowed_mentions} in your reminder!")
-            return False
+
+        await send_denial(ctx, f"You can't mention other {disallowed_mentions} in your reminder!")
+        return False
 
     async def get_mentionables(self, mention_ids: t.List[int]) -> t.Iterator[Mentionable]:
         """Converts Role and Member ids to their corresponding objects if possible."""

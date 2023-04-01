@@ -41,8 +41,7 @@ class Strainer(SoupStrainer):
             if not self.name and not self.attrs and self.include_strings:
                 return markup
             return None
-        else:
-            return super().search(markup)
+        return super().search(markup)
 
 
 def _find_elements_until_tag(
