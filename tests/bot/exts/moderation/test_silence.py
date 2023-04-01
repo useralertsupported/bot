@@ -1,6 +1,6 @@
 import itertools
 import unittest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest import mock
 from unittest.mock import AsyncMock, Mock
 
@@ -364,7 +364,7 @@ class RescheduleTests(RedisTestCase):
         channels = [MockTextChannel(id=123), MockTextChannel(id=456)]
         self.bot.get_channel.side_effect = channels
         self.cog.unsilence_timestamps.items.return_value = [(123, 2000), (456, 3000)]
-        silence.datetime.now.return_value = datetime.fromtimestamp(1000, tz=timezone.utc)
+        silence.datetime.now.return_value = datetime.fromtimestamp(1000, tz=UTC)
 
         self.cog._unsilence_wrapper = mock.MagicMock()
         unsilence_return = self.cog._unsilence_wrapper.return_value
@@ -620,13 +620,13 @@ class SilenceTests(SilenceTest):
         now_timestamp = 100
         duration = 15
         timestamp = now_timestamp + duration * 60
-        datetime_mock.now.return_value = datetime.fromtimestamp(now_timestamp, tz=timezone.utc)
+        datetime_mock.now.return_value = datetime.fromtimestamp(now_timestamp, tz=UTC)
 
         ctx = MockContext(channel=self.text_channel)
         await self.cog.silence.callback(self.cog, ctx, duration)
 
         self.cog.unsilence_timestamps.set.assert_awaited_once_with(ctx.channel.id, timestamp)
-        datetime_mock.now.assert_called_once_with(tz=timezone.utc)  # Ensure it's using an aware dt.
+        datetime_mock.now.assert_called_once_with(tz=UTC)  # Ensure it's using an aware dt.
 
     async def test_cached_indefinite_time(self):
         """A value of -1 was cached for a permanent silence."""

@@ -1,4 +1,4 @@
-from datetime import timedelta, timezone
+from datetime import UTC, timedelta
 from operator import itemgetter
 
 import arrow
@@ -110,7 +110,7 @@ class Stream(commands.Cog):
         elif duration.tzinfo is None:
             # Make duration tz-aware.
             # ISODateTime could already include tzinfo, this check is so it isn't overwritten.
-            duration.replace(tzinfo=timezone.utc)
+            duration.replace(tzinfo=UTC)
 
         # Check if the member already has streaming permission
         already_allowed = any(Roles.video == role.id for role in member.roles)

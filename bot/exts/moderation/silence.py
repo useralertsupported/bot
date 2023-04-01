@@ -1,7 +1,7 @@
 import json
 from collections import OrderedDict
 from contextlib import suppress
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Union
 
 from async_rediscache import RedisCache
@@ -266,7 +266,7 @@ class Silence(commands.Cog):
             await self.unsilence_timestamps.set(channel.id, -1)
         else:
             self.scheduler.schedule_later(duration * 60, channel.id, ctx.invoke(self.unsilence, channel=channel))
-            unsilence_time = datetime.now(tz=timezone.utc) + timedelta(minutes=duration)
+            unsilence_time = datetime.now(tz=UTC) + timedelta(minutes=duration)
             await self.unsilence_timestamps.set(channel.id, unsilence_time.timestamp())
 
     @commands.command(aliases=("unhush",))
@@ -451,8 +451,8 @@ class Silence(commands.Cog):
                 self.notifier.add_channel(channel)
                 continue
 
-            dt = datetime.fromtimestamp(timestamp, tz=timezone.utc)
-            delta = (dt - datetime.now(tz=timezone.utc)).total_seconds()
+            dt = datetime.fromtimestamp(timestamp, tz=UTC)
+            delta = (dt - datetime.now(tz=UTC)).total_seconds()
             if delta <= 0:
                 # Suppress the error since it's not being invoked by a user via the command.
                 with suppress(LockedResourceError):

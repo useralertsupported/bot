@@ -2,7 +2,6 @@ import re
 import zlib
 from collections import defaultdict
 from collections.abc import AsyncIterator
-from typing import DefaultDict
 
 import aiohttp
 
@@ -14,7 +13,7 @@ log = get_logger(__name__)
 FAILED_REQUEST_ATTEMPTS = 3
 _V2_LINE_RE = re.compile(r'(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+?(\S*)\s+(.*)')
 
-InventoryDict = DefaultDict[str, list[tuple[str, str]]]
+InventoryDict = defaultdict[str, list[tuple[str, str]]]
 
 
 class InvalidHeaderError(Exception):

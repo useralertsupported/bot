@@ -2,7 +2,7 @@ import asyncio
 import difflib
 import itertools
 import typing as t
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from itertools import zip_longest
 
 import discord
@@ -72,7 +72,7 @@ class ModLog(Cog, name="ModLog"):
                 "bot/deleted-messages",
                 json={
                     "actor": actor_id,
-                    "creation": datetime.now(timezone.utc).isoformat(),
+                    "creation": datetime.now(UTC).isoformat(),
                     "deletedmessage_set": deletedmessage_set,
                 }
             )
@@ -408,7 +408,7 @@ class ModLog(Cog, name="ModLog"):
         if member.guild.id != GuildConstant.id:
             return
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         difference = abs(relativedelta(now, member.created_at))
 
         message = format_user(member) + "\n\n**Account age:** " + time.humanize_delta(difference)

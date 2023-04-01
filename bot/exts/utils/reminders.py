@@ -1,7 +1,7 @@
 import random
 import textwrap
 import typing as t
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from operator import itemgetter
 
 import discord
@@ -54,7 +54,7 @@ class Reminders(Cog):
             params={'active': 'true'}
         )
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         for reminder in response:
             is_valid, *_ = self.ensure_valid_reminder(reminder)

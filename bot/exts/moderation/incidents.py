@@ -1,6 +1,6 @@
 import asyncio
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 
 import discord
@@ -110,7 +110,7 @@ async def make_embed(incident: discord.Message, outcome: Signal, actioned_by: di
     embed = discord.Embed(
         description=description,
         colour=colour,
-        timestamp=datetime.now(timezone.utc)
+        timestamp=datetime.now(UTC)
     )
     embed.set_footer(text=footer, icon_url=actioned_by.display_avatar.url)
 

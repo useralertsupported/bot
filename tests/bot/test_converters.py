@@ -1,6 +1,6 @@
 import re
 import unittest
-from datetime import MAXYEAR, datetime, timezone
+from datetime import MAXYEAR, UTC, datetime
 from unittest.mock import MagicMock, patch
 
 from dateutil.relativedelta import relativedelta
@@ -17,7 +17,7 @@ class ConverterTests(unittest.IsolatedAsyncioTestCase):
         cls.context = MagicMock
         cls.context.author = 'bob'
 
-        cls.fixed_utc_now = datetime.fromisoformat('2019-01-01T00:00:00+00:00')
+        cls.fixed_UTC_now = datetime.fromisoformat("2019-01-01T00:00:00+00:00")
 
     async def test_package_name_for_valid(self):
         """PackageName returns valid package names unchanged."""
@@ -92,10 +92,10 @@ class ConverterTests(unittest.IsolatedAsyncioTestCase):
         converter = Duration()
 
         for duration, duration_dict in test_values:
-            expected_datetime = self.fixed_utc_now + relativedelta(**duration_dict)
+            expected_datetime = self.fixed_UTC_now + relativedelta(**duration_dict)
 
-            with patch('bot.converters.datetime') as mock_datetime:
-                mock_datetime.now.return_value = self.fixed_utc_now
+            with patch("bot.converters.datetime") as mock_datetime:
+                mock_datetime.now.return_value = self.fixed_UTC_now
 
                 with self.subTest(duration=duration, duration_dict=duration_dict):
                     converted_datetime = await converter.convert(self.context, duration)
@@ -150,44 +150,43 @@ class ConverterTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_isodatetime_converter_for_valid(self):
         """ISODateTime converter returns correct datetime for valid datetime string."""
-        utc = timezone.utc
         test_values = (
             # `YYYY-mm-ddTHH:MM:SSZ` | `YYYY-mm-dd HH:MM:SSZ`
-            ('2019-09-02T02:03:05Z', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 02:03:05Z', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
+            ("2019-09-02T02:03:05Z", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 02:03:05Z", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
 
             # `YYYY-mm-ddTHH:MM:SS±HH:MM` | `YYYY-mm-dd HH:MM:SS±HH:MM`
-            ('2019-09-02T03:18:05+01:15', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 03:18:05+01:15', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02T00:48:05-01:15', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 00:48:05-01:15', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
+            ("2019-09-02T03:18:05+01:15", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 03:18:05+01:15", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02T00:48:05-01:15", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 00:48:05-01:15", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
 
             # `YYYY-mm-ddTHH:MM:SS±HHMM` | `YYYY-mm-dd HH:MM:SS±HHMM`
-            ('2019-09-02T03:18:05+0115', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 03:18:05+0115', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02T00:48:05-0115', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 00:48:05-0115', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
+            ("2019-09-02T03:18:05+0115", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 03:18:05+0115", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02T00:48:05-0115", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 00:48:05-0115", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
 
             # `YYYY-mm-ddTHH:MM:SS±HH` | `YYYY-mm-dd HH:MM:SS±HH`
-            ('2019-09-02 03:03:05+01', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02T01:03:05-01', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
+            ("2019-09-02 03:03:05+01", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02T01:03:05-01", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
 
             # `YYYY-mm-ddTHH:MM:SS` | `YYYY-mm-dd HH:MM:SS`
-            ('2019-09-02T02:03:05', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
-            ('2019-09-02 02:03:05', datetime(2019, 9, 2, 2, 3, 5, tzinfo=utc)),
+            ("2019-09-02T02:03:05", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
+            ("2019-09-02 02:03:05", datetime(2019, 9, 2, 2, 3, 5, tzinfo=UTC)),
 
             # `YYYY-mm-ddTHH:MM` | `YYYY-mm-dd HH:MM`
-            ('2019-11-12T09:15', datetime(2019, 11, 12, 9, 15, tzinfo=utc)),
-            ('2019-11-12 09:15', datetime(2019, 11, 12, 9, 15, tzinfo=utc)),
+            ("2019-11-12T09:15", datetime(2019, 11, 12, 9, 15, tzinfo=UTC)),
+            ("2019-11-12 09:15", datetime(2019, 11, 12, 9, 15, tzinfo=UTC)),
 
             # `YYYY-mm-dd`
-            ('2019-04-01', datetime(2019, 4, 1, tzinfo=utc)),
+            ("2019-04-01", datetime(2019, 4, 1, tzinfo=UTC)),
 
             # `YYYY-mm`
-            ('2019-02-01', datetime(2019, 2, 1, tzinfo=utc)),
+            ("2019-02-01", datetime(2019, 2, 1, tzinfo=UTC)),
 
             # `YYYY`
-            ('2025', datetime(2025, 1, 1, tzinfo=utc)),
+            ("2025", datetime(2025, 1, 1, tzinfo=UTC)),
         )
 
         converter = ISODateTime()

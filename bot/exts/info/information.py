@@ -4,7 +4,7 @@ import textwrap
 from collections import defaultdict
 from collections.abc import Mapping
 from textwrap import shorten
-from typing import Any, DefaultDict, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 import rapidfuzz
 from discord import AllowedMentions, Colour, Embed, Guild, Message, Role
@@ -45,7 +45,7 @@ class Information(Cog):
         self.bot = bot
 
     @staticmethod
-    def get_channel_type_counts(guild: Guild) -> DefaultDict[str, int]:
+    def get_channel_type_counts(guild: Guild) -> defaultdict[str, int]:
         """Return the total amounts of the various types of channels in `guild`."""
         channel_counter = defaultdict(int)
 

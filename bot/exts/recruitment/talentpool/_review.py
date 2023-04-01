@@ -5,7 +5,7 @@ import re
 import textwrap
 import typing
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import discord
 from async_rediscache import RedisCache
@@ -89,8 +89,8 @@ class Reviewer:
 
         last_vote_timestamp = await self.status_cache.get("last_vote_date")
         if last_vote_timestamp:
-            last_vote_date = datetime.fromtimestamp(last_vote_timestamp, tz=timezone.utc)
-            time_since_last_vote = datetime.now(timezone.utc) - last_vote_date
+            last_vote_date = datetime.fromtimestamp(last_vote_timestamp, tz=UTC)
+            time_since_last_vote = datetime.now(UTC) - last_vote_date
 
             if time_since_last_vote < MIN_REVIEW_INTERVAL:
                 log.debug("Most recent review was less than %s ago, cancelling check", MIN_REVIEW_INTERVAL)
@@ -126,7 +126,7 @@ class Reviewer:
         (more nominations = higher priority).
         For users with equal priority the oldest nomination will be reviewed first.
         """
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         possible_nominations: list[Nomination] = []
         nominations = await self.api.get_nominations(active=True)
@@ -189,7 +189,7 @@ class Reviewer:
         )
         message = await thread.send(f"<@&{Roles.mod_team}> <@&{Roles.admins}>")
 
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=UTC)
         await self.status_cache.set("last_vote_date", now.timestamp())
 
         await self.api.edit_nomination(nomination.id, reviewed=True, thread_id=thread.id)

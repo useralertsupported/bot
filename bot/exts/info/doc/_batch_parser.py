@@ -5,7 +5,7 @@ import collections
 from collections import defaultdict
 from contextlib import suppress
 from operator import attrgetter
-from typing import Deque, NamedTuple
+from typing import NamedTuple
 
 import discord
 from bs4 import BeautifulSoup
@@ -90,7 +90,7 @@ class BatchParser:
     """
 
     def __init__(self):
-        self._queue: Deque[QueueItem] = collections.deque()
+        self._queue: collections.deque[QueueItem] = collections.deque()
         self._page_doc_items: dict[str, list[_cog.DocItem]] = defaultdict(list)
         self._item_futures: dict[_cog.DocItem, ParseResultFuture] = defaultdict(ParseResultFuture)
         self._parse_task = None

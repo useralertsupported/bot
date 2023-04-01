@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 import typing as t
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from ssl import CertificateError
 
 import dateutil.parser
@@ -263,7 +263,7 @@ class Snowflake(IDConverter):
         if time < DISCORD_EPOCH_DT:
             raise BadArgument(f"{error}: timestamp is before the Discord epoch.")
 
-        if (datetime.now(timezone.utc) - time).days < -1:
+        if (datetime.now(UTC) - time).days < -1:
             raise BadArgument(f"{error}: timestamp is too far into the future.")
 
         return snowflake
@@ -336,7 +336,7 @@ class Duration(DurationDelta):
         The converter supports the same symbols for each unit of time as its parent class.
         """
         delta = await super().convert(ctx, duration)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         try:
             return now + delta
@@ -354,7 +354,7 @@ class Age(DurationDelta):
         The converter supports the same symbols for each unit of time as its parent class.
         """
         delta = await super().convert(ctx, duration)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         try:
             return now - delta
@@ -436,9 +436,9 @@ class ISODateTime(Converter):
             raise BadArgument(f"`{datetime_string}` is not a valid ISO-8601 datetime string")
 
         if dt.tzinfo:
-            dt = dt.astimezone(timezone.utc)
+            dt = dt.astimezone(UTC)
         else:  # Without a timezone, assume it represents UTC.
-            dt = dt.replace(tzinfo=timezone.utc)
+            dt = dt.replace(tzinfo=UTC)
 
         return dt
 
