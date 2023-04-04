@@ -193,13 +193,13 @@ class Infractions(InfractionScheduler, commands.Cog):
         Timeout a user for the given reason and duration.
 
         A unit of time should be appended to the duration.
-        Units (∗case-sensitive):
+        Units (*case-sensitive):
         \u2003`y` - years
-        \u2003`m` - months∗
+        \u2003`m` - months*
         \u2003`w` - weeks
         \u2003`d` - days
         \u2003`h` - hours
-        \u2003`M` - minutes∗
+        \u2003`M` - minutes*
         \u2003`s` - seconds
 
         Alternatively, an ISO 8601 timestamp can be provided for the duration.
@@ -245,13 +245,13 @@ class Infractions(InfractionScheduler, commands.Cog):
         Temporarily ban a user for the given reason and duration.
 
         A unit of time should be appended to the duration.
-        Units (∗case-sensitive):
+        Units (*case-sensitive):
         \u2003`y` - years
-        \u2003`m` - months∗
+        \u2003`m` - months*
         \u2003`w` - weeks
         \u2003`d` - days
         \u2003`h` - hours
-        \u2003`M` - minutes∗
+        \u2003`M` - minutes*
         \u2003`s` - seconds
 
         Alternatively, an ISO 8601 timestamp can be provided for the duration.
@@ -281,13 +281,13 @@ class Infractions(InfractionScheduler, commands.Cog):
         Temporarily voice mute a user for the given reason and duration.
 
         A unit of time should be appended to the duration.
-        Units (∗case-sensitive):
+        Units (*case-sensitive):
         \u2003`y` - years
-        \u2003`m` - months∗
+        \u2003`m` - months*
         \u2003`w` - weeks
         \u2003`d` - days
         \u2003`h` - hours
-        \u2003`M` - minutes∗
+        \u2003`M` - minutes*
         \u2003`s` - seconds
 
         Alternatively, an ISO 8601 timestamp can be provided for the duration.
@@ -328,13 +328,13 @@ class Infractions(InfractionScheduler, commands.Cog):
         Temporarily ban a user for the given reason and duration without notifying the user.
 
         A unit of time should be appended to the duration.
-        Units (∗case-sensitive):
+        Units (*case-sensitive):
         \u2003`y` - years
-        \u2003`m` - months∗
+        \u2003`m` - months*
         \u2003`w` - weeks
         \u2003`d` - days
         \u2003`h` - hours
-        \u2003`M` - minutes∗
+        \u2003`M` - minutes*
         \u2003`s` - seconds
 
         Alternatively, an ISO 8601 timestamp can be provided for the duration.

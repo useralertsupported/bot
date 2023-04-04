@@ -172,7 +172,7 @@ async def func():  # (None,) -> Any
 """.format(textwrap.indent(code, '            '))
 
         try:
-            exec(code_, self.env)  # noqa: B102,S102
+            exec(code_, self.env)  # noqa: S102
             func = self.env['func']
             res = await func()
 

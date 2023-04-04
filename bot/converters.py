@@ -366,7 +366,7 @@ class OffTopicName(Converter):
     """A converter that ensures an added off-topic name is valid."""
 
     ALLOWED_CHARACTERS = r"ABCDEFGHIJKLMNOPQRSTUVWXYZ!?'`-<>\/"
-    TRANSLATED_CHARACTERS = "𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹ǃ？’’-＜＞⧹⧸"
+    TRANSLATED_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!?``-<>\\/"
 
     @classmethod
     def translate_name(cls, name: str, *, from_unicode: bool = True) -> str:
@@ -561,7 +561,7 @@ if t.TYPE_CHECKING:
     Inventory = tuple[str, _inventory_parser.InventoryDict]  # noqa: F811
     Snowflake = int  # noqa: F811
     SourceConverter = SourceType  # noqa: F811
-    DurationDelta = relativedelta  # noqa: F811
+    DurationDelta = relativedelta
     Duration = datetime  # noqa: F811
     Age = datetime  # noqa: F811
     OffTopicName = str  # noqa: F811

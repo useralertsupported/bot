@@ -580,9 +580,9 @@ class _Emojis(EnvConfig):
     verified_bot = "<:verified_bot:811645219220750347>"
     bot = "<:bot:812712599464443914>"
 
-    defcon_shutdown = "<:defcondisabled:470326273952972810>"  # noqa: E704
-    defcon_unshutdown = "<:defconenabled:470326274213150730>"  # noqa: E704
-    defcon_update = "<:defconsettingsupdated:470326274082996224>"  # noqa: E704
+    defcon_shutdown = "<:defcondisabled:470326273952972810>"
+    defcon_unshutdown = "<:defconenabled:470326274213150730>"
+    defcon_update = "<:defconsettingsupdated:470326274082996224>"
 
     failmail = "<:failmail:633660039931887616>"
     failed_file = "<:failed_file:1073298441968562226>"
@@ -619,10 +619,10 @@ class _Icons(EnvConfig):
     crown_green = "https://cdn.discordapp.com/emojis/469964154719961088.png"
     crown_red = "https://cdn.discordapp.com/emojis/469964154879344640.png"
 
-    defcon_denied = "https://cdn.discordapp.com/emojis/472475292078964738.png"    # noqa: E704
-    defcon_shutdown = "https://cdn.discordapp.com/emojis/470326273952972810.png"  # noqa: E704
-    defcon_unshutdown = "https://cdn.discordapp.com/emojis/470326274213150730.png"   # noqa: E704
-    defcon_update = "https://cdn.discordapp.com/emojis/472472638342561793.png"   # noqa: E704
+    defcon_denied = "https://cdn.discordapp.com/emojis/472475292078964738.png"
+    defcon_shutdown = "https://cdn.discordapp.com/emojis/470326273952972810.png"
+    defcon_unshutdown = "https://cdn.discordapp.com/emojis/470326274213150730.png"
+    defcon_update = "https://cdn.discordapp.com/emojis/472472638342561793.png"
 
     filtering = "https://cdn.discordapp.com/emojis/472472638594482195.png"
 

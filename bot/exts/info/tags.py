@@ -191,7 +191,7 @@ class Tags(Cog):
         or isn't accessible by the member.
 
         If the requested tag is on cooldown return `COOLDOWN.obj`, otherwise if no suggestions were found return None.
-        """  # noqa: D205, D415
+        """  # noqa: D205
         filtered_tags = [
             (ident, tag) for ident, tag in
             self.get_fuzzy_matches(tag_identifier)[:10]
@@ -324,7 +324,7 @@ class Tags(Cog):
 
         Returns True if a message was sent, or if the tag is on cooldown.
         Returns False if no message was sent.
-        """  # noqa: D205, D415
+        """  # noqa: D205
         if not name:
             if self.tags:
                 await LinePaginator.paginate(

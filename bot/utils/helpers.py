@@ -5,7 +5,7 @@ from discord.ext.commands import CogMeta
 from tldextract import extract
 
 
-class CogABCMeta(CogMeta, ABCMeta):  # noqa: B024 (Ignore abstract class with no abstract methods.)
+class CogABCMeta(CogMeta, ABCMeta):  # (Ignore abstract class with no abstract methods.)
     """Metaclass for ABCs meant to be implemented as Cogs."""
 
 

@@ -90,13 +90,13 @@ class Stream(commands.Cog):
         Temporarily grant streaming permissions to a member for a given duration.
 
         A unit of time should be appended to the duration.
-        Units (∗case-sensitive):
+        Units (*case-sensitive):
         \u2003`y` - years
-        \u2003`m` - months∗
+        \u2003`m` - months*
         \u2003`w` - weeks
         \u2003`d` - days
         \u2003`h` - hours
-        \u2003`M` - minutes∗
+        \u2003`M` - minutes*
         \u2003`s` - seconds
 
         Alternatively, an ISO 8601 timestamp can be provided for the duration.

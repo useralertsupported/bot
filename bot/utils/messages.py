@@ -216,13 +216,13 @@ async def pin_no_system_message(message: discord.Message) -> bool:
 
 def sub_clyde(username: str | None) -> str | None:
     """
-    Replace "e"/"E" in any "clyde" in `username` with a Cyrillic "е"/"E" and return the new string.
+    Replace "e"/"E" in any "clyde" in `username` with a Cyrillic "e"/"E" and return the new string.
 
     Discord disallows "clyde" anywhere in the username for webhooks. It will return a 400.
     Return None only if `username` is None.
     """
     def replace_e(match: re.Match) -> str:
-        char = "е" if match[2] == "e" else "Е"
+        char = "e" if match[2] == "e" else "E"
         return match[1] + char
 
     if username:

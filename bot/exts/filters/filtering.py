@@ -568,7 +568,7 @@ class Filtering(Cog):
         """
         Returns True if the text contains zalgo characters.
 
-        Zalgo range is \u0300 – \u036F and \u0489.
+        Zalgo range is \u0300 - \u036F and \u0489.
         """
         return bool(ZALGO_RE.search(text))
 

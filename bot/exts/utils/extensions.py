@@ -47,7 +47,7 @@ class Extensions(commands.Cog):
         Load extensions given their fully qualified or unqualified names.
 
         If '\*' or '\*\*' is given as the name, all unloaded extensions will be loaded.
-        """  # noqa: W605
+        """
         if not extensions:
             await ctx.send_help(ctx.command)
             return
@@ -63,7 +63,7 @@ class Extensions(commands.Cog):
         Unload currently loaded extensions given their fully qualified or unqualified names.
 
         If '\*' or '\*\*' is given as the name, all loaded extensions will be unloaded.
-        """  # noqa: W605
+        """
         if not extensions:
             await ctx.send_help(ctx.command)
             return
@@ -87,7 +87,7 @@ class Extensions(commands.Cog):
 
         If '\*' is given as the name, all currently loaded extensions will be reloaded.
         If '\*\*' is given as the name, all extensions, including unloaded ones, will be reloaded.
-        """  # noqa: W605
+        """
         if not extensions:
             await ctx.send_help(ctx.command)
             return
