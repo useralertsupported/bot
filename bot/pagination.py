@@ -24,7 +24,6 @@ log = get_logger(__name__)
 class EmptyPaginatorEmbedError(Exception):
     """Raised when attempting to paginate with empty contents."""
 
-    pass
 
 
 class LinePaginator(Paginator):

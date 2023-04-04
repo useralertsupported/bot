@@ -556,7 +556,6 @@ class MockInteractionMessage(MockMessage):
     Instances of this class will follow the specifications of `discord.InteractionMessage` instances. For more
     information, see the `MockGuild` docstring.
     """
-    pass
 
 
 emoji_data = {'require_colons': True, 'managed': True, 'id': 1, 'name': 'hyperlemon'}

@@ -61,7 +61,6 @@ class InvalidInfractionError(ConversionError):
 class BrandingMisconfigurationError(RuntimeError):
     """Raised by the Branding cog when a misconfigured event is encountered."""
 
-    pass
 
 
 class NonExistentRoleError(ValueError):
