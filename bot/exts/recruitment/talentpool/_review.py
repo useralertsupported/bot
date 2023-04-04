@@ -440,7 +440,7 @@ class Reviewer:
 
         log.trace(f"{len(history)} previous nominations found for {member.id}, formatting review.")
         if not history:
-            return
+            return None
 
         num_entries = sum(len(nomination.entries) for nomination in history)
 

@@ -130,11 +130,12 @@ async def post_infraction(
             if e.status == 400 and 'user' in e.response_json:
                 # Only one attempt to add the user to the database, not two:
                 if not should_post_user or await post_user(ctx, user) is None:
-                    return
+                    return None
             else:
                 log.exception(f"Unexpected error while adding an infraction for {user}:")
                 await ctx.send(f":x: There was an error adding the infraction: status {e.status}.")
-                return
+                return None
+    return None
 
 
 async def get_active_infraction(

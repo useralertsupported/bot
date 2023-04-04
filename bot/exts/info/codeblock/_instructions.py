@@ -157,7 +157,7 @@ def get_instructions(content: str) -> Optional[str]:
     blocks = _parsing.find_code_blocks(content)
     if blocks is None:
         log.trace("At least one valid code block found; no instructions to return.")
-        return
+        return None
 
     if not blocks:
         log.trace("No code blocks were found in message.")

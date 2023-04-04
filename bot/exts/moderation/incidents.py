@@ -228,7 +228,7 @@ async def make_message_link_embed(ctx: Context, message_link: str) -> Optional[d
                 f"Helpers don't have read permissions in #{channel.name},"
                 f" not sending message link embed for {message_link}"
             )
-            return
+            return None
 
         embed = discord.Embed(
             colour=discord.Colour.gold(),
@@ -612,7 +612,7 @@ class Incidents(Cog):
             log.trace(
                 f"No message links detected on incident message with id {message.id}."
             )
-            return
+            return None
 
         embeds = []
         for message_link in message_links[:10]:

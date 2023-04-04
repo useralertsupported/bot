@@ -188,6 +188,7 @@ def _get_leading_spaces(content: str) -> int:
             leading_spaces += 1
         else:
             return leading_spaces
+    return None
 
 
 def _fix_indentation(content: str) -> str:

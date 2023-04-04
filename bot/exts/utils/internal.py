@@ -209,9 +209,10 @@ async def func():  # (None,) -> Any
                 f"... response truncated; {paste_text}",
                 embed=embed
             )
-            return
+            return None
 
         await ctx.send(f"```py\n{out}```", embed=embed)
+        return None
 
     @group(name='internal', aliases=('int',))
     @has_any_role(Roles.owners, Roles.admins, Roles.core_developers)

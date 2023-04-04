@@ -232,6 +232,7 @@ class CodeJams(commands.Cog):
                         or criterion in channel.overwrites
                     ):
                         return channel
+        return None
 
     @staticmethod
     def team_name(channel: discord.TextChannel) -> str:

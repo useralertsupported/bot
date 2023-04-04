@@ -575,7 +575,7 @@ class Information(Cog):
             # Neither rules nor keywords were submitted. Return the default description.
             rules_embed.description = DEFAULT_RULES_DESCRIPTION
             await ctx.send(embed=rules_embed)
-            return
+            return None
 
         # Remove duplicates and sort the rule indices
         rule_numbers = sorted(set(rule_numbers))
@@ -586,7 +586,7 @@ class Information(Cog):
 
         if invalid:
             await ctx.send(shorten(":x: Invalid rule indices: " + invalid, 75, placeholder=" ..."))
-            return
+            return None
 
         final_rules = []
         final_rule_numbers = {keyword_to_rule_number[keyword] for keyword in keywords}

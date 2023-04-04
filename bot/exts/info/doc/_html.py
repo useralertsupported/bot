@@ -40,6 +40,7 @@ class Strainer(SoupStrainer):
             # Let everything through the text filter if we're including strings and tags.
             if not self.name and not self.attrs and self.include_strings:
                 return markup
+            return None
         else:
             return super().search(markup)
 

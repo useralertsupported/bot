@@ -199,7 +199,7 @@ class Superstarify(InfractionScheduler, Cog):
     async def _pardon_action(self, infraction: _utils.Infraction, notify: bool) -> t.Optional[t.Dict[str, str]]:
         """Pardon a superstar infraction, optionally notify the user via DM, and return a log dict."""
         if infraction["type"] != "superstar":
-            return
+            return None
 
         guild = self.bot.get_guild(constants.Guild.id)
         user = await get_or_fetch_member(guild, infraction["user"])

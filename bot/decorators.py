@@ -213,6 +213,7 @@ def respect_role_hierarchy(member_arg: function.Argument) -> t.Callable:
                     f":x: {actor.mention}, you may not {cmd} "
                     "someone with an equal or higher top role."
                 )
+                return None
             else:
                 log.trace(f"{func.__name__}: {target.top_role=} < {actor.top_role=}; calling func")
                 return await func(*args, **kwargs)
@@ -265,7 +266,7 @@ def ensure_future_timestamp(timestamp_arg: function.Argument) -> t.Callable:
                 is_future = True
             if not is_future:
                 await ctx.send(":x: Provided timestamp is in the past.")
-                return
+                return None
 
             return await func(*args, **kwargs)
         return wrapper

@@ -388,7 +388,7 @@ class Infractions(InfractionScheduler, commands.Cog):
         """Apply a timeout infraction with kwargs passed to `post_infraction`."""
         if isinstance(user, Member) and user.top_role >= ctx.me.top_role:
             await ctx.send(":x: I can't timeout users above or equal to me in the role hierarchy.")
-            return None
+            return
 
         if active := await _utils.get_active_infraction(ctx, user, "timeout", send_msg=False):
             if active["actor"] != self.bot.user.id:
