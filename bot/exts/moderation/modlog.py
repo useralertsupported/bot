@@ -128,10 +128,7 @@ class ModLog(Cog, name="ModLog"):
             embed.set_thumbnail(url=thumbnail)
 
         if ping_everyone:
-            if content:
-                content = f"<@&{Roles.moderators}> {content}"
-            else:
-                content = f"<@&{Roles.moderators}>"
+            content = f"<@&{Roles.moderators}> {content}" if content else f"<@&{Roles.moderators}>"
 
         # Truncate content to 2000 characters and append an ellipsis.
         if content and len(content) > 2000:

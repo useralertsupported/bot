@@ -17,10 +17,7 @@ class ContextCheckFailure(CheckFailure):
     def __init__(self, redirect_channel: Optional[int]) -> None:
         self.redirect_channel = redirect_channel
 
-        if redirect_channel:
-            redirect_message = f" here. Please use the <#{redirect_channel}> channel instead"
-        else:
-            redirect_message = ""
+        redirect_message = f" here. Please use the <#{redirect_channel}> channel instead" if redirect_channel else ""
 
         error_message = f"You are not allowed to use that command{redirect_message}."
 

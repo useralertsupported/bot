@@ -332,10 +332,7 @@ class Filtering(Cog):
                             continue
 
                     # Does the filter only need the message content or the full message?
-                    if _filter["content_only"]:
-                        payload = msg.content
-                    else:
-                        payload = msg
+                    payload = msg.content if _filter["content_only"] else msg
 
                     result = await _filter["function"](payload)
                     reason = None

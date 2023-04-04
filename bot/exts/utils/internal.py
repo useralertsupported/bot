@@ -83,9 +83,8 @@ class Internal(Cog):
                 # to indent it.
                 start = "...: ".rjust(len(str(self.ln)) + 7)
 
-            if i == len(lines) - 2:
-                if line.startswith("return"):
-                    line = line[6:].strip()
+            if i == len(lines) - 2 and line.startswith("return"):
+                line = line[6:].strip()
 
             # Combine everything
             res += (start + line + "\n")
@@ -114,10 +113,7 @@ class Internal(Cog):
                 # Leave out the traceback message
                 out = "\n" + "\n".join(out.split("\n")[1:])
 
-            if isinstance(out, str):
-                pretty = out
-            else:
-                pretty = pprint.pformat(out, compact=True, width=60)
+            pretty = out if isinstance(out, str) else pprint.pformat(out, compact=True, width=60)
 
             if pretty != str(out):
                 # We're using the pretty version, start on the next line

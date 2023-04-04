@@ -224,14 +224,13 @@ class CodeJams(commands.Cog):
         """Get a team channel through either a participant or the team name."""
         for category in CodeJams.jam_categories(guild):
             for channel in category.channels:
-                if isinstance(channel, discord.TextChannel):
-                    if (
-                        # If it's a string.
-                        criterion == channel.name or criterion == CodeJams.team_name(channel)
-                        # If it's a member.
-                        or criterion in channel.overwrites
-                    ):
-                        return channel
+                if isinstance(channel, discord.TextChannel) and (
+                    # If it's a string.
+                    criterion == channel.name or criterion == CodeJams.team_name(channel)
+                    # If it's a member.
+                    or criterion in channel.overwrites
+                ):
+                    return channel
         return None
 
     @staticmethod

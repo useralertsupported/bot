@@ -33,9 +33,8 @@ class ConverterTests(unittest.IsolatedAsyncioTestCase):
         test_values = ('text_with_a_dot.', 'UpperCaseName', 'dashed-name')
 
         for name in test_values:
-            with self.subTest(identifier=name):
-                with self.assertRaises(BadArgument):
-                    await PackageName.convert(self.context, name)
+            with self.subTest(identifier=name), self.assertRaises(BadArgument):
+                await PackageName.convert(self.context, name)
 
     async def test_duration_converter_for_valid(self):
         """Duration returns the correct `datetime` for valid duration strings."""

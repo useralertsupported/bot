@@ -46,10 +46,7 @@ class LoggingTestsMixin:
         if not isinstance(logger, logging.Logger):
             logger = get_logger(logger)
 
-        if level:
-            level = logging._nameToLevel.get(level, level)
-        else:
-            level = logging.INFO
+        level = logging._nameToLevel.get(level, level) if level else logging.INFO
 
         handler = _CaptureLogHandler()
         old_handlers = logger.handlers[:]

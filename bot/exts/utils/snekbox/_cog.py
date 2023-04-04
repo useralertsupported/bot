@@ -181,10 +181,7 @@ class Snekbox(Cog):
     ) -> interactions.ViewWithUserAndRoleCheck:
         """Return a view that allows the user to change what version of Python their code is run on."""
         alt_python_version: PythonVersion
-        if current_python_version == "3.10":
-            alt_python_version = "3.11"
-        else:
-            alt_python_version = "3.10"
+        alt_python_version = "3.11" if current_python_version == "3.10" else "3.10"
 
         view = interactions.ViewWithUserAndRoleCheck(
             allowed_users=(ctx.author.id,),
@@ -197,10 +194,7 @@ class Snekbox(Cog):
 
     async def post_job(self, job: EvalJob) -> EvalResult:
         """Send a POST request to the Snekbox API to evaluate code and return the results."""
-        if job.version == "3.10":
-            url = URLs.snekbox_eval_api
-        else:
-            url = URLs.snekbox_311_eval_api
+        url = URLs.snekbox_eval_api if job.version == "3.10" else URLs.snekbox_311_eval_api
 
         data = job.to_dict()
 

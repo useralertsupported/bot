@@ -56,9 +56,8 @@ class LoggingTestCaseTests(unittest.TestCase):
     def test_logging_test_case_works_with_logger_instance(self):
         """Test if the LoggingTestCase captures logging for provided logger."""
         log = get_logger("new_logger")
-        with self.assertRaises(AssertionError):
-            with LoggingTestCase.assertNotLogs(self, logger=log):
-                log.info("Hello, this should raise an AssertionError")
+        with self.assertRaises(AssertionError), LoggingTestCase.assertNotLogs(self, logger=log):
+            log.info("Hello, this should raise an AssertionError")
 
     def test_logging_test_case_respects_alternative_logger(self):
         """Test if LoggingTestCase only checks the provided logger."""

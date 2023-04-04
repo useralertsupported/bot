@@ -132,16 +132,10 @@ class Extensions(commands.Cog):
         categories = {}
 
         for ext in self.bot.all_extensions:
-            if ext in self.bot.extensions:
-                status = Emojis.status_online
-            else:
-                status = Emojis.status_offline
+            status = Emojis.status_online if ext in self.bot.extensions else Emojis.status_offline
 
             path = ext.split(".")
-            if len(path) > BASE_PATH_LEN + 1:
-                category = " - ".join(path[BASE_PATH_LEN:-1])
-            else:
-                category = "uncategorised"
+            category = " - ".join(path[BASE_PATH_LEN:-1]) if len(path) > BASE_PATH_LEN + 1 else "uncategorised"
 
             categories.setdefault(category, []).append(f"{status}  {path[-1]}")
 

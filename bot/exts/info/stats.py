@@ -35,11 +35,10 @@ class Stats(Cog):
         if message.guild.id != Guild.id:
             return
 
-        if is_in_category(message.channel, Categories.modmail):
-            if message.channel.id != Channels.incidents:
-                # Do not report modmail channels to stats, there are too many
-                # of them for interesting statistics to be drawn out of this.
-                return
+        if is_in_category(message.channel, Categories.modmail) and message.channel.id != Channels.incidents:
+            # Do not report modmail channels to stats, there are too many
+            # of them for interesting statistics to be drawn out of this.
+            return
 
         channel = message.channel
         if hasattr(channel, 'parent') and channel.parent:

@@ -283,10 +283,7 @@ class Information(Cog):
                 badges.append(emoji)
 
         if on_server:
-            if user.joined_at:
-                joined = time.format_relative(user.joined_at)
-            else:
-                joined = "Unable to get join date"
+            joined = time.format_relative(user.joined_at) if user.joined_at else "Unable to get join date"
 
             # The 0 is for excluding the default @everyone role,
             # and the -1 is for reversing the order of the roles to highest to lowest in hierarchy.

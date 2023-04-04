@@ -374,7 +374,7 @@ class Tags(Cog):
         current: str
     ) -> list[app_commands.Choice[str]]:
         """Autocompleter for `/tag get` command."""
-        names = [tag.name for tag in self.tags.keys()]
+        names = [tag.name for tag in self.tags]
         choices = [
             app_commands.Choice(name=tag, value=tag)
             for tag in names if current.lower() in tag

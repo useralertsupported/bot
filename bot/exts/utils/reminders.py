@@ -529,15 +529,14 @@ class Reminders(Cog):
             api_response = await self.bot.api_client.get(f"bot/reminders/{reminder_id}")
         except ResponseCodeError as e:
             # Override error-handling so that a 404 message isn't sent to Discord when `send_on_denial` is `False`
-            if not send_on_denial:
-                if e.status == 404:
-                    return False
+            if not send_on_denial and e.status == 404:
+                return False
             raise e
 
         if await has_any_role_check(ctx, Roles.admins):
             return True
 
-        if not api_response["author"] == ctx.author.id:
+        if api_response["author"] != ctx.author.id:
             log.debug(f"{ctx.author} is not the reminder author and does not pass the check.")
             if send_on_denial:
                 await send_denial(ctx, "You can't modify reminders of other users!")

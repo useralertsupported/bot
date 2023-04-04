@@ -342,9 +342,8 @@ class WatchChannel(metaclass=CogABCMeta):
         requested and it succeeded.
         """
         list_data = {}
-        if update_cache:
-            if not await self.fetch_user_cache():
-                update_cache = False
+        if update_cache and not await self.fetch_user_cache():
+            update_cache = False
         list_data["updated"] = update_cache
 
         watched_iter = self.watched_users.items()

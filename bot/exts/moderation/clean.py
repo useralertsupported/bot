@@ -451,9 +451,8 @@ class Clean(Cog):
                 await ctx.reply(success_message)
             except errors.HTTPException:
                 await ctx.send(success_message)
-        elif log_url:
-            if mods := self.bot.get_channel(Channels.mods):
-                await mods.send(f"{ctx.author.mention} {success_message}")
+        elif log_url and (mods := self.bot.get_channel(Channels.mods)):
+            await mods.send(f"{ctx.author.mention} {success_message}")
         return log_url
 
     # region: Commands

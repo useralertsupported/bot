@@ -283,7 +283,7 @@ class OffTopicNames(Cog):
         }
 
         # Search normalized keys
-        in_matches = {name for name in result.keys() if query in name}
+        in_matches = {name for name in result if query in name}
         close_matches = difflib.get_close_matches(query, result.keys(), n=10, cutoff=0.70)
 
         # Send Results

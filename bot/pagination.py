@@ -104,12 +104,11 @@ class LinePaginator(Paginator):
         It overrides in order to allow us to configure the maximum number of lines per page.
         """
         remaining_words = None
-        if len(line) > (max_chars := self.max_size - len(self.prefix) - 2):
+        if len(line) > (max_chars := self.max_size - len(self.prefix) - 2) and len(line) > self.scale_to_size:
+            line, remaining_words = self._split_remaining_words(line, max_chars)
             if len(line) > self.scale_to_size:
-                line, remaining_words = self._split_remaining_words(line, max_chars)
-                if len(line) > self.scale_to_size:
-                    log.debug("Could not continue to next page, truncating line.")
-                    line = line[:self.scale_to_size]
+                log.debug("Could not continue to next page, truncating line.")
+                line = line[:self.scale_to_size]
 
         # Check if we should start a new page or continue the line on the current one
         if self.max_lines is not None and self._linecount >= self.max_lines:
@@ -228,10 +227,7 @@ class LinePaginator(Paginator):
         current_page = 0
 
         if not restrict_to_user:
-            if isinstance(ctx, discord.Interaction):
-                restrict_to_user = ctx.user
-            else:
-                restrict_to_user = ctx.author
+            restrict_to_user = ctx.user if isinstance(ctx, discord.Interaction) else ctx.author
 
         if not lines:
             if exception_on_empty_embed:

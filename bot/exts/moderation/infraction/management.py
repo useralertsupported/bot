@@ -402,25 +402,16 @@ class ModManagement(commands.Cog):
             name = escape_markdown(user['name'])
             user_str = f"<@{user['id']}> ({name}#{user['discriminator']:04})"
 
-        if active:
-            remaining = time.until_expiration(expires_at)
-        else:
-            remaining = "Inactive"
+        remaining = time.until_expiration(expires_at) if active else "Inactive"
 
-        if expires_at is None:
-            duration = "*Permanent*"
-        else:
-            duration = time.humanize_delta(last_applied, expires_at)
+        duration = "*Permanent*" if expires_at is None else time.humanize_delta(last_applied, expires_at)
 
         # Notice if infraction expiry was edited.
         if duration_edited:
             duration += f" (edited {applied})"
 
         # Format `dm_sent`
-        if dm_sent is None:
-            dm_sent_text = "N/A"
-        else:
-            dm_sent_text = "Yes" if dm_sent else "No"
+        dm_sent_text = "N/A" if dm_sent is None else "Yes" if dm_sent else "No"
 
         if jump_url is None:
             # Infraction was issued prior to jump urls being stored in the database

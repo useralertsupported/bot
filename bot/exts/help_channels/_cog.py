@@ -138,7 +138,7 @@ class HelpForum(commands.Cog):
             return
         thread = message.channel
 
-        if not message.id == thread.id:
+        if message.id != thread.id:
             # Opener messages have the same ID as the thread
             return
 
