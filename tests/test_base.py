@@ -30,15 +30,19 @@ class LoggingTestCaseTests(unittest.TestCase):
             r"1 logs of DEBUG or higher were triggered on root:\n"
             r'<LogRecord: tests\.test_base, [\d]+, .+[/\\]tests[/\\]test_base\.py, [\d]+, "Log!">'
         )
-        with self.assertRaisesRegex(AssertionError, msg_regex):
-            with LoggingTestCase.assertNotLogs(self, level=logging.DEBUG):
-                self.log.debug("Log!")
+        with (
+            self.assertRaisesRegex(AssertionError, msg_regex),
+            LoggingTestCase.assertNotLogs(self, level=logging.DEBUG),
+        ):
+            self.log.debug("Log!")
 
     def test_assert_not_logs_reraises_unexpected_exception_in_managed_context(self):
         """Test if LoggingTestCase.assertNotLogs reraises an unexpected exception."""
-        with self.assertRaises(ValueError, msg="test exception"):
-            with LoggingTestCase.assertNotLogs(self, level=logging.DEBUG):
-                raise ValueError("test exception")
+        with (
+            self.assertRaises(ValueError, msg="test exception"),
+            LoggingTestCase.assertNotLogs(self, level=logging.DEBUG),
+        ):
+            raise ValueError("test exception")
 
     def test_assert_not_logs_restores_old_logging_settings(self):
         """Test if LoggingTestCase.assertNotLogs reraises an unexpected exception."""

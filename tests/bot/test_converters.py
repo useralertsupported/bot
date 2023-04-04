@@ -248,6 +248,8 @@ class ConverterTests(unittest.IsolatedAsyncioTestCase):
         )
         converter = HushDurationConverter()
         for invalid_minutes_string, exception_message in test_values:
-            with self.subTest(invalid_minutes_string=invalid_minutes_string, exception_message=exception_message):
-                with self.assertRaisesRegex(BadArgument, re.escape(exception_message)):
-                    await converter.convert(self.context, invalid_minutes_string)
+            with (
+                self.subTest(invalid_minutes_string=invalid_minutes_string, exception_message=exception_message),
+                self.assertRaisesRegex(BadArgument, re.escape(exception_message)),
+            ):
+                await converter.convert(self.context, invalid_minutes_string)

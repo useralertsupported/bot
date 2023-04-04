@@ -97,8 +97,10 @@ class SilenceNotifierTests(SilenceTest):
         """Alert is skipped on first loop or not an increment of 900."""
         test_cases = (0, 15, 5000)
         for current_loop in test_cases:
-            with self.subTest(current_loop=current_loop):
-                with mock.patch.object(self.notifier, "_current_loop", new=current_loop):
+            with (
+                self.subTest(current_loop=current_loop),
+                mock.patch.object(self.notifier, "_current_loop", new=current_loop)
+            ):
                     await self.notifier._notifier()
                     self.alert_channel.send.assert_not_called()
 
@@ -426,17 +428,19 @@ class SilenceTests(SilenceTest):
         targets = (MockTextChannel(), MockVoiceChannel(), None)
 
         for (duration, message, was_silenced), target in itertools.product(test_cases, targets):
-            with mock.patch.object(self.cog, "_set_silence_overwrites", return_value=was_silenced):
-                with self.subTest(was_silenced=was_silenced, target=target, message=message):
-                    with mock.patch.object(self.cog, "send_message") as send_message:
-                        ctx = MockContext()
-                        await self.cog.silence.callback(self.cog, ctx, target, duration)
-                        send_message.assert_called_once_with(
-                            message,
-                            ctx.channel,
-                            target or ctx.channel,
-                            alert_target=was_silenced
-                        )
+            with (
+                mock.patch.object(self.cog, "_set_silence_overwrites", return_value=was_silenced),
+                self.subTest(was_silenced=was_silenced, target=target, message=message),
+                mock.patch.object(self.cog, "send_message") as send_message,
+            ):
+                ctx = MockContext()
+                await self.cog.silence.callback(self.cog, ctx, target, duration)
+                send_message.assert_called_once_with(
+                    message,
+                    ctx.channel,
+                    target or ctx.channel,
+                    alert_target=was_silenced
+                )
 
     @voice_sync_helper
     async def test_sync_called(self, ctx, sync, kick):
@@ -697,13 +701,15 @@ class UnsilenceTests(SilenceTest):
             if target:
                 target.overwrites_for.return_value = overwrite
 
-            with mock.patch.object(self.cog, "_unsilence", return_value=was_unsilenced):
-                with mock.patch.object(self.cog, "send_message") as send_message:
-                    with self.subTest(was_unsilenced=was_unsilenced, overwrite=overwrite, target=target):
-                        await self.cog.unsilence.callback(self.cog, ctx, channel=target)
+            with (
+                mock.patch.object(self.cog, "_unsilence", return_value=was_unsilenced),
+                mock.patch.object(self.cog, "send_message") as send_message,
+                self.subTest(was_unsilenced=was_unsilenced, overwrite=overwrite, target=target),
+            ):
+                await self.cog.unsilence.callback(self.cog, ctx, channel=target)
 
-                        call_args = (message, ctx.channel, target or ctx.channel)
-                        send_message.assert_awaited_once_with(*call_args, alert_target=was_unsilenced)
+                call_args = (message, ctx.channel, target or ctx.channel)
+                send_message.assert_awaited_once_with(*call_args, alert_target=was_unsilenced)
 
     async def test_skipped_already_unsilenced(self):
         """Permissions were not set and `False` was returned for an already unsilenced channel."""
