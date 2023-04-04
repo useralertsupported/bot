@@ -237,7 +237,7 @@ class CodeSnippets(Cog):
                     )
 
         # Sorts the list of snippets by their match index and joins them into a single message
-        return '\n'.join(map(lambda x: x[1], sorted(all_snippets)))
+        return '\n'.join(x[1] for x in sorted(all_snippets))
 
     @Cog.listener()
     async def on_message(self, message: discord.Message) -> None:
