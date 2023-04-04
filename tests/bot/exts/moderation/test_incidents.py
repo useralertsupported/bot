@@ -799,7 +799,7 @@ class TestMessageLinkEmbeds(TestIncidents):
 
             "\n".join("Lets make a new line test".split()): "Lets\nmake\na...",
 
-            'Hello, World!' * 300: (
+            "Hello, World!" * 300: (
                 "Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!"
                 "Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!"
                 "Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!"

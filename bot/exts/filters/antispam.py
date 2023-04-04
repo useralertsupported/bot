@@ -27,17 +27,17 @@ from bot.utils.messages import format_user, send_attachments
 log = get_logger(__name__)
 
 RULE_FUNCTION_MAPPING = {
-    'attachments': rules.apply_attachments,
-    'burst': rules.apply_burst,
+    "attachments": rules.apply_attachments,
+    "burst": rules.apply_burst,
     # burst shared is temporarily disabled due to a bug
     # 'burst_shared': rules.apply_burst_shared,
-    'chars': rules.apply_chars,
-    'discord_emojis': rules.apply_discord_emojis,
-    'duplicates': rules.apply_duplicates,
-    'links': rules.apply_links,
-    'mentions': rules.apply_mentions,
-    'newlines': rules.apply_newlines,
-    'role_mentions': rules.apply_role_mentions,
+    "chars": rules.apply_chars,
+    "discord_emojis": rules.apply_discord_emojis,
+    "duplicates": rules.apply_duplicates,
+    "links": rules.apply_links,
+    "mentions": rules.apply_mentions,
+    "newlines": rules.apply_newlines,
+    "role_mentions": rules.apply_role_mentions,
 }
 
 ANTI_SPAM_RULES = AntiSpamConfig.rules.dict()
@@ -88,7 +88,7 @@ class DeletionContext:
         if any((
             len(messages_as_list) > 1,
             len(first_message.attachments) > 0,
-            first_message.content.count('\n') > 15
+            first_message.content.count("\n") > 15
         )):
             url = await modlog.upload_log(self.messages.values(), actor_id, self.attachments)
             mod_alert_message += f"A complete log of the offending messages can be found [here]({url})"
@@ -129,9 +129,9 @@ class AntiSpam(Cog):
         # Fetch the rule configuration with the highest rule interval.
         max_interval_config = max(
             ANTI_SPAM_RULES.values(),
-            key=itemgetter('interval')
+            key=itemgetter("interval")
         )
-        self.max_interval = max_interval_config['interval']
+        self.max_interval = max_interval_config["interval"]
         self.cache = MessageCache(AntiSpamConfig.cache_size, newest_first=True)
 
     @property
@@ -181,7 +181,7 @@ class AntiSpam(Cog):
             rule_function = RULE_FUNCTION_MAPPING[rule_name]
 
             # Create a list of messages that were sent in the interval that the rule cares about.
-            latest_interesting_stamp = arrow.utcnow() - timedelta(seconds=rule_config['interval'])
+            latest_interesting_stamp = arrow.utcnow() - timedelta(seconds=rule_config["interval"])
             messages_for_rule = list(
                 takewhile(lambda msg: msg.created_at > latest_interesting_stamp, relevant_messages)  # noqa: B023
             )
@@ -309,7 +309,7 @@ def validate_config(rules_: Mapping = ANTI_SPAM_RULES) -> dict[str, str]:
             )
             validation_errors[name] = f"`{name}` is not recognized as an antispam rule."
             continue
-        for required_key in ('interval', 'max'):
+        for required_key in ("interval", "max"):
             if required_key not in config:
                 log.error(
                     f"`{required_key}` is required but was not "

@@ -25,7 +25,7 @@ async def apply(
         for msg in relevant_messages
     )
 
-    if total_emojis > config['max']:
+    if total_emojis > config["max"]:
         return (
             f"sent {total_emojis} emojis in {config['interval']}s",
             (last_message.author,),

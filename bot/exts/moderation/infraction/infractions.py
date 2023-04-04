@@ -306,7 +306,7 @@ class Infractions(InfractionScheduler, commands.Cog):
 
         await self.apply_infraction(ctx, infraction, user)
 
-    @command(hidden=True, aliases=['shadowban', 'sban'])
+    @command(hidden=True, aliases=["shadowban", "sban"])
     async def shadow_ban(self, ctx: Context, user: UnambiguousMemberOrUser, *, reason: str | None = None) -> None:
         """Permanently ban a user for the given reason without notifying the user."""
         await self.apply_ban(ctx, user, reason, hidden=True)
@@ -495,7 +495,7 @@ class Infractions(InfractionScheduler, commands.Cog):
         await self.apply_infraction(ctx, infraction, user, action)
 
         bb_cog: BigBrother | None = self.bot.get_cog("Big Brother")
-        if infraction.get('expires_at') is not None:
+        if infraction.get("expires_at") is not None:
             log.trace(f"Ban isn't permanent; user {user} won't be unwatched by Big Brother.")
         elif not bb_cog:
             log.error(f"Big Brother cog not loaded; perma-banned user {user} won't be unwatched.")

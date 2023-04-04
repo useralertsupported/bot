@@ -44,7 +44,7 @@ class ModManagement(commands.Cog):
         """Get currently loaded Infractions cog instance."""
         return self.bot.get_cog("Infractions")
 
-    @commands.group(name='infraction', aliases=('infr', 'infractions', 'inf', 'i'), invoke_without_command=True)
+    @commands.group(name="infraction", aliases=("infr", "infractions", "inf", "i"), invoke_without_command=True)
     async def infraction_group(self, ctx: Context, infraction: Infraction = None) -> None:
         """
         Infraction management commands.
@@ -125,7 +125,7 @@ class ModManagement(commands.Cog):
 
         await self.infraction_edit(ctx, infraction, duration, reason=reason)
 
-    @infraction_group.command(name='edit', aliases=('e',))
+    @infraction_group.command(name="edit", aliases=("e",))
     @ensure_future_timestamp(timestamp_arg=3)
     async def infraction_edit(
         self,
@@ -164,28 +164,28 @@ class ModManagement(commands.Cog):
         confirm_messages = []
         log_text = ""
 
-        if duration is not None and not infraction['active']:
-            if (infr_type := infraction['type']) in ('note', 'warning'):
+        if duration is not None and not infraction["active"]:
+            if (infr_type := infraction["type"]) in ("note", "warning"):
                 await ctx.send(f":x: Cannot edit the expiration of a {infr_type}.")
             else:
                 await ctx.send(":x: Cannot edit the expiration of an expired infraction.")
             return
 
         if isinstance(duration, str):
-            request_data['expires_at'] = None
+            request_data["expires_at"] = None
             confirm_messages.append("marked as permanent")
         elif duration is not None:
             origin, expiry = unpack_duration(duration)
             # Update `last_applied` if expiry changes.
-            request_data['last_applied'] = origin.isoformat()
-            request_data['expires_at'] = expiry.isoformat()
+            request_data["last_applied"] = origin.isoformat()
+            request_data["expires_at"] = expiry.isoformat()
             expiry = time.format_with_duration(expiry, origin)
             confirm_messages.append(f"set to expire on {expiry}")
         else:
             confirm_messages.append("expiry unchanged")
 
         if reason:
-            request_data['reason'] = reason
+            request_data["reason"] = reason
             confirm_messages.append("set a new reason")
             log_text += f"""
                 Previous reason: {infraction['reason']}
@@ -196,18 +196,18 @@ class ModManagement(commands.Cog):
 
         # Update the infraction
         new_infraction = await self.bot.api_client.patch(
-            f'bot/infractions/{infraction_id}',
+            f"bot/infractions/{infraction_id}",
             json=request_data,
         )
 
         # Re-schedule infraction if the expiration has been updated
-        if 'expires_at' in request_data:
+        if "expires_at" in request_data:
             # A scheduled task should only exist if the old infraction wasn't permanent
-            if infraction['expires_at']:
+            if infraction["expires_at"]:
                 self.infractions_cog.scheduler.cancel(infraction_id)
 
             # If the infraction was not marked as permanent, schedule a new expiration task
-            if request_data['expires_at']:
+            if request_data["expires_at"]:
                 self.infractions_cog.schedule_expiration(new_infraction)
 
             log_text += f"""
@@ -215,11 +215,11 @@ class ModManagement(commands.Cog):
                 New expiry: {time.until_expiration(new_infraction['expires_at'])}
             """.rstrip()
 
-        changes = ' & '.join(confirm_messages)
+        changes = " & ".join(confirm_messages)
         await ctx.send(f":ok_hand: Updated infraction #{infraction_id}: {changes}")
 
         # Get information about the infraction's user
-        user_id = new_infraction['user']
+        user_id = new_infraction["user"]
         user = await get_or_fetch_member(ctx.guild, user_id)
 
         if user:
@@ -245,7 +245,7 @@ class ModManagement(commands.Cog):
     # endregion
     # region: Search infractions
 
-    @infraction_group.group(name="search", aliases=('s',), invoke_without_command=True)
+    @infraction_group.group(name="search", aliases=("s",), invoke_without_command=True)
     async def infraction_search_group(self, ctx: Context, query: UnambiguousUser | Snowflake | str) -> None:
         """Searches for infractions in the database."""
         if isinstance(query, int):
@@ -259,8 +259,8 @@ class ModManagement(commands.Cog):
     async def search_user(self, ctx: Context, user: MemberOrUser | discord.Object) -> None:
         """Search for infractions by member."""
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'user__id': str(user.id)}
+            "bot/infractions/expanded",
+            params={"user__id": str(user.id)}
         )
 
         if isinstance(user, discord.Member | discord.User):
@@ -288,8 +288,8 @@ class ModManagement(commands.Cog):
             raise commands.BadArgument(f"Invalid regular expression in `reason`: {e}")
 
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'search': reason}
+            "bot/infractions/expanded",
+            params={"search": reason}
         )
 
         formatted_infraction_count = self.format_infraction_count(len(infraction_list))
@@ -320,15 +320,15 @@ class ModManagement(commands.Cog):
             actor = ctx.author
 
         if oldest_first:
-            ordering = 'inserted_at'  # oldest infractions first
+            ordering = "inserted_at"  # oldest infractions first
         else:
-            ordering = '-inserted_at'  # newest infractions first
+            ordering = "-inserted_at"  # newest infractions first
 
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
+            "bot/infractions/expanded",
             params={
-                'actor__id': str(actor.id),
-                'ordering': ordering
+                "actor__id": str(actor.id),
+                "ordering": ordering
             }
         )
 
@@ -399,7 +399,7 @@ class ModManagement(commands.Cog):
             user_str = messages.format_user(user_obj)
         else:
             # Use the user data retrieved from the DB.
-            name = escape_markdown(user['name'])
+            name = escape_markdown(user["name"])
             user_str = f"<@{user['id']}> ({name}#{user['discriminator']:04})"
 
         remaining = time.until_expiration(expires_at) if active else "Inactive"

@@ -50,7 +50,7 @@ async def apply(
                         resolved.message_id
                     )
                 except NotFound:
-                    log.info('Could not fetch the reference message as it has been deleted.')
+                    log.info("Could not fetch the reference message as it has been deleted.")
 
             if resolved and not isinstance(resolved, DeletedReferencedMessage):
                 reply_author = resolved.author
@@ -61,7 +61,7 @@ async def apply(
                 continue
             total_recent_mentions += 1
 
-    if total_recent_mentions > config['max']:
+    if total_recent_mentions > config["max"]:
         return (
             f"sent {total_recent_mentions} mentions in {config['interval']}s",
             (last_message.author,),

@@ -337,15 +337,15 @@ class Information(Cog):
     async def basic_user_infraction_counts(self, user: MemberOrUser) -> tuple[str, str]:
         """Gets the total and active infraction counts for the given `member`."""
         infractions = await self.bot.api_client.get(
-            'bot/infractions',
+            "bot/infractions",
             params={
-                'hidden': 'False',
-                'user__id': str(user.id)
+                "hidden": "False",
+                "user__id": str(user.id)
             }
         )
 
         total_infractions = len(infractions)
-        active_infractions = sum(infraction['active'] for infraction in infractions)
+        active_infractions = sum(infraction["active"] for infraction in infractions)
 
         infraction_output = f"Total: {total_infractions}\nActive: {active_infractions}"
 
@@ -359,9 +359,9 @@ class Information(Cog):
         in the output as well.
         """
         infractions = await self.bot.api_client.get(
-            'bot/infractions',
+            "bot/infractions",
             params={
-                'user__id': str(user.id)
+                "user__id": str(user.id)
             }
         )
 
@@ -374,7 +374,7 @@ class Information(Cog):
             infraction_counter = defaultdict(int)
             for infraction in infractions:
                 infraction_type = infraction["type"]
-                infraction_active = 'active' if infraction["active"] else 'inactive'
+                infraction_active = "active" if infraction["active"] else "inactive"
 
                 infraction_types.add(infraction_type)
                 infraction_counter[f"{infraction_active} {infraction_type}"] += 1
@@ -395,9 +395,9 @@ class Information(Cog):
     async def user_nomination_counts(self, user: MemberOrUser) -> tuple[str, str]:
         """Gets the active and historical nomination counts for the given `member`."""
         nominations = await self.bot.api_client.get(
-            'bot/nominations',
+            "bot/nominations",
             params={
-                'user__id': str(user.id)
+                "user__id": str(user.id)
             }
         )
 
@@ -450,29 +450,29 @@ class Information(Cog):
         if field_width is None:
             field_width = len(max(mapping.keys(), key=len))
 
-        out = ''
+        out = ""
 
         for key, val in fields:
             if isinstance(val, dict):
                 # if we have dicts inside dicts we want to apply the same treatment to the inner dictionaries
                 inner_width = int(field_width * 1.6)
-                val = '\n' + self.format_fields(val, field_width=inner_width)
+                val = "\n" + self.format_fields(val, field_width=inner_width)
 
             elif isinstance(val, str):
                 # split up text since it might be long
                 text = textwrap.fill(val, width=100, replace_whitespace=False)
 
                 # indent it, I guess you could do this with `wrap` and `join` but this is nicer
-                val = textwrap.indent(text, ' ' * (field_width + len(': ')))
+                val = textwrap.indent(text, " " * (field_width + len(": ")))
 
                 # the first line is already indented so we `str.lstrip` it
                 val = val.lstrip()
 
-            if key == 'color':
+            if key == "color":
                 # makes the base 10 representation of a hex number readable to humans
                 val = hex(val)
 
-            out += '{0:>{width}}: {1}\n'.format(key, val, width=field_width)
+            out += "{0:>{width}}: {1}\n".format(key, val, width=field_width)
 
         # remove trailing whitespace
         return out.rstrip()
@@ -494,17 +494,17 @@ class Information(Cog):
         paginator = Paginator()
 
         def add_content(title: str, content: str) -> None:
-            paginator.add_line(f'== {title} ==\n')
+            paginator.add_line(f"== {title} ==\n")
             # Replace backticks as it breaks out of code blocks.
             # An invisible character seemed to be the most reasonable solution. We hope it's not close to 2000.
-            paginator.add_line(content.replace('`', '`\u200b'))
+            paginator.add_line(content.replace("`", "`\u200b"))
             paginator.close_page()
 
         if message.content:
-            add_content('Raw message', message.content)
+            add_content("Raw message", message.content)
 
         transformer = pprint.pformat if json else self.format_fields
-        for field_name in ('embeds', 'attachments'):
+        for field_name in ("embeds", "attachments"):
             data = raw_data[field_name]
 
             if not data:
@@ -512,7 +512,7 @@ class Information(Cog):
 
             total = len(data)
             for current, item in enumerate(data, start=1):
-                title = f'Raw {field_name} ({current}/{total})'
+                title = f"Raw {field_name} ({current}/{total})"
                 add_content(title, transformer(item))
 
         for page in paginator.pages:

@@ -50,8 +50,8 @@ class Reminders(Cog):
         """Get all current reminders from the API and reschedule them."""
         await self.bot.wait_until_guild_available()
         response = await self.bot.api_client.get(
-            'bot/reminders',
-            params={'active': 'true'}
+            "bot/reminders",
+            params={"active": "true"}
         )
 
         now = datetime.now(UTC)
@@ -61,7 +61,7 @@ class Reminders(Cog):
             if not is_valid:
                 continue
 
-            remind_at = isoparse(reminder['expiration'])
+            remind_at = isoparse(reminder["expiration"])
 
             # If the reminder is already overdue ...
             if remind_at < now:
@@ -71,7 +71,7 @@ class Reminders(Cog):
 
     def ensure_valid_reminder(self, reminder: dict) -> tuple[bool, discord.TextChannel]:
         """Ensure reminder channel can be fetched otherwise delete the reminder."""
-        channel = self.bot.get_channel(reminder['channel_id'])
+        channel = self.bot.get_channel(reminder["channel_id"])
         is_valid = True
         if not channel:
             is_valid = False
@@ -146,7 +146,7 @@ class Reminders(Cog):
 
     def schedule_reminder(self, reminder: dict) -> None:
         """A coroutine which sends the reminder once the time is reached, and cancels the running task."""
-        reminder_datetime = isoparse(reminder['expiration'])
+        reminder_datetime = isoparse(reminder["expiration"])
         self.scheduler.schedule_at(reminder_datetime, reminder["id"], self.send_reminder(reminder))
 
     async def _edit_reminder(self, reminder_id: int, payload: dict) -> dict:
@@ -157,7 +157,7 @@ class Reminders(Cog):
         """
         # Send the request to update the reminder in the database
         reminder = await self.bot.api_client.patch(
-            'bot/reminders/' + str(reminder_id),
+            "bot/reminders/" + str(reminder_id),
             json=payload
         )
         return reminder
@@ -195,7 +195,7 @@ class Reminders(Cog):
         embed.description = f"Here's your reminder: {reminder['content']}"
 
         # Here the jump URL is in the format of base_url/guild_id/channel_id/message_id
-        additional_mentions = ' '.join([
+        additional_mentions = " ".join([
             mentionable.mention async for mentionable in self.get_mentionables(reminder["mentions"])
         ])
 
@@ -287,9 +287,9 @@ class Reminders(Cog):
 
             # Get their current active reminders
             active_reminders = await self.bot.api_client.get(
-                'bot/reminders',
+                "bot/reminders",
                 params={
-                    'author__id': str(ctx.author.id)
+                    "author__id": str(ctx.author.id)
                 }
             )
 
@@ -318,14 +318,14 @@ class Reminders(Cog):
 
         # Now we can attempt to actually set the reminder.
         reminder = await self.bot.api_client.post(
-            'bot/reminders',
+            "bot/reminders",
             json={
-                'author': ctx.author.id,
-                'channel_id': ctx.message.channel.id,
-                'jump_url': ctx.message.jump_url,
-                'content': content,
-                'expiration': expiration.isoformat(),
-                'mentions': mention_ids,
+                "author": ctx.author.id,
+                "channel_id": ctx.message.channel.id,
+                "jump_url": ctx.message.jump_url,
+                "content": content,
+                "expiration": expiration.isoformat(),
+                "mentions": mention_ids,
             }
         )
 
@@ -350,14 +350,14 @@ class Reminders(Cog):
         """View a paginated embed of all reminders for your user."""
         # Get all the user's reminders from the database.
         data = await self.bot.api_client.get(
-            'bot/reminders',
-            params={'author__id': str(ctx.author.id)}
+            "bot/reminders",
+            params={"author__id": str(ctx.author.id)}
         )
 
         # Make a list of tuples so it can be sorted by time.
         reminders = sorted(
             (
-                (rem['content'], rem['expiration'], rem['id'], rem['mentions'])
+                (rem["content"], rem["expiration"], rem["id"], rem["mentions"])
                 for rem in data
             ),
             key=itemgetter(1)
@@ -422,7 +422,7 @@ class Reminders(Cog):
 
         For example, to edit a reminder to expire in 3 days and 1 minute, you can do `!remind edit duration 1234 3d1M`.
         """
-        await self.edit_reminder(ctx, id_, {'expiration': expiration.isoformat()})
+        await self.edit_reminder(ctx, id_, {"expiration": expiration.isoformat()})
 
     @edit_reminder_group.command(name="content", aliases=("reason",))
     async def edit_reminder_content(self, ctx: Context, id_: int, *, content: str | None = None) -> None:

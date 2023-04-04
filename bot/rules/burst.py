@@ -14,7 +14,7 @@ async def apply(
     )
     total_relevant = len(relevant_messages)
 
-    if total_relevant > config['max']:
+    if total_relevant > config["max"]:
         return (
             f"sent {total_relevant} messages in {config['interval']}s",
             (last_message.author,),

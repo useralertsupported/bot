@@ -146,8 +146,8 @@ class InfractionScheduler:
         infr_type = infraction["type"]
         icon = _utils.INFRACTION_ICONS[infr_type][0]
         reason = infraction["reason"]
-        id_ = infraction['id']
-        jump_url = infraction['jump_url']
+        id_ = infraction["id"]
+        jump_url = infraction["jump_url"]
         expiry = time.format_with_duration(
             infraction["expires_at"],
             infraction["last_applied"]
@@ -313,11 +313,11 @@ class InfractionScheduler:
         # Check the current active infraction
         log.trace(f"Fetching active {infr_type} infractions for {user}.")
         response = await self.bot.api_client.get(
-            'bot/infractions',
+            "bot/infractions",
             params={
-                'active': 'true',
-                'type': infr_type,
-                'user__id': user.id
+                "active": "true",
+                "type": infr_type,
+                "user__id": user.id
             }
         )
 
@@ -332,7 +332,7 @@ class InfractionScheduler:
         log_text["Member"] = messages.format_user(user)
         log_text["Actor"] = ctx.author.mention
         log_content = None
-        id_ = response[0]['id']
+        id_ = response[0]["id"]
         footer = f"ID: {id_}"
 
         # Accordingly display whether the user was successfully notified via DM.

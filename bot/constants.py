@@ -18,8 +18,8 @@ class EnvConfig(BaseSettings):
         """Specify what .env files to load, and how to load them."""
 
         env_file = ".env.server", ".env",
-        env_file_encoding = 'utf-8'
-        env_nested_delimiter = '__'
+        env_file_encoding = "utf-8"
+        env_nested_delimiter = "__"
 
 
 class _Miscellaneous(EnvConfig):
@@ -370,7 +370,7 @@ class Rules(BaseModel):
 
 
 class _AntiSpam(EnvConfig):
-    EnvConfig.Config.env_prefix = 'anti_spam_'
+    EnvConfig.Config.env_prefix = "anti_spam_"
 
     cache_size = 100
 
@@ -435,7 +435,7 @@ class _PythonNews(EnvConfig):
 
     channel: int = Webhooks.python_news.channel
     webhook: int = Webhooks.python_news.id
-    mail_lists = ['python-ideas', 'python-announce-list', 'pypi-announce', 'python-dev']
+    mail_lists = ["python-ideas", "python-announce-list", "pypi-announce", "python-dev"]
 
 
 PythonNews = _PythonNews()

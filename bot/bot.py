@@ -9,7 +9,7 @@ from sentry_sdk import push_scope
 from bot import constants, exts
 from bot.log import get_logger
 
-log = get_logger('bot')
+log = get_logger("bot")
 
 
 class StartupError(Exception):
@@ -60,7 +60,7 @@ class Bot(BotBase):
 
     async def cache_filter_list_data(self) -> None:
         """Cache all the data in the FilterList on the site."""
-        full_cache = await self.api_client.get('bot/filter-lists')
+        full_cache = await self.api_client.get("bot/filter-lists")
 
         for item in full_cache:
             self.insert_item_into_filter_list_cache(item)

@@ -185,7 +185,7 @@ class Stream(commands.Cog):
 
         await self._suspend_stream(ctx, member)
 
-    @commands.command(aliases=('lstream',))
+    @commands.command(aliases=("lstream",))
     @commands.has_any_role(*MODERATION_ROLES)
     async def liststream(self, ctx: commands.Context) -> None:
         """Lists all users who aren't staff, partners or members of the python community and have stream permissions."""

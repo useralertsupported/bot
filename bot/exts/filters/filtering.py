@@ -170,7 +170,7 @@ class Filtering(Cog):
     def _expand_spoilers(text: str) -> str:
         """Return a string containing all interpretations of a spoilered message."""
         split_text = SPOILER_RE.split(text)
-        return ''.join(
+        return "".join(
             split_text[0::2] + split_text[1::2] + split_text
         )
 
@@ -223,7 +223,7 @@ class Filtering(Cog):
         # in case we have filters for one but not the other.
         names_to_check = (name, normalised_name, cleaned_normalised_name)
 
-        watchlist_patterns = self._get_filterlist_items('filter_token', allowed=False)
+        watchlist_patterns = self._get_filterlist_items("filter_token", allowed=False)
         for pattern in watchlist_patterns:
             for name in names_to_check:
                 if match := re.search(pattern, name, flags=re.IGNORECASE):
@@ -371,13 +371,13 @@ class Filtering(Cog):
                         if _filter["schedule_deletion"] and not is_private:
                             delete_date = (msg.created_at + OFFENSIVE_MSG_DELETE_TIME).isoformat()
                             data = {
-                                'id': msg.id,
-                                'channel_id': msg.channel.id,
-                                'delete_date': delete_date
+                                "id": msg.id,
+                                "channel_id": msg.channel.id,
+                                "delete_date": delete_date
                             }
 
                             try:
-                                await self.bot.api_client.post('bot/offensive-messages', json=data)
+                                await self.bot.api_client.post("bot/offensive-messages", json=data)
                             except ResponseCodeError as e:
                                 if e.status == 400 and "already exists" in e.response_json.get("id", [""])[0]:
                                     log.debug(f"Offensive message {msg.id} already exists.")
@@ -493,7 +493,7 @@ class Filtering(Cog):
         if name == "filter_invites" and match is not True:
             additional_embeds = []
             for _, data in match.items():
-                reason = f"Reason: {data['reason']} | " if data.get('reason') else ""
+                reason = f"Reason: {data['reason']} | " if data.get("reason") else ""
                 embed = Embed(description=(
                     f"**Members:**\n{data['members']}\n"
                     f"**Active:**\n{data['active']}"
@@ -537,11 +537,11 @@ class Filtering(Cog):
 
         text = self.clean_input(text)
 
-        watchlist_patterns = self._get_filterlist_items('filter_token', allowed=False)
+        watchlist_patterns = self._get_filterlist_items("filter_token", allowed=False)
         for pattern in watchlist_patterns:
             match = re.search(pattern, text, flags=re.IGNORECASE)
             if match:
-                return match, self._get_filterlist_value('filter_token', pattern, allowed=False)['comment']
+                return match, self._get_filterlist_value("filter_token", pattern, allowed=False)["comment"]
 
         return False, None
 
@@ -612,8 +612,8 @@ class Filtering(Cog):
 
             # Is this invite allowed?
             guild_partnered_or_verified = (
-                'PARTNERED' in guild.get("features", [])
-                or 'VERIFIED' in guild.get("features", [])
+                "PARTNERED" in guild.get("features", [])
+                or "VERIFIED" in guild.get("features", [])
             )
             invite_not_allowed = (
                 guild_id in guild_invite_blacklist           # Blacklisted guilds are never permitted.
@@ -634,7 +634,7 @@ class Filtering(Cog):
 
                 invite_data[invite] = {
                     "name": guild["name"],
-                    "id": guild['id'],
+                    "id": guild["id"],
                     "icon": guild_icon,
                     "members": response["approximate_member_count"],
                     "active": response["approximate_presence_count"],
@@ -691,18 +691,18 @@ class Filtering(Cog):
 
     def schedule_msg_delete(self, msg: dict) -> None:
         """Delete an offensive message once its deletion date is reached."""
-        delete_at = dateutil.parser.isoparse(msg['delete_date'])
-        self.scheduler.schedule_at(delete_at, msg['id'], self.delete_offensive_msg(msg))
+        delete_at = dateutil.parser.isoparse(msg["delete_date"])
+        self.scheduler.schedule_at(delete_at, msg["id"], self.delete_offensive_msg(msg))
 
     async def cog_load(self) -> None:
         """Get all the pending message deletion from the API and reschedule them."""
         await self.bot.wait_until_ready()
-        response = await self.bot.api_client.get('bot/offensive-messages',)
+        response = await self.bot.api_client.get("bot/offensive-messages",)
 
         now = arrow.utcnow()
 
         for msg in response:
-            delete_at = dateutil.parser.isoparse(msg['delete_date'])
+            delete_at = dateutil.parser.isoparse(msg["delete_date"])
 
             if delete_at < now:
                 await self.delete_offensive_msg(msg)
@@ -712,9 +712,9 @@ class Filtering(Cog):
     async def delete_offensive_msg(self, msg: Mapping[str, int]) -> None:
         """Delete an offensive message, and then delete it from the db."""
         try:
-            channel = self.bot.get_channel(msg['channel_id'])
+            channel = self.bot.get_channel(msg["channel_id"])
             if channel:
-                msg_obj = await channel.fetch_message(msg['id'])
+                msg_obj = await channel.fetch_message(msg["id"])
                 await msg_obj.delete()
         except NotFound:
             log.info(

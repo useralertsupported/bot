@@ -84,7 +84,7 @@ class ValidFilterListType(Converter):
         Raise a BadArgument if the API can't respond.
         """
         try:
-            valid_types = await bot.api_client.get('bot/filter-lists/get-types')
+            valid_types = await bot.api_client.get("bot/filter-lists/get-types")
         except ResponseCodeError:
             raise BadArgument("Cannot validate list_type: Unable to fetch valid types from API.")
 
@@ -108,7 +108,7 @@ class ValidFilterListType(Converter):
                 list_type = list_type[:-1]
 
             else:
-                valid_types_list = '\n'.join([f"• {type_.lower()}" for type_ in valid_types])
+                valid_types_list = "\n".join([f"• {type_.lower()}" for type_ in valid_types])
                 raise BadArgument(
                     f"You have provided an invalid list type!\n\n"
                     f"Please provide one of the following: \n{valid_types_list}"
@@ -192,7 +192,7 @@ class ValidURL(Converter):
                         f"HTTP GET on `{url}` returned status `{resp.status}`, expected 200"
                     )
         except CertificateError:
-            if url.startswith('https'):
+            if url.startswith("https"):
                 raise BadArgument(
                     f"Got a `CertificateError` for URL `{url}`. Does it support HTTPS?"
                 )
@@ -476,8 +476,8 @@ def _is_an_unambiguous_user_argument(argument: str) -> bool:
     has_id_or_mention = bool(IDConverter()._get_id_match(argument) or RE_USER_MENTION.match(argument))
 
     # Check to see if the author passed a username (a discriminator exists)
-    argument = argument.removeprefix('@')
-    has_username = len(argument) > 5 and argument[-5] == '#'
+    argument = argument.removeprefix("@")
+    has_username = len(argument) > 5 and argument[-5] == "#"
 
     return has_id_or_mention or has_username
 

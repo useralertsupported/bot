@@ -86,7 +86,7 @@ NO_SNEKBOX_CHANNELS = (Channels.python_general,)
 NO_SNEKBOX_CATEGORIES = ()
 SNEKBOX_ROLES = (Roles.helpers, Roles.moderators, Roles.admins, Roles.owners, Roles.python_community, Roles.partners)
 
-REDO_EMOJI = '\U0001f501'  # :repeat:
+REDO_EMOJI = "\U0001f501"  # :repeat:
 REDO_TIMEOUT = 30
 
 PythonVersion = Literal["3.10", "3.11"]
@@ -286,7 +286,7 @@ class Snekbox(Cog):
 
     def get_extensions_whitelist(self) -> set[str]:
         """Return a set of whitelisted file extensions."""
-        return set(self.bot.filter_list_cache['FILE_FORMAT.True'].keys()) | TXT_LIKE_FILES
+        return set(self.bot.filter_list_cache["FILE_FORMAT.True"].keys()) | TXT_LIKE_FILES
 
     def _filter_files(self, ctx: Context, files: list[FileAttachment]) -> FilteredFiles:
         """Filter to restrict files to allowed extensions. Return a named tuple of allowed and blocked files lists."""
@@ -441,13 +441,13 @@ class Snekbox(Cog):
         with contextlib.suppress(NotFound):
             try:
                 _, new_message = await self.bot.wait_for(
-                    'message_edit',
+                    "message_edit",
                     check=_predicate_message_edit,
                     timeout=REDO_TIMEOUT
                 )
                 await ctx.message.add_reaction(REDO_EMOJI)
                 await self.bot.wait_for(
-                    'reaction_add',
+                    "reaction_add",
                     check=_predicate_emoji_reaction,
                     timeout=10
                 )

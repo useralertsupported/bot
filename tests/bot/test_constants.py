@@ -35,7 +35,7 @@ class ConstantsTests(unittest.TestCase):
         sections = (
             cls
             for (name, cls) in inspect.getmembers(constants)
-            if hasattr(cls, 'section') and isinstance(cls, type)
+            if hasattr(cls, "section") and isinstance(cls, type)
         )
         for section in sections:
             for name, annotation in section.__annotations__.items():

@@ -83,7 +83,7 @@ class SilenceNotifier(tasks.Loop):
                 f"Sending notice with channels: "
                 f"{', '.join(f'#{channel} ({channel.id})' for channel in self._silenced_channels)}."
             )
-            channels_text = ', '.join(
+            channels_text = ", ".join(
                 f"{channel.mention} for {(self._current_loop-start)//60} min"
                 for channel, start in self._silenced_channels.items()
             )

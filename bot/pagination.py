@@ -45,8 +45,8 @@ class LinePaginator(Paginator):
 
     def __init__(
         self,
-        prefix: str = '```',
-        suffix: str = '```',
+        prefix: str = "```",
+        suffix: str = "```",
         max_size: int = 4000,
         scale_to_size: int = 4000,
         max_lines: int | None = None,
@@ -82,7 +82,7 @@ class LinePaginator(Paginator):
         self._count = len(prefix) + 1  # prefix + newline
         self._pages = []
 
-    def add_line(self, line: str = '', *, empty: bool = False) -> None:
+    def add_line(self, line: str = "", *, empty: bool = False) -> None:
         """
         Adds a line to the current page.
 
@@ -122,7 +122,7 @@ class LinePaginator(Paginator):
         self._current_page.append(line)
 
         if empty:
-            self._current_page.append('')
+            self._current_page.append("")
             self._count += 1
 
         # Start a new page if there were any overflow words

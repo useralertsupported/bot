@@ -11,7 +11,7 @@ from bot.log import get_logger
 log = get_logger(__name__)
 
 FAILED_REQUEST_ATTEMPTS = 3
-_V2_LINE_RE = re.compile(r'(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+?(\S*)\s+(.*)')
+_V2_LINE_RE = re.compile(r"(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+?(\S*)\s+(.*)")
 
 InventoryDict = defaultdict[str, list[tuple[str, str]]]
 
@@ -38,14 +38,14 @@ class ZlibStreamReader:
 
     async def __aiter__(self) -> AsyncIterator[str]:
         """Yield lines of decompressed text."""
-        buf = b''
+        buf = b""
         async for chunk in self._read_compressed_chunks():
             buf += chunk
-            pos = buf.find(b'\n')
+            pos = buf.find(b"\n")
             while pos != -1:
                 yield buf[:pos].decode()
                 buf = buf[pos + 1:]
-                pos = buf.find(b'\n')
+                pos = buf.find(b"\n")
 
 
 async def _load_v1(stream: aiohttp.StreamReader) -> InventoryDict:

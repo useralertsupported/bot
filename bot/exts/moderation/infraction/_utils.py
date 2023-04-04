@@ -36,8 +36,8 @@ MODMAIL_ACCOUNT_ID = "683001325440860340"
 INFRACTION_TITLE = "Please review our rules"
 INFRACTION_APPEAL_SERVER_FOOTER = f"\nTo appeal this infraction, join our [appeals server]({APPEAL_SERVER_INVITE})."
 INFRACTION_APPEAL_MODMAIL_FOOTER = (
-    '\nIf you would like to discuss or appeal this infraction, '
-    f'send a message to the ModMail bot (<@{MODMAIL_ACCOUNT_ID}>).'
+    "\nIf you would like to discuss or appeal this infraction, "
+    f"send a message to the ModMail bot (<@{MODMAIL_ACCOUNT_ID}>)."
 )
 INFRACTION_AUTHOR_NAME = "Infraction information"
 
@@ -60,15 +60,15 @@ async def post_user(ctx: Context, user: MemberOrUser) -> dict | None:
     log.trace(f"Attempting to add user {user.id} to the database.")
 
     payload = {
-        'discriminator': int(user.discriminator),
-        'id': user.id,
-        'in_guild': False,
-        'name': user.name,
-        'roles': []
+        "discriminator": int(user.discriminator),
+        "id": user.id,
+        "in_guild": False,
+        "name": user.name,
+        "roles": []
     }
 
     try:
-        response = await ctx.bot.api_client.post('bot/users', json=payload)
+        response = await ctx.bot.api_client.post("bot/users", json=payload)
         log.info(f"User {user.id} added to the DB.")
         return response
     except ResponseCodeError as e:
@@ -123,10 +123,10 @@ async def post_infraction(
     # Try to apply the infraction. If it fails because the user doesn't exist, try to add it.
     for should_post_user in (True, False):
         try:
-            response = await ctx.bot.api_client.post('bot/infractions', json=payload)
+            response = await ctx.bot.api_client.post("bot/infractions", json=payload)
             return response
         except ResponseCodeError as e:
-            if e.status == 400 and 'user' in e.response_json:
+            if e.status == 400 and "user" in e.response_json:
                 # Only one attempt to add the user to the database, not two:
                 if not should_post_user or await post_user(ctx, user) is None:
                     return None
@@ -153,11 +153,11 @@ async def get_active_infraction(
     log.trace(f"Checking if {user} has active infractions of type {infr_type}.")
 
     active_infractions = await ctx.bot.api_client.get(
-        'bot/infractions',
+        "bot/infractions",
         params={
-            'active': 'true',
-            'type': infr_type,
-            'user__id': str(user.id)
+            "active": "true",
+            "type": infr_type,
+            "user__id": str(user.id)
         }
     )
     if active_infractions:
@@ -224,7 +224,7 @@ async def notify_infraction(
     if len(text) > 4096 - LONGEST_EXTRAS:
         text = f"{text[:4093-LONGEST_EXTRAS]}..."
 
-    text += INFRACTION_APPEAL_SERVER_FOOTER if infraction["type"] == 'ban' else INFRACTION_APPEAL_MODMAIL_FOOTER
+    text += INFRACTION_APPEAL_SERVER_FOOTER if infraction["type"] == "ban" else INFRACTION_APPEAL_MODMAIL_FOOTER
 
     embed = discord.Embed(
         description=text,

@@ -376,8 +376,8 @@ class Reviewer:
         """
         log.trace(f"Fetching the infraction data for {member.id}'s review")
         infraction_list = await self.bot.api_client.get(
-            'bot/infractions/expanded',
-            params={'user__id': str(member.id), 'ordering': '-inserted_at'}
+            "bot/infractions/expanded",
+            params={"user__id": str(member.id), "ordering": "-inserted_at"}
         )
 
         log.trace(f"{len(infraction_list)} infractions found for {member.id}, formatting review.")
@@ -408,7 +408,7 @@ class Reviewer:
             infractions += ", with the last infraction issued "
 
         # Infractions were ordered by time since insertion descending.
-        infractions += time.format_relative(infraction_list[0]['inserted_at'])
+        infractions += time.format_relative(infraction_list[0]["inserted_at"])
 
         return f"They have {infractions}."
 
@@ -422,7 +422,7 @@ class Reviewer:
         """
         formatted = infr_type.replace("_", " ")
         if count > 1:
-            if infr_type.endswith(('ch', 'sh')):
+            if infr_type.endswith(("ch", "sh")):
                 formatted += "e"
             formatted += "s"
 

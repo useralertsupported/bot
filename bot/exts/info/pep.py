@@ -141,7 +141,7 @@ class PythonEnhancementProposals(Cog):
             colour=Colour.red()
         ), False
 
-    @command(name='pep', aliases=('get_pep', 'p'))
+    @command(name="pep", aliases=("get_pep", "p"))
     async def pep_command(self, ctx: Context, pep_number: int) -> None:
         """Fetches information about a PEP and sends it to the channel."""
         # Trigger typing in chat to show users that bot is responding

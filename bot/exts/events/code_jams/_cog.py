@@ -102,7 +102,7 @@ class CodeJams(commands.Cog):
         await message.add_reaction(DELETION_REACTION)
         try:
             await self.bot.wait_for(
-                'reaction_add',
+                "reaction_add",
                 check=predicate_deletion_emoji_reaction,
                 timeout=10
             )

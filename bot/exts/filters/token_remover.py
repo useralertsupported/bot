@@ -147,7 +147,7 @@ class TokenRemover(Cog):
             channel=msg.channel.mention,
             user_id=token.user_id,
             timestamp=token.timestamp,
-            hmac='x' * (len(token.hmac) - 3) + token.hmac[-3:],
+            hmac="x" * (len(token.hmac) - 3) + token.hmac[-3:],
         )
 
     @classmethod
@@ -175,7 +175,7 @@ class TokenRemover(Cog):
 
         try:
             decoded_bytes = base64.urlsafe_b64decode(b64_content)
-            string = decoded_bytes.decode('utf-8')
+            string = decoded_bytes.decode("utf-8")
             if not (string.isascii() and string.isdigit()):
                 # This case triggers if there are fancy unicode digits in the base64 encoding,
                 # that means it's not a valid user id.

@@ -158,7 +158,7 @@ class WatchChannel(metaclass=CogABCMeta):
         self.watched_users = defaultdict(dict)
 
         for entry in data:
-            user_id = entry.pop('user')
+            user_id = entry.pop("user")
             self.watched_users[user_id] = entry
 
         return True
@@ -280,13 +280,13 @@ class WatchChannel(metaclass=CogABCMeta):
         user_id = msg.author.id
 
         guild = self.bot.get_guild(GuildConfig.id)
-        actor = await get_or_fetch_member(guild, self.watched_users[user_id]['actor'])
-        actor = actor.display_name if actor else self.watched_users[user_id]['actor']
+        actor = await get_or_fetch_member(guild, self.watched_users[user_id]["actor"])
+        actor = actor.display_name if actor else self.watched_users[user_id]["actor"]
 
-        inserted_at = self.watched_users[user_id]['inserted_at']
+        inserted_at = self.watched_users[user_id]["inserted_at"]
         time_delta = time.format_relative(inserted_at)
 
-        reason = self.watched_users[user_id]['reason']
+        reason = self.watched_users[user_id]["reason"]
 
         if isinstance(msg.channel, DMChannel):
             # If a watched user DMs the bot there won't be a channel name or jump URL
@@ -356,7 +356,7 @@ class WatchChannel(metaclass=CogABCMeta):
             line = f"• `{user_id}`"
             if member:
                 line += f" ({member.name}#{member.discriminator})"
-            inserted_at = user_data['inserted_at']
+            inserted_at = user_data["inserted_at"]
             line += f", added {time.format_relative(inserted_at)}"
             if not member:  # Cross off users who left the server.
                 line = f"~~{line}~~"

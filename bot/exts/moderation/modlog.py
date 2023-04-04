@@ -691,12 +691,12 @@ class ModLog(Cog, name="ModLog"):
         content_after: list[str] = []
 
         for index, (diff_type, words) in enumerate(diff_groups):
-            sub = ' '.join(words)
-            if diff_type == '-':
+            sub = " ".join(words)
+            if diff_type == "-":
                 content_before.append(f"[{sub}](http://o.hi)")
-            elif diff_type == '+':
+            elif diff_type == "+":
                 content_after.append(f"[{sub}](http://o.hi)")
-            elif diff_type == ' ':
+            elif diff_type == " ":
                 if len(words) > 2:
                     sub = (
                         f"{words[0] if index > 0 else ''}"

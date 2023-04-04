@@ -13,23 +13,23 @@ class TimeTests(unittest.TestCase):
         """humanize_delta should be able to handle unknown units, and will not abort."""
         # Does not abort for unknown units, as the unit name is checked
         # against the attribute of the relativedelta instance.
-        actual = time.humanize_delta(relativedelta(days=2, hours=2), precision='elephants', max_units=2)
-        self.assertEqual(actual, '2 days and 2 hours')
+        actual = time.humanize_delta(relativedelta(days=2, hours=2), precision="elephants", max_units=2)
+        self.assertEqual(actual, "2 days and 2 hours")
 
     def test_humanize_delta_handle_high_units(self):
         """humanize_delta should be able to handle very high units."""
         # Very high maximum units, but it only ever iterates over
         # each value the relativedelta might have.
-        actual = time.humanize_delta(relativedelta(days=2, hours=2), precision='hours', max_units=20)
-        self.assertEqual(actual, '2 days and 2 hours')
+        actual = time.humanize_delta(relativedelta(days=2, hours=2), precision="hours", max_units=20)
+        self.assertEqual(actual, "2 days and 2 hours")
 
     def test_humanize_delta_should_normal_usage(self):
         """Testing humanize delta."""
         test_cases = (
-            (relativedelta(days=2), 'seconds', 1, '2 days'),
-            (relativedelta(days=2, hours=2), 'seconds', 2, '2 days and 2 hours'),
-            (relativedelta(days=2, hours=2), 'seconds', 1, '2 days'),
-            (relativedelta(days=2, hours=2), 'days', 2, '2 days'),
+            (relativedelta(days=2), "seconds", 1, "2 days"),
+            (relativedelta(days=2, hours=2), "seconds", 2, "2 days and 2 hours"),
+            (relativedelta(days=2, hours=2), "seconds", 1, "2 days"),
+            (relativedelta(days=2, hours=2), "days", 2, "2 days"),
         )
 
         for delta, precision, max_units, expected in test_cases:
@@ -43,8 +43,8 @@ class TimeTests(unittest.TestCase):
 
         for max_units in test_cases:
             with self.subTest(max_units=max_units), self.assertRaises(ValueError) as error:
-                time.humanize_delta(relativedelta(days=2, hours=2), precision='hours', max_units=max_units)
-            self.assertEqual(str(error.exception), 'max_units must be positive.')
+                time.humanize_delta(relativedelta(days=2, hours=2), precision="hours", max_units=max_units)
+            self.assertEqual(str(error.exception), "max_units must be positive.")
 
     def test_format_with_duration_none_expiry(self):
         """format_with_duration should work for None expiry."""
@@ -52,9 +52,9 @@ class TimeTests(unittest.TestCase):
             (None, None, None, None),
 
             # To make sure that date_from and max_units are not touched
-            (None, 'Why hello there!', None, None),
-            (None, None, float('inf'), None),
-            (None, 'Why hello there!', float('inf'), None),
+            (None, "Why hello there!", None, None),
+            (None, None, float("inf"), None),
+            (None, "Why hello there!", float("inf"), None),
         )
 
         for expiry, date_from, max_units, expected in test_cases:
@@ -105,8 +105,8 @@ class TimeTests(unittest.TestCase):
     def test_until_expiration_with_duration_custom_units(self):
         """until_expiration should work for custom max_units."""
         test_cases = (
-            ('3000-12-12T00:01:00Z', '<t:32533488060:R>'),
-            ('3000-11-23T20:09:00Z', '<t:32531918940:R>')
+            ("3000-12-12T00:01:00Z", "<t:32533488060:R>"),
+            ("3000-11-23T20:09:00Z", "<t:32531918940:R>")
         )
 
         for expiry, expected in test_cases:
@@ -116,11 +116,11 @@ class TimeTests(unittest.TestCase):
     def test_until_expiration_normal_usage(self):
         """until_expiration should work for normal usage, across various durations."""
         test_cases = (
-            ('3000-12-12T00:01:00Z', '<t:32533488060:R>'),
-            ('3000-12-12T00:01:00Z', '<t:32533488060:R>'),
-            ('3000-12-12T00:00:00Z', '<t:32533488000:R>'),
-            ('3000-11-23T20:09:00Z', '<t:32531918940:R>'),
-            ('3000-11-23T20:09:00Z', '<t:32531918940:R>'),
+            ("3000-12-12T00:01:00Z", "<t:32533488060:R>"),
+            ("3000-12-12T00:01:00Z", "<t:32533488060:R>"),
+            ("3000-12-12T00:00:00Z", "<t:32533488000:R>"),
+            ("3000-11-23T20:09:00Z", "<t:32531918940:R>"),
+            ("3000-11-23T20:09:00Z", "<t:32531918940:R>"),
         )
 
         for expiry, expected in test_cases:

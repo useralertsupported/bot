@@ -169,11 +169,11 @@ async def func():  # (None,) -> Any
             return _
     finally:
         self.env.update(locals())
-""".format(textwrap.indent(code, '            '))
+""".format(textwrap.indent(code, "            "))
 
         try:
             exec(code_, self.env)  # noqa: S102
-            func = self.env['func']
+            func = self.env["func"]
             res = await func()
 
         except Exception:
@@ -210,19 +210,19 @@ async def func():  # (None,) -> Any
         await ctx.send(f"```py\n{out}```", embed=embed)
         return None
 
-    @group(name='internal', aliases=('int',))
+    @group(name="internal", aliases=("int",))
     @has_any_role(Roles.owners, Roles.admins, Roles.core_developers)
     async def internal_group(self, ctx: Context) -> None:
         """Internal commands. Top secret!"""
         if not ctx.invoked_subcommand:
             await ctx.send_help(ctx.command)
 
-    @internal_group.command(name='eval', aliases=('e',))
+    @internal_group.command(name="eval", aliases=("e",))
     @has_any_role(Roles.admins, Roles.owners)
     async def eval(self, ctx: Context, *, code: str) -> None:
         """Run eval in a REPL-like format."""
         code = code.strip("`")
-        if re.match('py(thon)?\n', code):
+        if re.match("py(thon)?\n", code):
             code = "\n".join(code.split("\n")[1:])
 
         if not re.search(  # Check if it's an expression
@@ -233,7 +233,7 @@ async def func():  # (None,) -> Any
 
         await self._eval(ctx, code)
 
-    @internal_group.command(name='socketstats', aliases=('socket', 'stats'))
+    @internal_group.command(name="socketstats", aliases=("socket", "stats"))
     @has_any_role(Roles.admins, Roles.owners, Roles.core_developers)
     async def socketstats(self, ctx: Context) -> None:
         """Fetch information on the socket events received from Discord."""

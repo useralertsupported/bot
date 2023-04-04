@@ -24,7 +24,7 @@ def to_kebabcase(resource_topic: str) -> str:
     # First, make it lowercase, and just remove any apostrophes.
     # We remove the apostrophes because "wasnt" is better than "wasn-t"
     resource_topic = resource_topic.casefold()
-    resource_topic = resource_topic.replace("'", '')
+    resource_topic = resource_topic.replace("'", "")
 
     # Now, replace any non-alphanumerics that remains with a dash.
     # If there are multiple consecutive non-letters, just replace them with a single dash.
