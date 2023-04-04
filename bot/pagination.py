@@ -1,5 +1,4 @@
 import asyncio
-import typing as t
 from contextlib import suppress
 from functools import partial
 
@@ -51,7 +50,7 @@ class LinePaginator(Paginator):
         suffix: str = '```',
         max_size: int = 4000,
         scale_to_size: int = 4000,
-        max_lines: t.Optional[int] = None,
+        max_lines: int | None = None,
         linesep: str = "\n"
     ) -> None:
         """
@@ -143,7 +142,7 @@ class LinePaginator(Paginator):
         self._count = len(self.prefix) + 1
         self.close_page()
 
-    def _split_remaining_words(self, line: str, max_chars: int) -> t.Tuple[str, t.Optional[str]]:
+    def _split_remaining_words(self, line: str, max_chars: int) -> tuple[str, str | None]:
         """
         Internal: split a line into two strings -- reduced_words and remaining_words.
 
@@ -194,7 +193,7 @@ class LinePaginator(Paginator):
         embed: discord.Embed,
         prefix: str = "",
         suffix: str = "",
-        max_lines: t.Optional[int] = None,
+        max_lines: int | None = None,
         max_size: int = 500,
         scale_to_size: int = 4000,
         empty: bool = True,
@@ -203,7 +202,7 @@ class LinePaginator(Paginator):
         footer_text: str = None,
         url: str = None,
         exception_on_empty_embed: bool = False,
-    ) -> t.Optional[discord.Message]:
+    ) -> discord.Message | None:
         """
         Use a paginator and set of reactions to provide pagination over a set of lines.
 

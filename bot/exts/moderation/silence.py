@@ -1,8 +1,8 @@
 import json
-import typing
+from collections import OrderedDict
 from contextlib import suppress
 from datetime import datetime, timedelta, timezone
-from typing import Optional, OrderedDict, Union
+from typing import Union
 
 from async_rediscache import RedisCache
 from discord import Guild, PermissionOverwrite, TextChannel, Thread, VoiceChannel
@@ -159,7 +159,7 @@ class Silence(commands.Cog):
     async def silence(
         self,
         ctx: Context,
-        duration_or_channel: typing.Union[TextOrVoiceChannel, HushDurationConverter] = None,
+        duration_or_channel: TextOrVoiceChannel | HushDurationConverter = None,
         duration: HushDurationConverter = 10,
         *,
         kick: bool = False
@@ -210,12 +210,12 @@ class Silence(commands.Cog):
     @staticmethod
     def parse_silence_args(
         ctx: Context,
-        duration_or_channel: typing.Union[TextOrVoiceChannel, int],
+        duration_or_channel: TextOrVoiceChannel | int,
         duration: HushDurationConverter
-    ) -> typing.Tuple[TextOrVoiceChannel, Optional[int]]:
+    ) -> tuple[TextOrVoiceChannel, int | None]:
         """Helper method to parse the arguments of the silence command."""
         if duration_or_channel:
-            if isinstance(duration_or_channel, (TextChannel, VoiceChannel)):
+            if isinstance(duration_or_channel, TextChannel | VoiceChannel):
                 channel = duration_or_channel
             else:
                 channel = ctx.channel
@@ -260,7 +260,7 @@ class Silence(commands.Cog):
 
         return True
 
-    async def _schedule_unsilence(self, ctx: Context, channel: TextOrVoiceChannel, duration: Optional[int]) -> None:
+    async def _schedule_unsilence(self, ctx: Context, channel: TextOrVoiceChannel, duration: int | None) -> None:
         """Schedule `ctx.channel` to be unsilenced if `duration` is not None."""
         if duration is None:
             await self.unsilence_timestamps.set(channel.id, -1)
@@ -282,7 +282,7 @@ class Silence(commands.Cog):
         await self._unsilence_wrapper(channel, ctx)
 
     @lock_arg(LOCK_NAMESPACE, "channel", raise_error=True)
-    async def _unsilence_wrapper(self, channel: TextOrVoiceChannel, ctx: Optional[Context] = None) -> None:
+    async def _unsilence_wrapper(self, channel: TextOrVoiceChannel, ctx: Context | None = None) -> None:
         """
         Unsilence `channel` and send a success/failure message to ctx.channel.
 

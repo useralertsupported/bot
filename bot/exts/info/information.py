@@ -2,8 +2,9 @@ import colorsys
 import pprint
 import textwrap
 from collections import defaultdict
+from collections.abc import Mapping
 from textwrap import shorten
-from typing import Any, DefaultDict, Mapping, Optional, Set, TYPE_CHECKING, Tuple, Union
+from typing import Any, DefaultDict, TYPE_CHECKING
 
 import rapidfuzz
 from discord import AllowedMentions, Colour, Embed, Guild, Message, Role
@@ -57,7 +58,7 @@ class Information(Cog):
         return channel_counter
 
     @staticmethod
-    def join_role_stats(role_ids: list[int], guild: Guild, name: Optional[str] = None) -> dict[str, int]:
+    def join_role_stats(role_ids: list[int], guild: Guild, name: str | None = None) -> dict[str, int]:
         """Return a dictionary with the number of `members` of each role given, and the `name` for this joined group."""
         member_count = 0
         for role_id in role_ids:
@@ -134,7 +135,7 @@ class Information(Cog):
 
     @has_any_role(*constants.STAFF_PARTNERS_COMMUNITY_ROLES)
     @command(name="role")
-    async def role_info(self, ctx: Context, *roles: Union[Role, str]) -> None:
+    async def role_info(self, ctx: Context, *roles: Role | str) -> None:
         """
         Return information on a role or list of roles.
 
@@ -237,7 +238,7 @@ class Information(Cog):
         await ctx.send(embed=embed)
 
     @command(name="user", aliases=["user_info", "member", "member_info", "u"])
-    async def user_info(self, ctx: Context, user_or_message: Union[MemberOrUser, Message] = None) -> None:
+    async def user_info(self, ctx: Context, user_or_message: MemberOrUser | Message = None) -> None:
         """Returns info about a user."""
         if passed_as_message := isinstance(user_or_message, Message):
             user = user_or_message.author
@@ -333,7 +334,7 @@ class Information(Cog):
 
         return embed
 
-    async def basic_user_infraction_counts(self, user: MemberOrUser) -> Tuple[str, str]:
+    async def basic_user_infraction_counts(self, user: MemberOrUser) -> tuple[str, str]:
         """Gets the total and active infraction counts for the given `member`."""
         infractions = await self.bot.api_client.get(
             'bot/infractions',
@@ -350,7 +351,7 @@ class Information(Cog):
 
         return "Infractions", infraction_output
 
-    async def expanded_user_infraction_counts(self, user: MemberOrUser) -> Tuple[str, str]:
+    async def expanded_user_infraction_counts(self, user: MemberOrUser) -> tuple[str, str]:
         """
         Gets expanded infraction counts for the given `member`.
 
@@ -391,7 +392,7 @@ class Information(Cog):
 
         return "Infractions", "\n".join(infraction_output)
 
-    async def user_nomination_counts(self, user: MemberOrUser) -> Tuple[str, str]:
+    async def user_nomination_counts(self, user: MemberOrUser) -> tuple[str, str]:
         """Gets the active and historical nomination counts for the given `member`."""
         nominations = await self.bot.api_client.get(
             'bot/nominations',
@@ -416,7 +417,7 @@ class Information(Cog):
 
         return "Nominations", "\n".join(output)
 
-    async def user_messages(self, user: MemberOrUser) -> Tuple[Union[bool, str], Tuple[str, str]]:
+    async def user_messages(self, user: MemberOrUser) -> tuple[bool | str, tuple[str, str]]:
         """
         Gets the amount of messages for `member`.
 
@@ -441,7 +442,7 @@ class Information(Cog):
 
         return ("Activity", activity_output)
 
-    def format_fields(self, mapping: Mapping[str, Any], field_width: Optional[int] = None) -> str:
+    def format_fields(self, mapping: Mapping[str, Any], field_width: int | None = None) -> str:
         """Format a mapping to be readable to a human."""
         # sorting is technically superfluous but nice if you want to look for a specific field
         fields = sorted(mapping.items(), key=lambda item: item[0])
@@ -541,7 +542,7 @@ class Information(Cog):
         self.rules.help = help_string
 
     @command(aliases=("rule",))
-    async def rules(self, ctx: Context, *, args: Optional[str]) -> Optional[Set[int]]:
+    async def rules(self, ctx: Context, *, args: str | None) -> set[int] | None:
         """
         Provides a link to all rules or, if specified, displays specific rule(s).
 

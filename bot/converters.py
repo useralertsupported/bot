@@ -215,7 +215,7 @@ class Inventory(Converter):
     """
 
     @staticmethod
-    async def convert(ctx: Context, url: str) -> t.Tuple[str, _inventory_parser.InventoryDict]:
+    async def convert(ctx: Context, url: str) -> tuple[str, _inventory_parser.InventoryDict]:
         """Convert url to Intersphinx inventory URL."""
         await ctx.typing()
         try:
@@ -524,7 +524,7 @@ class Infraction(Converter):
     obtain the most recent infraction by the actor.
     """
 
-    async def convert(self, ctx: Context, arg: str) -> t.Optional[dict]:
+    async def convert(self, ctx: Context, arg: str) -> dict | None:
         """Attempts to convert `arg` into an infraction `dict`."""
         if arg in ("l", "last", "recent"):
             params = {
@@ -558,7 +558,7 @@ if t.TYPE_CHECKING:
     Extension = str  # noqa: F811
     PackageName = str  # noqa: F811
     ValidURL = str  # noqa: F811
-    Inventory = t.Tuple[str, _inventory_parser.InventoryDict]  # noqa: F811
+    Inventory = tuple[str, _inventory_parser.InventoryDict]  # noqa: F811
     Snowflake = int  # noqa: F811
     SourceConverter = SourceType  # noqa: F811
     DurationDelta = relativedelta  # noqa: F811

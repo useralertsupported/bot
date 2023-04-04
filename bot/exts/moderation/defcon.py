@@ -3,7 +3,6 @@ import traceback
 from collections import namedtuple
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Union
 
 import arrow
 from async_rediscache import RedisCache
@@ -167,7 +166,7 @@ class Defcon(Cog):
     @defcon_group.command(name="threshold", aliases=('t', 'd'))
     @has_any_role(*MODERATION_ROLES)
     async def threshold_command(
-        self, ctx: Context, threshold: Union[DurationDelta, int], expiry: Optional[Expiry] = None
+        self, ctx: Context, threshold: DurationDelta | int, expiry: Expiry | None = None
     ) -> None:
         """
         Set how old an account must be to join the server.
@@ -227,7 +226,7 @@ class Defcon(Cog):
         author: User,
         channel: TextChannel,
         threshold: relativedelta,
-        expiry: Optional[Expiry] = None
+        expiry: Expiry | None = None
     ) -> None:
         """Update the new threshold in the cog, cache, defcon channel, and logs, and additionally schedule expiry."""
         self.threshold = threshold

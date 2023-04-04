@@ -1,7 +1,6 @@
 import difflib
 import re
 import unicodedata
-from typing import Tuple
 
 from discord import Colour, Embed, utils
 from discord.ext.commands import BadArgument, Cog, Context, clean_content, command, has_any_role
@@ -65,7 +64,7 @@ class Utils(Cog):
             await messages.send_denial(ctx, f"Too many characters ({len(characters)}/50)")
             return
 
-        def get_info(char: str) -> Tuple[str, str]:
+        def get_info(char: str) -> tuple[str, str]:
             digit = f"{ord(char):x}"
             u_code = f"\\u{digit:>04}" if len(digit) <= 4 else f"\\U{digit:>08}"
             url = f"https://www.compart.com/en/unicode/U+{digit:>04}"

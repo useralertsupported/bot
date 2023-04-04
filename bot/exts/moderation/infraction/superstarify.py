@@ -1,7 +1,6 @@
 import json
 import random
 import textwrap
-import typing as t
 from pathlib import Path
 
 from discord import Embed, Member
@@ -110,7 +109,7 @@ class Superstarify(InfractionScheduler, Cog):
         self,
         ctx: Context,
         member: Member,
-        duration: t.Optional[DurationOrExpiry],
+        duration: DurationOrExpiry | None,
         *,
         reason: str = '',
     ) -> None:
@@ -196,7 +195,7 @@ class Superstarify(InfractionScheduler, Cog):
         """Remove the superstarify infraction and allow the user to change their nickname."""
         await self.pardon_infraction(ctx, "superstar", member)
 
-    async def _pardon_action(self, infraction: _utils.Infraction, notify: bool) -> t.Optional[t.Dict[str, str]]:
+    async def _pardon_action(self, infraction: _utils.Infraction, notify: bool) -> dict[str, str] | None:
         """Pardon a superstar infraction, optionally notify the user via DM, and return a log dict."""
         if infraction["type"] != "superstar":
             return None

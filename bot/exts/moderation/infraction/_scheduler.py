@@ -80,7 +80,7 @@ class InfractionScheduler:
     async def reapply_infraction(
         self,
         infraction: _utils.Infraction,
-        action: t.Optional[Callable[[], Awaitable[None]]]
+        action: Callable[[], Awaitable[None]] | None
     ) -> None:
         """
         Reapply an infraction if it's still active or deactivate it if less than 60 sec left.
@@ -127,8 +127,8 @@ class InfractionScheduler:
         ctx: Context,
         infraction: _utils.Infraction,
         user: MemberOrUser,
-        action: t.Optional[Callable[[], Awaitable[None]]] = None,
-        user_reason: t.Optional[str] = None,
+        action: Callable[[], Awaitable[None]] | None = None,
+        user_reason: str | None = None,
         additional_info: str = "",
     ) -> bool:
         """
@@ -292,7 +292,7 @@ class InfractionScheduler:
         ctx: Context,
         infr_type: str,
         user: MemberOrUser,
-        pardon_reason: t.Optional[str] = None,
+        pardon_reason: str | None = None,
         *,
         send_msg: bool = True,
         notify: bool = True
@@ -380,11 +380,11 @@ class InfractionScheduler:
     async def deactivate_infraction(
         self,
         infraction: _utils.Infraction,
-        pardon_reason: t.Optional[str] = None,
+        pardon_reason: str | None = None,
         *,
         send_log: bool = True,
         notify: bool = True
-    ) -> t.Dict[str, str]:
+    ) -> dict[str, str]:
         """
         Deactivate an active infraction and return a dictionary of lines to send in a mod log.
 
@@ -522,7 +522,7 @@ class InfractionScheduler:
         self,
         infraction: _utils.Infraction,
         notify: bool
-    ) -> t.Optional[t.Dict[str, str]]:
+    ) -> dict[str, str] | None:
         """
         Execute deactivation steps specific to the infraction's type and return a log dict.
 

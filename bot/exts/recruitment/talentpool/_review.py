@@ -6,7 +6,6 @@ import textwrap
 import typing
 from collections import Counter
 from datetime import datetime, timedelta, timezone
-from typing import List, Optional, Union
 
 import discord
 from async_rediscache import RedisCache
@@ -115,7 +114,7 @@ class Reviewer:
 
         return True
 
-    async def get_nomination_to_review(self) -> Optional[Nomination]:
+    async def get_nomination_to_review(self) -> Nomination | None:
         """
         Returns the Nomination of the next user to review, or None if there are no users ready.
 
@@ -200,7 +199,7 @@ class Reviewer:
             context = await self.bot.get_context(message)
             await bump_cog.add_thread_to_bump_list(context, thread)
 
-    async def make_review(self, nomination: Nomination) -> typing.Tuple[str, Optional[Emoji], Optional[Member]]:
+    async def make_review(self, nomination: Nomination) -> tuple[str, Emoji | None, Member | None]:
         """Format a generic review of a user and return it with the reviewed emoji and the user themselves."""
         log.trace(f"Formatting the review of {nomination.user_id}")
 
@@ -429,7 +428,7 @@ class Reviewer:
 
         return formatted
 
-    async def _previous_nominations_review(self, member: Member) -> Optional[str]:
+    async def _previous_nominations_review(self, member: Member) -> str | None:
         """
         Formats the review of the nominee's previous nominations.
 
@@ -476,7 +475,7 @@ class Reviewer:
         return review
 
     @staticmethod
-    def _random_ducky(guild: Guild) -> Union[Emoji, str]:
+    def _random_ducky(guild: Guild) -> Emoji | str:
         """Picks a random ducky emoji. If no duckies found returns 👀."""
         duckies = [emoji for emoji in guild.emojis if emoji.name.startswith("ducky")]
         if not duckies:
@@ -484,7 +483,7 @@ class Reviewer:
         return random.choice(duckies)
 
     @staticmethod
-    async def _bulk_send(channel: TextChannel, text: str) -> List[Message]:
+    async def _bulk_send(channel: TextChannel, text: str) -> list[Message]:
         """
         Split a text into several if necessary, and post them to the channel.
 

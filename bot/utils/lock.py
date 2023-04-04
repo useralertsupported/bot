@@ -2,8 +2,9 @@ import asyncio
 import inspect
 import types
 from collections import defaultdict
+from collections.abc import Awaitable, Callable, Hashable
 from functools import partial
-from typing import Any, Awaitable, Callable, Hashable, Union
+from typing import Any, Union
 from weakref import WeakValueDictionary
 
 from bot.errors import LockedResourceError

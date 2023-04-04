@@ -1,5 +1,4 @@
 import re
-from typing import Optional
 from urllib.parse import quote
 
 from discord import Embed
@@ -48,7 +47,7 @@ class Resources(commands.Cog):
         self.bot = bot
 
     @commands.command(name="resources", aliases=("res",))
-    async def resources_command(self, ctx: commands.Context, *, resource_topic: Optional[str]) -> None:
+    async def resources_command(self, ctx: commands.Context, *, resource_topic: str | None) -> None:
         """Display information and a link to the Python Discord website Resources page."""
         url = RESOURCE_URL
 

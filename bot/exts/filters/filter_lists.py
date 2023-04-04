@@ -1,7 +1,6 @@
 import datetime
 import re
 from collections import defaultdict
-from typing import Optional
 
 import arrow
 import discord
@@ -57,7 +56,7 @@ class FilterLists(Cog):
         allowed: bool,
         list_type: ValidFilterListType,
         content: str,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> None:
         """Add an item to a filterlist."""
         allow_type = "whitelist" if allowed else "blacklist"
@@ -247,7 +246,7 @@ class FilterLists(Cog):
         list_type: ValidFilterListType,
         content: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> None:
         """Add an item to the specified allowlist."""
         await self._add_data(ctx, True, list_type, content, comment)
@@ -259,7 +258,7 @@ class FilterLists(Cog):
         list_type: ValidFilterListType,
         content: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> None:
         """Add an item to the specified denylist."""
         await self._add_data(ctx, False, list_type, content, comment)

@@ -1,4 +1,4 @@
-from typing import Iterable
+from collections.abc import Iterable
 
 from bot.rules import burst_shared
 from tests.bot.rules import DisallowedCase, RuleTest

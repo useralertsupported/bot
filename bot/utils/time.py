@@ -5,7 +5,7 @@ import re
 from copy import copy
 from enum import Enum
 from time import struct_time
-from typing import Literal, Optional, TYPE_CHECKING, Union, overload
+from typing import Literal, TYPE_CHECKING, Union, overload
 
 import arrow
 from dateutil.relativedelta import relativedelta
@@ -87,7 +87,7 @@ def discord_timestamp(timestamp: Timestamp, format: TimestampFormats = Timestamp
 # region humanize_delta overloads
 @overload
 def humanize_delta(
-    arg1: Union[relativedelta, Timestamp],
+    arg1: relativedelta | Timestamp,
     /,
     *,
     precision: _Precision = "seconds",
@@ -240,7 +240,7 @@ def humanize_delta(
     return humanized
 
 
-def parse_duration_string(duration: str) -> Optional[relativedelta]:
+def parse_duration_string(duration: str) -> relativedelta | None:
     """
     Convert a `duration` string to a relativedelta object.
 
@@ -284,10 +284,10 @@ def format_relative(timestamp: Timestamp) -> str:
 
 
 def format_with_duration(
-    timestamp: Optional[Timestamp],
-    other_timestamp: Optional[Timestamp] = None,
+    timestamp: Timestamp | None,
+    other_timestamp: Timestamp | None = None,
     max_units: int = 2,
-) -> Optional[str]:
+) -> str | None:
     """
     Return `timestamp` formatted as a discord timestamp with the timestamp duration since `other_timestamp`.
 
@@ -310,7 +310,7 @@ def format_with_duration(
     return f"{formatted_timestamp} ({duration})"
 
 
-def until_expiration(expiry: Optional[Timestamp]) -> str:
+def until_expiration(expiry: Timestamp | None) -> str:
     """
     Get the remaining time until an infraction's expiration as a Discord timestamp.
 
@@ -330,7 +330,7 @@ def until_expiration(expiry: Optional[Timestamp]) -> str:
 
 def unpack_duration(
         duration_or_expiry: DurationOrExpiry,
-        origin: Optional[Union[datetime.datetime, arrow.Arrow]] = None
+        origin: datetime.datetime | arrow.Arrow | None = None
 ) -> tuple[datetime.datetime, datetime.datetime]:
     """
     Unpacks a DurationOrExpiry into a tuple of (origin, expiry).
@@ -338,7 +338,7 @@ def unpack_duration(
     The `origin` defaults to the current UTC time at function call.
     """
     if origin is None:
-        origin = datetime.datetime.now(tz=datetime.timezone.utc)
+        origin = datetime.datetime.now(tz=datetime.UTC)
 
     if isinstance(origin, arrow.Arrow):
         origin = origin.datetime

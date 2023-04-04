@@ -1,9 +1,9 @@
 import asyncio
 import random
 import re
+from collections.abc import Callable, Sequence
 from functools import partial
 from io import BytesIO
-from typing import Callable, List, Optional, Sequence, Union
 
 import discord
 from discord.ext.commands import Context
@@ -113,11 +113,11 @@ async def wait_for_deletion(
 
 async def send_attachments(
     message: discord.Message,
-    destination: Union[discord.TextChannel, discord.Webhook],
+    destination: discord.TextChannel | discord.Webhook,
     link_large: bool = True,
     use_cached: bool = False,
     **kwargs
-) -> List[str]:
+) -> list[str]:
     """
     Re-upload the message's attachments to the destination and return a list of their new URLs.
 
@@ -214,7 +214,7 @@ async def pin_no_system_message(message: discord.Message) -> bool:
     return False
 
 
-def sub_clyde(username: Optional[str]) -> Optional[str]:
+def sub_clyde(username: str | None) -> str | None:
     """
     Replace "e"/"E" in any "clyde" in `username` with a Cyrillic "е"/"E" and return the new string.
 

@@ -1,4 +1,4 @@
-from typing import Callable, Container, Iterable, Optional, Union
+from collections.abc import Callable, Container, Iterable
 
 from discord.ext.commands import (
     BucketType, CheckFailure, Cog, Command, CommandOnCooldown, Context, Cooldown, CooldownMapping, NoPrivateMessage,
@@ -14,7 +14,7 @@ log = get_logger(__name__)
 class ContextCheckFailure(CheckFailure):
     """Raised when a context-specific check fails."""
 
-    def __init__(self, redirect_channel: Optional[int]) -> None:
+    def __init__(self, redirect_channel: int | None) -> None:
         self.redirect_channel = redirect_channel
 
         redirect_message = f" here. Please use the <#{redirect_channel}> channel instead" if redirect_channel else ""
@@ -33,7 +33,7 @@ def in_whitelist_check(
     channels: Container[int] = (),
     categories: Container[int] = (),
     roles: Container[int] = (),
-    redirect: Optional[int] = constants.Channels.bot_commands,
+    redirect: int | None = constants.Channels.bot_commands,
     fail_silently: bool = False,
 ) -> bool:
     """
@@ -83,7 +83,7 @@ def in_whitelist_check(
     return False
 
 
-async def has_any_role_check(ctx: Context, *roles: Union[str, int]) -> bool:
+async def has_any_role_check(ctx: Context, *roles: str | int) -> bool:
     """
     Returns True if the context's author has any of the specified roles.
 
@@ -96,7 +96,7 @@ async def has_any_role_check(ctx: Context, *roles: Union[str, int]) -> bool:
         return False
 
 
-async def has_no_roles_check(ctx: Context, *roles: Union[str, int]) -> bool:
+async def has_no_roles_check(ctx: Context, *roles: str | int) -> bool:
     """
     Returns True if the context's author doesn't have any of the specified roles.
 

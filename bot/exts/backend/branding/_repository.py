@@ -39,9 +39,9 @@ class RemoteObject:
     name: str  # Filename.
     path: str  # Path from repo root.
     type: str  # Either 'file' or 'dir'.
-    download_url: t.Optional[str]  # If type is 'dir', this is None!
+    download_url: str | None  # If type is 'dir', this is None!
 
-    def __init__(self, dictionary: t.Dict[str, t.Any]) -> None:
+    def __init__(self, dictionary: dict[str, t.Any]) -> None:
         """Initialize by grabbing annotated attributes from `dictionary`."""
         missing_keys = self.__annotations__.keys() - dictionary.keys()
         if missing_keys:
@@ -54,8 +54,8 @@ class MetaFile(t.NamedTuple):
     """Attributes defined in a 'meta.md' file."""
 
     is_fallback: bool
-    start_date: t.Optional[date]
-    end_date: t.Optional[date]
+    start_date: date | None
+    end_date: date | None
     description: str  # Markdown event description.
 
 
@@ -93,7 +93,7 @@ class BrandingRepository:
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    async def fetch_directory(self, path: str, types: t.Container[str] = ("file", "dir")) -> t.Dict[str, RemoteObject]:
+    async def fetch_directory(self, path: str, types: t.Container[str] = ("file", "dir")) -> dict[str, RemoteObject]:
         """
         Fetch directory found at `path` in the branding repository.
 
@@ -182,7 +182,7 @@ class BrandingRepository:
 
         return Event(directory.path, meta_file, list(banners.values()), list(server_icons.values()))
 
-    async def get_events(self) -> t.List[Event]:
+    async def get_events(self) -> list[Event]:
         """
         Discover available events in the branding repository.
 
@@ -196,7 +196,7 @@ class BrandingRepository:
             log.exception("Failed to fetch 'events' directory.")
             return []
 
-        instances: t.List[Event] = []
+        instances: list[Event] = []
 
         for event_directory in event_directories.values():
             log.trace(f"Attempting to construct event from directory: '{event_directory.path}'.")
@@ -209,7 +209,7 @@ class BrandingRepository:
 
         return instances
 
-    async def get_current_event(self) -> t.Tuple[t.Optional[Event], t.List[Event]]:
+    async def get_current_event(self) -> tuple[Event | None, list[Event]]:
         """
         Get the currently active event, or the fallback event.
 

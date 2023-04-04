@@ -69,7 +69,7 @@ class Reminders(Cog):
             else:
                 self.schedule_reminder(reminder)
 
-    def ensure_valid_reminder(self, reminder: dict) -> t.Tuple[bool, discord.TextChannel]:
+    def ensure_valid_reminder(self, reminder: dict) -> tuple[bool, discord.TextChannel]:
         """Ensure reminder channel can be fetched otherwise delete the reminder."""
         channel = self.bot.get_channel(reminder['channel_id'])
         is_valid = True
@@ -87,7 +87,7 @@ class Reminders(Cog):
     async def _send_confirmation(
         ctx: Context,
         on_success: str,
-        reminder_id: t.Union[str, int]
+        reminder_id: str | int
     ) -> None:
         """Send an embed confirming the reminder change was made successfully."""
         embed = discord.Embed(
@@ -103,7 +103,7 @@ class Reminders(Cog):
         await ctx.send(embed=embed)
 
     @staticmethod
-    async def _check_mentions(ctx: Context, mentions: t.Iterable[Mentionable]) -> t.Tuple[bool, str]:
+    async def _check_mentions(ctx: Context, mentions: t.Iterable[Mentionable]) -> tuple[bool, str]:
         """
         Returns whether or not the list of mentions is allowed.
 
@@ -117,7 +117,7 @@ class Reminders(Cog):
             return False, "members/roles"
 
         if await has_no_roles_check(ctx, *MODERATION_ROLES):
-            return all(isinstance(mention, (discord.User, discord.Member)) for mention in mentions), "roles"
+            return all(isinstance(mention, discord.User | discord.Member) for mention in mentions), "roles"
 
         return True, ""
 
@@ -136,7 +136,7 @@ class Reminders(Cog):
         await send_denial(ctx, f"You can't mention other {disallowed_mentions} in your reminder!")
         return False
 
-    async def get_mentionables(self, mention_ids: t.List[int]) -> t.Iterator[Mentionable]:
+    async def get_mentionables(self, mention_ids: list[int]) -> t.Iterator[Mentionable]:
         """Converts Role and Member ids to their corresponding objects if possible."""
         guild = self.bot.get_guild(Guild.id)
         for mention_id in mention_ids:
@@ -171,7 +171,7 @@ class Reminders(Cog):
         self.schedule_reminder(reminder)
 
     @lock_arg(LOCK_NAMESPACE, "reminder", itemgetter("id"), raise_error=True)
-    async def send_reminder(self, reminder: dict, expected_time: t.Optional[time.Timestamp] = None) -> None:
+    async def send_reminder(self, reminder: dict, expected_time: time.Timestamp | None = None) -> None:
         """Send the reminder."""
         is_valid, channel = self.ensure_valid_reminder(reminder)
         if not is_valid:
@@ -215,7 +215,7 @@ class Reminders(Cog):
         await self.bot.api_client.delete(f"bot/reminders/{reminder['id']}")
 
     @staticmethod
-    async def try_get_content_from_reply(ctx: Context) -> t.Optional[str]:
+    async def try_get_content_from_reply(ctx: Context) -> str | None:
         """
         Attempts to get content from the referenced message, if applicable.
 
@@ -239,7 +239,7 @@ class Reminders(Cog):
 
     @group(name="remind", aliases=("reminder", "reminders", "remindme"), invoke_without_command=True)
     async def remind_group(
-        self, ctx: Context, mentions: Greedy[ReminderMention], expiration: Duration, *, content: t.Optional[str] = None
+        self, ctx: Context, mentions: Greedy[ReminderMention], expiration: Duration, *, content: str | None = None
     ) -> None:
         """
         Commands for managing your reminders.
@@ -259,7 +259,7 @@ class Reminders(Cog):
 
     @remind_group.command(name="new", aliases=("add", "create"))
     async def new_reminder(
-        self, ctx: Context, mentions: Greedy[ReminderMention], expiration: Duration, *, content: t.Optional[str] = None
+        self, ctx: Context, mentions: Greedy[ReminderMention], expiration: Duration, *, content: str | None = None
     ) -> None:
         """
         Set yourself a simple reminder.
@@ -425,7 +425,7 @@ class Reminders(Cog):
         await self.edit_reminder(ctx, id_, {'expiration': expiration.isoformat()})
 
     @edit_reminder_group.command(name="content", aliases=("reason",))
-    async def edit_reminder_content(self, ctx: Context, id_: int, *, content: t.Optional[str] = None) -> None:
+    async def edit_reminder_content(self, ctx: Context, id_: int, *, content: str | None = None) -> None:
         """
         Edit one of your reminder's content.
 
@@ -519,7 +519,7 @@ class Reminders(Cog):
         )
         await ctx.send(embed=embed)
 
-    async def _can_modify(self, ctx: Context, reminder_id: t.Union[str, int], send_on_denial: bool = True) -> bool:
+    async def _can_modify(self, ctx: Context, reminder_id: str | int, send_on_denial: bool = True) -> bool:
         """
         Check whether the reminder can be modified by the ctx author.
 

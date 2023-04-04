@@ -75,7 +75,7 @@ class ErrorHandler(Cog):
         elif isinstance(e, errors.CheckFailure):
             log.debug(debug_message)
             await self.handle_check_failure(ctx, e)
-        elif isinstance(e, (errors.CommandOnCooldown, errors.MaxConcurrencyReached)):
+        elif isinstance(e, errors.CommandOnCooldown | errors.MaxConcurrencyReached):
             log.debug(debug_message)
             await ctx.send(e)
         elif isinstance(e, errors.CommandInvokeError):
@@ -320,7 +320,7 @@ class ErrorHandler(Cog):
             await ctx.send(
                 "Sorry, it looks like I don't have the permissions or roles I need to do that."
             )
-        elif isinstance(e, (ContextCheckFailure, errors.NoPrivateMessage)):
+        elif isinstance(e, ContextCheckFailure | errors.NoPrivateMessage):
             ctx.bot.stats.incr("errors.wrong_channel_or_dm_error")
             await ctx.send(e)
 

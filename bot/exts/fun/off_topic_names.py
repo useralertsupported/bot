@@ -4,7 +4,6 @@ import difflib
 import json
 import random
 from functools import partial
-from typing import Optional
 
 from discord import ButtonStyle, Colour, Embed, Interaction
 from discord.ext import tasks
@@ -158,7 +157,7 @@ class OffTopicNames(Cog):
 
     @otname_group.command(name='reroll')
     @has_any_role(*MODERATION_ROLES)
-    async def re_roll_command(self, ctx: Context, ot_channel_index: Optional[int] = None) -> None:
+    async def re_roll_command(self, ctx: Context, ot_channel_index: int | None = None) -> None:
         """
         Re-roll an off-topic name for a specific off-topic channel and deactivate the current name.
 

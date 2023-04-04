@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from email.parser import HeaderParser
 from io import StringIO
-from typing import Dict, Optional, Tuple
 
 from discord import Colour, Embed
 from discord.ext.commands import Cog, Context, command
@@ -29,7 +28,7 @@ class PythonEnhancementProposals(Cog):
 
     def __init__(self, bot: Bot):
         self.bot = bot
-        self.peps: Dict[int, str] = {}
+        self.peps: dict[int, str] = {}
         # To avoid situations where we don't have last datetime, set this to now.
         self.last_refreshed_peps: datetime = datetime.now()
 
@@ -78,7 +77,7 @@ class PythonEnhancementProposals(Cog):
 
         return pep_embed
 
-    async def validate_pep_number(self, pep_nr: int) -> Optional[Embed]:
+    async def validate_pep_number(self, pep_nr: int) -> Embed | None:
         """Validate is PEP number valid. When it isn't, return error embed, otherwise None."""
         if (
             pep_nr not in self.peps
@@ -97,7 +96,7 @@ class PythonEnhancementProposals(Cog):
 
         return None
 
-    def generate_pep_embed(self, pep_header: Dict, pep_nr: int) -> Embed:
+    def generate_pep_embed(self, pep_header: dict, pep_nr: int) -> Embed:
         """Generate PEP embed based on PEP headers data."""
         # the parsed header can be wrapped to multiple lines, so we need to make sure that is removed
         # for an example of a pep with this issue, see pep 500
@@ -121,7 +120,7 @@ class PythonEnhancementProposals(Cog):
         return pep_embed
 
     @pep_cache(arg_offset=1)
-    async def get_pep_embed(self, pep_nr: int) -> Tuple[Embed, bool]:
+    async def get_pep_embed(self, pep_nr: int) -> tuple[Embed, bool]:
         """Fetch, generate and return PEP embed. Second item of return tuple show does getting success."""
         response = await self.bot.http_session.get(self.peps[pep_nr])
 

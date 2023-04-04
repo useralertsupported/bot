@@ -1,4 +1,3 @@
-from typing import Union
 
 import discord
 
@@ -9,7 +8,7 @@ from bot.log import get_logger
 log = get_logger(__name__)
 
 
-def is_mod_channel(channel: Union[discord.TextChannel, discord.Thread]) -> bool:
+def is_mod_channel(channel: discord.TextChannel | discord.Thread) -> bool:
     """True if channel, or channel.parent for threads, is considered a mod channel."""
     if isinstance(channel, discord.Thread):
         channel = channel.parent

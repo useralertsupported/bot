@@ -1,12 +1,12 @@
 import re
-from typing import Dict, Iterable, List, Optional, Tuple
+from collections.abc import Iterable
 
 from discord import Member, Message
 
 
 async def apply(
-    last_message: Message, recent_messages: List[Message], config: Dict[str, int]
-) -> Optional[Tuple[str, Iterable[Member], Iterable[Message]]]:
+    last_message: Message, recent_messages: list[Message], config: dict[str, int]
+) -> tuple[str, Iterable[Member], Iterable[Message]] | None:
     """Detects total newlines exceeding the set limit sent by a single user."""
     relevant_messages = tuple(
         msg

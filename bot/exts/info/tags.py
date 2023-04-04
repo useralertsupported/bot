@@ -4,7 +4,7 @@ import enum
 import re
 import time
 from pathlib import Path
-from typing import Literal, NamedTuple, Optional, Union
+from typing import Literal, NamedTuple
 
 import discord
 import frontmatter
@@ -37,7 +37,7 @@ class COOLDOWN(enum.Enum):
 class TagIdentifier(NamedTuple):
     """Stores the group and name used as an identifier for a tag."""
 
-    group: Optional[str]
+    group: str | None
     name: str
 
     def get_fuzzy_score(self, fuzz_tag_identifier: TagIdentifier) -> float:
@@ -185,7 +185,7 @@ class Tags(Cog):
             member: Member,
             channel: discord.abc.Messageable,
             tag_identifier: TagIdentifier,
-    ) -> Optional[Union[Embed, Literal[COOLDOWN.obj]]]:
+    ) -> Embed | Literal[COOLDOWN.obj] | None:
         """
         Generate an embed of the requested tag or of suggestions if the tag doesn't exist
         or isn't accessible by the member.
@@ -315,7 +315,7 @@ class Tags(Cog):
 
     @app_commands.command(name="tag")
     @app_commands.guild_only()
-    async def get_command(self, interaction: Interaction, *, name: Optional[str]) -> bool:
+    async def get_command(self, interaction: Interaction, *, name: str | None) -> bool:
         """
         If a single argument matching a group name is given, list all accessible tags from that group
         Otherwise display the tag if one was found for the given arguments, or try to display suggestions for that name.

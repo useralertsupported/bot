@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Dict
+from typing import Any
 
 from discord import Member, Role, User
 from discord.ext import commands
@@ -48,7 +48,7 @@ class Sync(Cog):
         for syncer in (_syncers.RoleSyncer, _syncers.UserSyncer):
             await syncer.sync(guild)
 
-    async def patch_user(self, user_id: int, json: Dict[str, Any], ignore_404: bool = False) -> None:
+    async def patch_user(self, user_id: int, json: dict[str, Any], ignore_404: bool = False) -> None:
         """Send a PATCH request to partially update a user in the database."""
         try:
             await self.bot.api_client.patch(f"bot/users/{user_id}", json=json)

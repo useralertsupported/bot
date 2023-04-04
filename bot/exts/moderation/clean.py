@@ -3,10 +3,11 @@ import itertools
 import re
 import time
 from collections import defaultdict
+from collections.abc import Callable, Iterable
 from contextlib import suppress
 from datetime import datetime
 from itertools import takewhile
-from typing import Callable, Iterable, Literal, Optional, TYPE_CHECKING, Union
+from typing import Literal, TYPE_CHECKING, Union
 
 from discord import Colour, Message, NotFound, TextChannel, Thread, User, errors
 from discord.ext.commands import Cog, Context, Converter, Greedy, command, group, has_any_role
@@ -36,7 +37,7 @@ class CleanChannels(Converter):
 
     _channel_converter = TextChannelConverter()
 
-    async def convert(self, ctx: Context, argument: str) -> Union[Literal["*"], list[TextChannel]]:
+    async def convert(self, ctx: Context, argument: str) -> Literal["*"] | list[TextChannel]:
         """Converts a string to a list of channels to clean, or the literal `*` for all public channels."""
         if argument == "*":
             return "*"
@@ -86,11 +87,11 @@ class Clean(Cog):
 
     @staticmethod
     def _validate_input(
-            channels: Optional[CleanChannels],
+            channels: CleanChannels | None,
             bots_only: bool,
-            users: Optional[list[User]],
-            first_limit: Optional[CleanLimit],
-            second_limit: Optional[CleanLimit],
+            users: list[User] | None,
+            first_limit: CleanLimit | None,
+            second_limit: CleanLimit | None,
     ) -> None:
         """Raise errors if an argument value or a combination of values is invalid."""
         if first_limit is None:
@@ -132,7 +133,7 @@ class Clean(Cog):
             if channels == "*":
                 channels = {
                     channel for channel in itertools.chain(ctx.guild.channels, ctx.guild.threads)
-                    if isinstance(channel, (TextChannel, Thread))
+                    if isinstance(channel, TextChannel | Thread)
                     # Assume that non-public channels are not needed to optimize for speed.
                     and channel.permissions_for(ctx.guild.default_role).view_channel
                 }
@@ -144,10 +145,10 @@ class Clean(Cog):
     @staticmethod
     def _build_predicate(
         first_limit: datetime,
-        second_limit: Optional[datetime] = None,
+        second_limit: datetime | None = None,
         bots_only: bool = False,
-        users: Optional[list[User]] = None,
-        regex: Optional[re.Pattern] = None,
+        users: list[User] | None = None,
+        regex: re.Pattern | None = None,
     ) -> Predicate:
         """Return the predicate that decides whether to delete a given message."""
         def predicate_bots_only(message: Message) -> bool:
@@ -243,7 +244,7 @@ class Clean(Cog):
         channels: Iterable[TextChannel],
         to_delete: Predicate,
         after: datetime,
-        before: Optional[datetime] = None
+        before: datetime | None = None
     ) -> tuple[defaultdict[TextChannel, list], list]:
         """
         Collect the messages for deletion by iterating over the histories of the appropriate channels.
@@ -342,7 +343,7 @@ class Clean(Cog):
         messages: list[Message],
         channels: CleanChannels,
         ctx: Context
-    ) -> Optional[str]:
+    ) -> str | None:
         """Log the deleted messages to the modlog, returning the log url if logging was successful."""
         if not messages:
             # Can't build an embed, nothing to clean!
@@ -380,14 +381,14 @@ class Clean(Cog):
     async def _clean_messages(
         self,
         ctx: Context,
-        channels: Optional[CleanChannels],
+        channels: CleanChannels | None,
         bots_only: bool = False,
-        users: Optional[list[User]] = None,
-        regex: Optional[re.Pattern] = None,
-        first_limit: Optional[CleanLimit] = None,
-        second_limit: Optional[CleanLimit] = None,
+        users: list[User] | None = None,
+        regex: re.Pattern | None = None,
+        first_limit: CleanLimit | None = None,
+        second_limit: CleanLimit | None = None,
         attempt_delete_invocation: bool = True,
-    ) -> Optional[str]:
+    ) -> str | None:
         """A helper function that does the actual message cleaning, returns the log url if logging was successful."""
         self._validate_input(channels, bots_only, users, first_limit, second_limit)
 
@@ -462,10 +463,10 @@ class Clean(Cog):
         self,
         ctx: Context,
         users: Greedy[User] = None,
-        first_limit: Optional[CleanLimit] = None,
-        second_limit: Optional[CleanLimit] = None,
-        regex: Optional[Regex] = None,
-        bots_only: Optional[bool] = False,
+        first_limit: CleanLimit | None = None,
+        second_limit: CleanLimit | None = None,
+        regex: Regex | None = None,
+        bots_only: bool | None = False,
         *,
         channels: CleanChannels = None  # "Optional" with discord.py silently ignores incorrect input.
     ) -> None:
@@ -625,7 +626,7 @@ class Clean(Cog):
         await self._delete_invocation(ctx)
 
     @command()
-    async def purge(self, ctx: Context, users: Greedy[User], age: Optional[Union[Age, ISODateTime]] = None) -> None:
+    async def purge(self, ctx: Context, users: Greedy[User], age: Age | ISODateTime | None = None) -> None:
         """
         Clean messages of `users` from all public channels up to a certain message `age` (10 minutes by default).
 

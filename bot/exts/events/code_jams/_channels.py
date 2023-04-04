@@ -1,4 +1,3 @@
-import typing as t
 
 import discord
 
@@ -49,7 +48,7 @@ async def _create_category(guild: discord.Guild) -> discord.CategoryChannel:
 def _get_overwrites(
         members: list[tuple[discord.Member, bool]],
         guild: discord.Guild,
-) -> dict[t.Union[discord.Member, discord.Role], discord.PermissionOverwrite]:
+) -> dict[discord.Member | discord.Role, discord.PermissionOverwrite]:
     """Get code jam team channels permission overwrites."""
     team_channel_overwrites = {
         guild.default_role: discord.PermissionOverwrite(read_messages=False),

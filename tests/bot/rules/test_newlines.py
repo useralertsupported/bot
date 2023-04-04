@@ -1,11 +1,11 @@
-from typing import Iterable, List
+from collections.abc import Iterable
 
 from bot.rules import newlines
 from tests.bot.rules import DisallowedCase, RuleTest
 from tests.helpers import MockMessage
 
 
-def make_msg(author: str, newline_groups: List[int]) -> MockMessage:
+def make_msg(author: str, newline_groups: list[int]) -> MockMessage:
     """Init a MockMessage instance with `author` and content configured by `newline_groups".
 
     Configure content by passing a list of ints, where each int `n` will generate

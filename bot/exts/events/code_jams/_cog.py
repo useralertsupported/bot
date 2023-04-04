@@ -1,6 +1,5 @@
 import asyncio
 import csv
-import typing as t
 from collections import defaultdict
 
 import discord
@@ -34,7 +33,7 @@ class CodeJams(commands.Cog):
             await ctx.send_help(ctx.command)
 
     @codejam.command()
-    async def create(self, ctx: commands.Context, csv_file: t.Optional[str] = None) -> None:
+    async def create(self, ctx: commands.Context, csv_file: str | None = None) -> None:
         """
         Create code-jam teams from a CSV file or a link to one, specifying the team names, leaders and members.
 
@@ -220,7 +219,7 @@ class CodeJams(commands.Cog):
         return [category for category in guild.categories if category.name == _channels.CATEGORY_NAME]
 
     @staticmethod
-    def team_channel(guild: Guild, criterion: t.Union[str, Member]) -> t.Optional[discord.TextChannel]:
+    def team_channel(guild: Guild, criterion: str | Member) -> discord.TextChannel | None:
         """Get a team channel through either a participant or the team name."""
         for category in CodeJams.jam_categories(guild):
             for channel in category.channels:

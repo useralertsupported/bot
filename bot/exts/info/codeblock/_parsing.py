@@ -3,7 +3,8 @@
 import ast
 import re
 import textwrap
-from typing import NamedTuple, Optional, Sequence
+from collections.abc import Sequence
+from typing import NamedTuple
 
 from bot import constants
 from bot.log import get_logger
@@ -69,7 +70,7 @@ class BadLanguage(NamedTuple):
     has_terminal_newline: bool
 
 
-def find_code_blocks(message: str) -> Optional[Sequence[CodeBlock]]:
+def find_code_blocks(message: str) -> Sequence[CodeBlock] | None:
     """
     Find and return all Markdown code blocks in the `message`.
 
@@ -162,7 +163,7 @@ def is_python_code(content: str) -> bool:
     )
 
 
-def parse_bad_language(content: str) -> Optional[BadLanguage]:
+def parse_bad_language(content: str) -> BadLanguage | None:
     """
     Return information about a poorly formatted Python language in code block `content`.
 

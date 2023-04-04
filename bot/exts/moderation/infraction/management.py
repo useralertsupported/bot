@@ -91,7 +91,7 @@ class ModManagement(commands.Cog):
         self,
         ctx: Context,
         infraction: Infraction,
-        duration: t.Union[DurationOrExpiry, t.Literal["p", "permanent"], None],
+        duration: DurationOrExpiry | t.Literal["p", "permanent"] | None,
         *,
         reason: str = None
     ) -> None:
@@ -131,7 +131,7 @@ class ModManagement(commands.Cog):
         self,
         ctx: Context,
         infraction: Infraction,
-        duration: t.Union[DurationOrExpiry, t.Literal["p", "permanent"], None],
+        duration: DurationOrExpiry | t.Literal["p", "permanent"] | None,
         *,
         reason: str = None
     ) -> None:
@@ -246,7 +246,7 @@ class ModManagement(commands.Cog):
     # region: Search infractions
 
     @infraction_group.group(name="search", aliases=('s',), invoke_without_command=True)
-    async def infraction_search_group(self, ctx: Context, query: t.Union[UnambiguousUser, Snowflake, str]) -> None:
+    async def infraction_search_group(self, ctx: Context, query: UnambiguousUser | Snowflake | str) -> None:
         """Searches for infractions in the database."""
         if isinstance(query, int):
             await self.search_user(ctx, discord.Object(query))
@@ -256,14 +256,14 @@ class ModManagement(commands.Cog):
             await self.search_user(ctx, query)
 
     @infraction_search_group.command(name="user", aliases=("member", "userid"))
-    async def search_user(self, ctx: Context, user: t.Union[MemberOrUser, discord.Object]) -> None:
+    async def search_user(self, ctx: Context, user: MemberOrUser | discord.Object) -> None:
         """Search for infractions by member."""
         infraction_list = await self.bot.api_client.get(
             'bot/infractions/expanded',
             params={'user__id': str(user.id)}
         )
 
-        if isinstance(user, (discord.Member, discord.User)):
+        if isinstance(user, discord.Member | discord.User):
             user_str = escape_markdown(str(user))
         else:
             if infraction_list:
@@ -306,7 +306,7 @@ class ModManagement(commands.Cog):
     async def search_by_actor(
         self,
         ctx: Context,
-        actor: t.Union[t.Literal["m", "me"], UnambiguousUser],
+        actor: t.Literal["m", "me"] | UnambiguousUser,
         oldest_first: bool = False
     ) -> None:
         """
@@ -359,7 +359,7 @@ class ModManagement(commands.Cog):
         self,
         ctx: Context,
         embed: discord.Embed,
-        infractions: t.Iterable[t.Dict[str, t.Any]]
+        infractions: t.Iterable[dict[str, t.Any]]
     ) -> None:
         """Send a paginated embed of infractions for the specified user."""
         if not infractions:
@@ -380,7 +380,7 @@ class ModManagement(commands.Cog):
             max_size=1000
         )
 
-    def infraction_to_string(self, infraction: t.Dict[str, t.Any]) -> str:
+    def infraction_to_string(self, infraction: dict[str, t.Any]) -> str:
         """Convert the infraction object to a string representation."""
         active = infraction["active"]
         user = infraction["user"]

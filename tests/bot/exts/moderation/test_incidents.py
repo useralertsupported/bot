@@ -20,7 +20,7 @@ from tests.helpers import (
     MockUser
 )
 
-CURRENT_TIME = datetime.datetime(2022, 1, 1, tzinfo=datetime.timezone.utc)
+CURRENT_TIME = datetime.datetime(2022, 1, 1, tzinfo=datetime.UTC)
 
 
 class MockAsyncIterable:

@@ -31,7 +31,7 @@ class MessageCache:
         self._start = 0
         self._end = 0
 
-        self._messages: list[t.Optional[Message]] = [None] * self.maxlen
+        self._messages: list[Message | None] = [None] * self.maxlen
         self._message_id_mapping = {}
 
     def append(self, message: Message) -> None:
@@ -93,7 +93,7 @@ class MessageCache:
         self._start = 0
         self._end = 0
 
-    def get_message(self, message_id: int) -> t.Optional[Message]:
+    def get_message(self, message_id: int) -> Message | None:
         """Return the message that has the given message ID, if it is cached."""
         index = self._message_id_mapping.get(message_id, None)
         return self._messages[index] if index is not None else None
@@ -114,7 +114,7 @@ class MessageCache:
         """Return True if the cache contains a message with the given ID ."""
         return message_id in self._message_id_mapping
 
-    def __getitem__(self, item: t.Union[int, slice]) -> t.Union[Message, list[Message]]:
+    def __getitem__(self, item: int | slice) -> Message | list[Message]:
         """
         Return the message(s) in the index or slice provided.
 

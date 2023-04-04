@@ -1,13 +1,14 @@
 import unittest
 from abc import ABCMeta, abstractmethod
-from typing import Callable, Dict, Iterable, List, NamedTuple, Tuple
+from collections.abc import Callable, Iterable
+from typing import NamedTuple
 
 from tests.helpers import MockMessage
 
 
 class DisallowedCase(NamedTuple):
     """Encapsulation for test cases expected to fail."""
-    recent_messages: List[MockMessage]
+    recent_messages: list[MockMessage]
     culprits: Iterable[str]
     n_violations: int
 
@@ -25,9 +26,9 @@ class RuleTest(unittest.IsolatedAsyncioTestCase, metaclass=ABCMeta):
     """
 
     apply: Callable  # The tested rule's apply function
-    config: Dict[str, int]
+    config: dict[str, int]
 
-    async def run_allowed(self, cases: Tuple[List[MockMessage], ...]) -> None:
+    async def run_allowed(self, cases: tuple[list[MockMessage], ...]) -> None:
         """Run all `cases` against `self.apply` expecting them to pass."""
         for recent_messages in cases:
             last_message = recent_messages[0]
@@ -41,7 +42,7 @@ class RuleTest(unittest.IsolatedAsyncioTestCase, metaclass=ABCMeta):
                     await self.apply(last_message, recent_messages, self.config)
                 )
 
-    async def run_disallowed(self, cases: Tuple[DisallowedCase, ...]) -> None:
+    async def run_disallowed(self, cases: tuple[DisallowedCase, ...]) -> None:
         """Run all `cases` against `self.apply` expecting them to fail."""
         for case in cases:
             recent_messages, culprits, n_violations = case

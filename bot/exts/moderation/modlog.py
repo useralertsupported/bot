@@ -49,7 +49,7 @@ class ModLog(Cog, name="ModLog"):
         self,
         messages: t.Iterable[discord.Message],
         actor_id: int,
-        attachments: t.Iterable[t.List[str]] = None
+        attachments: t.Iterable[list[str]] = None
     ) -> str:
         """Upload message logs to the database and return a URL to a page for viewing the logs."""
         if attachments is None:
@@ -95,18 +95,18 @@ class ModLog(Cog, name="ModLog"):
 
     async def send_log_message(
         self,
-        icon_url: t.Optional[str],
-        colour: t.Union[discord.Colour, int],
-        title: t.Optional[str],
+        icon_url: str | None,
+        colour: discord.Colour | int,
+        title: str | None,
         text: str,
-        thumbnail: t.Optional[t.Union[str, discord.Asset]] = None,
+        thumbnail: str | discord.Asset | None = None,
         channel_id: int = Channels.mod_log,
         ping_everyone: bool = False,
-        files: t.Optional[t.List[discord.File]] = None,
-        content: t.Optional[str] = None,
-        additional_embeds: t.Optional[t.List[discord.Embed]] = None,
-        timestamp_override: t.Optional[datetime] = None,
-        footer: t.Optional[str] = None,
+        files: list[discord.File] | None = None,
+        content: str | None = None,
+        additional_embeds: list[discord.Embed] | None = None,
+        timestamp_override: datetime | None = None,
+        footer: str | None = None,
     ) -> Context:
         """Generate log embed and send to logging channel."""
         await self.bot.wait_until_guild_available()
@@ -458,7 +458,7 @@ class ModLog(Cog, name="ModLog"):
         )
 
     @staticmethod
-    def get_role_diff(before: t.List[discord.Role], after: t.List[discord.Role]) -> t.List[str]:
+    def get_role_diff(before: list[discord.Role], after: list[discord.Role]) -> list[str]:
         """Return a list of strings describing the roles added and removed."""
         changes = []
         before_roles = set(before)
@@ -687,8 +687,8 @@ class ModLog(Cog, name="ModLog"):
             for diff_type, diff_words in itertools.groupby(diff, key=lambda s: s[0])
         )
 
-        content_before: t.List[str] = []
-        content_after: t.List[str] = []
+        content_before: list[str] = []
+        content_after: list[str] = []
 
         for index, (diff_type, words) in enumerate(diff_groups):
             sub = ' '.join(words)

@@ -1,7 +1,8 @@
 import re
 import zlib
 from collections import defaultdict
-from typing import AsyncIterator, DefaultDict, List, Optional, Tuple
+from collections.abc import AsyncIterator
+from typing import DefaultDict
 
 import aiohttp
 
@@ -13,7 +14,7 @@ log = get_logger(__name__)
 FAILED_REQUEST_ATTEMPTS = 3
 _V2_LINE_RE = re.compile(r'(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+?(\S*)\s+(.*)')
 
-InventoryDict = DefaultDict[str, List[Tuple[str, str]]]
+InventoryDict = DefaultDict[str, list[tuple[str, str]]]
 
 
 class InvalidHeaderError(Exception):
@@ -105,7 +106,7 @@ async def _fetch_inventory(url: str) -> InventoryDict:
         raise InvalidHeaderError("Incompatible inventory version.")
 
 
-async def fetch_inventory(url: str) -> Optional[InventoryDict]:
+async def fetch_inventory(url: str) -> InventoryDict | None:
     """
     Get an inventory dict from `url`, retrying `FAILED_REQUEST_ATTEMPTS` times on errors.
 

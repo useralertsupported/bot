@@ -1,4 +1,4 @@
-from typing import Iterable
+from collections.abc import Iterable
 
 from bot.rules import duplicates
 from tests.bot.rules import DisallowedCase, RuleTest

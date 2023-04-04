@@ -4,7 +4,7 @@ import textwrap
 from abc import abstractmethod
 from collections import defaultdict, deque
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any
 
 import discord
 from discord import Color, DMChannel, Embed, HTTPException, Message, errors
@@ -31,8 +31,8 @@ URL_RE = re.compile(r"(https?://[^\s]+)")
 class MessageHistory:
     """Represents a watch channel's message history."""
 
-    last_author: Optional[int] = None
-    last_channel: Optional[int] = None
+    last_author: int | None = None
+    last_channel: int | None = None
     message_count: int = 0
 
 
@@ -207,10 +207,10 @@ class WatchChannel(metaclass=CogABCMeta):
 
     async def webhook_send(
         self,
-        content: Optional[str] = None,
-        username: Optional[str] = None,
-        avatar_url: Optional[str] = None,
-        embed: Optional[Embed] = None,
+        content: str | None = None,
+        username: str | None = None,
+        avatar_url: str | None = None,
+        embed: Embed | None = None,
     ) -> None:
         """Sends a message to the webhook with the specified kwargs."""
         username = messages.sub_clyde(username)
@@ -326,7 +326,7 @@ class WatchChannel(metaclass=CogABCMeta):
 
     async def prepare_watched_users_data(
         self, ctx: Context, oldest_first: bool = False, update_cache: bool = True
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Prepare overview information of watched users to list.
 

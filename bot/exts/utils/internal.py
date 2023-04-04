@@ -6,7 +6,7 @@ import textwrap
 import traceback
 from collections import Counter
 from io import StringIO
-from typing import Any, Optional, Tuple
+from typing import Any
 
 import arrow
 import discord
@@ -43,7 +43,7 @@ class Internal(Cog):
         self.socket_event_total += 1
         self.socket_events[event_type] += 1
 
-    def _format(self, inp: str, out: Any) -> Tuple[str, Optional[discord.Embed]]:
+    def _format(self, inp: str, out: Any) -> tuple[str, discord.Embed | None]:
         """Format the eval output into a string & attempt to format it into an Embed."""
         self._ = out
 
@@ -133,7 +133,7 @@ class Internal(Cog):
 
         return res  # Return (text, embed)
 
-    async def _eval(self, ctx: Context, code: str) -> Optional[discord.Message]:
+    async def _eval(self, ctx: Context, code: str) -> discord.Message | None:
         """Eval the input code string & send an embed to the invoking context."""
         self.ln += 1
 
@@ -162,7 +162,7 @@ class Internal(Cog):
 async def func():  # (None,) -> Any
     try:
         with contextlib.redirect_stdout(self.stdout):
-{0}
+{}
         if '_' in locals():
             if inspect.isawaitable(_):
                 _ = await _

@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from collections.abc import Iterable
 
 import discord
 
@@ -12,7 +12,7 @@ def make_msg(
     total_user_mentions: int,
     total_bot_mentions: int = 0,
     *,
-    reference: Optional[MockMessageReference] = None
+    reference: MockMessageReference | None = None
 ) -> MockMessage:
     """Makes a message from `author` with `total_user_mentions` user mentions and `total_bot_mentions` bot mentions."""
     user_mentions = [MockMember() for _ in range(total_user_mentions)]

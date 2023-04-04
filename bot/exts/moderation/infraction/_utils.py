@@ -1,4 +1,3 @@
-import typing as t
 
 import arrow
 import discord
@@ -29,7 +28,7 @@ INFRACTION_ICONS = {
 RULES_URL = "https://pythondiscord.com/pages/rules"
 
 # Type aliases
-Infraction = t.Dict[str, t.Union[str, int, bool]]
+Infraction = dict[str, str | int | bool]
 
 APPEAL_SERVER_INVITE = "https://discord.gg/WXrCJxWBnm"
 MODMAIL_ACCOUNT_ID = "683001325440860340"
@@ -52,7 +51,7 @@ INFRACTION_DESCRIPTION_TEMPLATE = (
 )
 
 
-async def post_user(ctx: Context, user: MemberOrUser) -> t.Optional[dict]:
+async def post_user(ctx: Context, user: MemberOrUser) -> dict | None:
     """
     Create a new user in the database.
 
@@ -82,13 +81,13 @@ async def post_infraction(
     user: MemberOrUser,
     infr_type: str,
     reason: str,
-    duration_or_expiry: t.Optional[DurationOrExpiry] = None,
+    duration_or_expiry: DurationOrExpiry | None = None,
     hidden: bool = False,
     active: bool = True,
     dm_sent: bool = False,
-) -> t.Optional[dict]:
+) -> dict | None:
     """Posts an infraction to the API."""
-    if isinstance(user, (discord.Member, discord.User)) and user.bot:
+    if isinstance(user, discord.Member | discord.User) and user.bot:
         log.trace(f"Posting of {infr_type} infraction for {user} to the API aborted. User is a bot.")
         raise InvalidInfractedUserError(user)
 
@@ -143,7 +142,7 @@ async def get_active_infraction(
         user: MemberOrUser,
         infr_type: str,
         send_msg: bool = True
-) -> t.Optional[dict]:
+) -> dict | None:
     """
     Retrieves an active infraction of the given type for the user.
 
@@ -182,7 +181,7 @@ async def send_active_infraction_message(ctx: Context, infraction: Infraction) -
 async def notify_infraction(
         infraction: Infraction,
         user: MemberOrUser,
-        reason: t.Optional[str] = None
+        reason: str | None = None
 ) -> bool:
     """
     DM a user about their new infraction and return True if the DM is successful.

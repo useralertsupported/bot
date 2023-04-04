@@ -43,7 +43,7 @@ class SnekboxTests(unittest.IsolatedAsyncioTestCase):
             "files": [
                 {
                     "path": "main.py",
-                    "content": b64encode("import random".encode()).decode()
+                    "content": b64encode(b"import random").decode()
                 }
             ]
         }

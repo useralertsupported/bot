@@ -24,7 +24,7 @@ def in_whitelist(
     channels: t.Container[int] = (),
     categories: t.Container[int] = (),
     roles: t.Container[int] = (),
-    redirect: t.Optional[int] = Channels.bot_commands,
+    redirect: int | None = Channels.bot_commands,
     fail_silently: bool = False,
 ) -> t.Callable:
     """
@@ -57,7 +57,7 @@ def not_in_blacklist(
     categories: t.Container[int] = (),
     roles: t.Container[int] = (),
     override_roles: t.Container[int] = (),
-    redirect: t.Optional[int] = Channels.bot_commands,
+    redirect: int | None = Channels.bot_commands,
     fail_silently: bool = False,
 ) -> t.Callable:
     """
@@ -90,7 +90,7 @@ def not_in_blacklist(
     return commands.check(predicate)
 
 
-def has_no_roles(*roles: t.Union[str, int]) -> t.Callable:
+def has_no_roles(*roles: str | int) -> t.Callable:
     """
     Returns True if the user does not have any of the roles specified.
 
@@ -111,9 +111,9 @@ def has_no_roles(*roles: t.Union[str, int]) -> t.Callable:
 
 def redirect_output(
     destination_channel: int,
-    bypass_roles: t.Optional[t.Container[int]] = None,
-    channels: t.Optional[t.Container[int]] = None,
-    categories: t.Optional[t.Container[int]] = None,
+    bypass_roles: t.Container[int] | None = None,
+    channels: t.Container[int] | None = None,
+    categories: t.Container[int] | None = None,
     ping_user: bool = True
 ) -> t.Callable:
     """

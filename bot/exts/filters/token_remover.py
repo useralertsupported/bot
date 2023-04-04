@@ -116,7 +116,7 @@ class TokenRemover(Cog):
         self.bot.stats.incr("tokens.removed_tokens")
 
     @classmethod
-    async def format_userid_log_message(cls, msg: Message, token: Token) -> t.Tuple[str, bool]:
+    async def format_userid_log_message(cls, msg: Message, token: Token) -> tuple[str, bool]:
         """
         Format the portion of the log message that includes details about the detected user ID.
 
@@ -151,7 +151,7 @@ class TokenRemover(Cog):
         )
 
     @classmethod
-    def find_token_in_message(cls, msg: Message) -> t.Optional[Token]:
+    def find_token_in_message(cls, msg: Message) -> Token | None:
         """Return a seemingly valid token found in `msg` or `None` if no token is found."""
         # Use finditer rather than search to guard against method calls prematurely returning the
         # token check (e.g. `message.channel.send` also matches our token pattern)
@@ -169,7 +169,7 @@ class TokenRemover(Cog):
         return None
 
     @staticmethod
-    def extract_user_id(b64_content: str) -> t.Optional[int]:
+    def extract_user_id(b64_content: str) -> int | None:
         """Return a user ID integer from part of a potential token, or None if it couldn't be decoded."""
         b64_content = utils.pad_base64(b64_content)
 

@@ -1,7 +1,6 @@
 import itertools
 import unittest
 from datetime import datetime, timezone
-from typing import List, Tuple
 from unittest import mock
 from unittest.mock import AsyncMock, Mock
 
@@ -205,7 +204,7 @@ class SilenceCogTests(SilenceTest):
                 self.assertEqual((None,), member.move_to.call_args_list[0].args)
 
     @staticmethod
-    def create_erroneous_members() -> Tuple[List[MockMember], List[MockMember]]:
+    def create_erroneous_members() -> tuple[list[MockMember], list[MockMember]]:
         """
         Helper method to generate a list of members that error out on move_to call.
 

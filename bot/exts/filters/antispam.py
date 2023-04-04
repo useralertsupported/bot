@@ -1,11 +1,10 @@
 import asyncio
 from collections import defaultdict
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from datetime import timedelta
 from itertools import takewhile
 from operator import attrgetter, itemgetter
-from typing import Dict, Iterable, List, Set
 
 import arrow
 from discord import Colour, Member, Message, MessageType, NotFound, TextChannel
@@ -51,9 +50,9 @@ class DeletionContext:
     members: frozenset[Member]
     triggered_in: TextChannel
     channels: set[TextChannel] = field(default_factory=set)
-    rules: Set[str] = field(default_factory=set)
-    messages: Dict[int, Message] = field(default_factory=dict)
-    attachments: List[List[str]] = field(default_factory=list)
+    rules: set[str] = field(default_factory=set)
+    messages: dict[int, Message] = field(default_factory=dict)
+    attachments: list[list[str]] = field(default_factory=list)
 
     async def add(self, rule_name: str, channels: Iterable[TextChannel], messages: Iterable[Message]) -> None:
         """Adds new rule violation events to the deletion context."""
@@ -120,7 +119,7 @@ class DeletionContext:
 class AntiSpam(Cog):
     """Cog that controls our anti-spam measures."""
 
-    def __init__(self, bot: Bot, validation_errors: Dict[str, str]) -> None:
+    def __init__(self, bot: Bot, validation_errors: dict[str, str]) -> None:
         self.bot = bot
         self.validation_errors = validation_errors
         self.expiration_date_converter = Duration()
@@ -245,7 +244,7 @@ class AntiSpam(Cog):
                 reason=reason
             )
 
-    async def maybe_delete_messages(self, messages: List[Message]) -> None:
+    async def maybe_delete_messages(self, messages: list[Message]) -> None:
         """Cleans the messages if cleaning is configured."""
         if AntiSpamConfig.clean_offending:
             # If we have more than one message, we can use bulk delete.
@@ -298,7 +297,7 @@ class AntiSpam(Cog):
         self.cache.update(after)
 
 
-def validate_config(rules_: Mapping = ANTI_SPAM_RULES) -> Dict[str, str]:
+def validate_config(rules_: Mapping = ANTI_SPAM_RULES) -> dict[str, str]:
     """Validates the antispam configs."""
     validation_errors = {}
     for name, config in rules_.items():

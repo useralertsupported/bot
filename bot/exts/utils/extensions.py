@@ -181,7 +181,7 @@ class Extensions(commands.Cog):
         await loading_message.edit(content=msg)
         self.action_in_progress = False
 
-    async def manage(self, action: Action, ext: str) -> t.Tuple[str, t.Optional[str]]:
+    async def manage(self, action: Action, ext: str) -> tuple[str, str | None]:
         """Apply an action to an extension and return the status message and any error message."""
         verb = action.name.lower()
         error_msg = None

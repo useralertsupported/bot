@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from discord import TextChannel, Thread
@@ -20,7 +20,7 @@ COMMONLY_SLOWMODED_CHANNELS = {
     Channels.off_topic_0: "ot0",
 }
 
-MessageHolder = Optional[Union[TextChannel, Thread]]
+MessageHolder = Optional[TextChannel | Thread]
 
 
 class Slowmode(Cog):
@@ -50,7 +50,7 @@ class Slowmode(Cog):
         self,
         ctx: Context,
         channel: MessageHolder,
-        delay: Union[DurationDelta, Literal["0s", "0seconds"]],
+        delay: DurationDelta | Literal["0s", "0seconds"],
     ) -> None:
         """Set the slowmode delay for a text channel."""
         # Use the channel this command was invoked in if one was not given

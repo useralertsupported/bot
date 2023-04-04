@@ -2,8 +2,9 @@ import asyncio
 import re
 import unicodedata
 import urllib.parse
+from collections.abc import Mapping
 from datetime import timedelta
-from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Tuple, Union
+from typing import Any, NamedTuple, Union
 
 import arrow
 import dateutil.parser
@@ -66,14 +67,14 @@ AUTO_BAN_REASON = (
 )
 AUTO_BAN_DURATION = timedelta(days=4)
 
-FilterMatch = Union[re.Match, dict, bool, List[Embed]]
+FilterMatch = Union[re.Match, dict, bool, list[Embed]]
 
 
 class Stats(NamedTuple):
     """Additional stats on a triggered filter to append to a mod log."""
 
     message_content: str
-    additional_embeds: Optional[List[Embed]]
+    additional_embeds: list[Embed] | None
 
 
 class Filtering(Cog):
@@ -213,7 +214,7 @@ class Filtering(Cog):
         """Checks for bad words in usernames when users join, switch or leave a voice channel."""
         await self.check_bad_words_in_name(member)
 
-    def get_name_match(self, name: str) -> Optional[re.Match]:
+    def get_name_match(self, name: str) -> re.Match | None:
         """Check bad words from passed string (name). Return the first match found."""
         normalised_name = unicodedata.normalize("NFKC", name)
         cleaned_normalised_name = "".join([c for c in normalised_name if not unicodedata.combining(c)])
@@ -311,7 +312,7 @@ class Filtering(Cog):
 
         return filter_triggered
 
-    async def _filter_message(self, msg: Message, delta: Optional[int] = None) -> None:
+    async def _filter_message(self, msg: Message, delta: int | None = None) -> None:
         """Filter the input message to see if it violates any of our rules, and then respond accordingly."""
         # Should we filter this message?
         if self._check_filter(msg):
@@ -422,10 +423,10 @@ class Filtering(Cog):
     async def _send_log(
         self,
         filter_name: str,
-        _filter: Dict[str, Any],
+        _filter: dict[str, Any],
         msg: Message,
         stats: Stats,
-        reason: Optional[str] = None,
+        reason: str | None = None,
         *,
         is_eval: bool = False,
         autoban: bool = False,
@@ -523,7 +524,7 @@ class Filtering(Cog):
             and not msg.author.bot                          # Author not a bot
         )
 
-    async def _has_watch_regex_match(self, text: str) -> Tuple[Union[bool, re.Match], Optional[str]]:
+    async def _has_watch_regex_match(self, text: str) -> tuple[bool | re.Match, str | None]:
         """
         Return True if `text` matches any regex from `word_watchlist` or `token_watchlist` configs.
 
@@ -544,7 +545,7 @@ class Filtering(Cog):
 
         return False, None
 
-    async def _has_urls(self, text: str) -> Tuple[bool, Optional[str]]:
+    async def _has_urls(self, text: str) -> tuple[bool, str | None]:
         """
         Returns True if the text contains one of the blacklisted URLs from the config file.
 
@@ -571,7 +572,7 @@ class Filtering(Cog):
         """
         return bool(ZALGO_RE.search(text))
 
-    async def _has_invites(self, text: str) -> Union[dict, bool]:
+    async def _has_invites(self, text: str) -> dict | bool:
         """
         Checks if there's any invites in the text content that aren't in the guild whitelist.
 
@@ -643,7 +644,7 @@ class Filtering(Cog):
         return invite_data if invite_data else False
 
     @staticmethod
-    async def _has_rich_embed(msg: Message) -> Union[bool, List[Embed]]:
+    async def _has_rich_embed(msg: Message) -> bool | list[Embed]:
         """Determines if `msg` contains any rich embeds not auto-generated from a URL."""
         if msg.embeds:
             for embed in msg.embeds:

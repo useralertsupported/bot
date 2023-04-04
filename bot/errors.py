@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Hashable, TYPE_CHECKING, Union
+from collections.abc import Hashable
+from typing import TYPE_CHECKING
 
 from discord.ext.commands import ConversionError, Converter
 
@@ -51,7 +52,7 @@ class InvalidInfractionError(ConversionError):
         `infraction_arg` -- the value that we attempted to convert into an Infraction
     """
 
-    def __init__(self, converter: Converter, original: Exception, infraction_arg: Union[int, str]):
+    def __init__(self, converter: Converter, original: Exception, infraction_arg: int | str):
 
         self.infraction_arg = infraction_arg
         super().__init__(converter, original)

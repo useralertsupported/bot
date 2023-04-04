@@ -1,7 +1,6 @@
 import asyncio
 import textwrap
 from io import StringIO
-from typing import Optional, Union
 
 import discord
 from async_rediscache import RedisCache
@@ -301,8 +300,8 @@ class TalentPool(Cog, name="Talentpool"):
     async def edit_reason_command(
         self,
         ctx: Context,
-        nominee_or_nomination_id: Union[UnambiguousMemberOrUser, int],
-        nominator: Optional[UnambiguousMemberOrUser] = None,
+        nominee_or_nomination_id: UnambiguousMemberOrUser | int,
+        nominator: UnambiguousMemberOrUser | None = None,
         *,
         reason: str
     ) -> None:
@@ -344,7 +343,7 @@ class TalentPool(Cog, name="Talentpool"):
         self,
         ctx: Context,
         *,
-        target: Union[int, Member, User],
+        target: int | Member | User,
         actor: MemberOrUser,
         reason: str,
     ) -> None:

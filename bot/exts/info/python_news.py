@@ -39,7 +39,7 @@ class PythonNews(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
         self.webhook_names = {}
-        self.webhook: t.Optional[discord.Webhook] = None
+        self.webhook: discord.Webhook | None = None
 
     async def cog_load(self) -> None:
         """Carry out cog asynchronous initialisation."""
@@ -223,7 +223,7 @@ class PythonNews(Cog):
 
         await self.bot.api_client.put("bot/bot-settings/news", json=payload)
 
-    async def get_thread_and_first_mail(self, maillist: str, thread_identifier: str) -> t.Tuple[t.Any, t.Any]:
+    async def get_thread_and_first_mail(self, maillist: str, thread_identifier: str) -> tuple[t.Any, t.Any]:
         """Get mail thread and first mail from mail.python.org based on `maillist` and `thread_identifier`."""
         async with self.bot.http_session.get(
                 THREAD_TEMPLATE_URL.format(name=maillist, id=thread_identifier)

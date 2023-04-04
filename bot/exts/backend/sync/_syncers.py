@@ -46,7 +46,7 @@ class Syncer(abc.ABC):
         raise NotImplementedError  # pragma: no cover
 
     @classmethod
-    async def sync(cls, guild: Guild, ctx: t.Optional[Context] = None) -> None:
+    async def sync(cls, guild: Guild, ctx: Context | None = None) -> None:
         """
         Synchronise the database with the cache of `guild`.
 
@@ -152,7 +152,7 @@ class UserSyncer(Syncer):
             # Store user fields which are to be updated.
             updated_fields = {}
 
-            def maybe_update(db_field: str, guild_value: t.Union[str, int]) -> None:
+            def maybe_update(db_field: str, guild_value: str | int) -> None:
                 # Equalize DB user and guild user attributes.
                 if db_user[db_field] != guild_value:  # noqa: B023
                     updated_fields[db_field] = guild_value  # noqa: B023
