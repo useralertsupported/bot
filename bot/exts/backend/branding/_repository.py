@@ -1,5 +1,5 @@
 import typing as t
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 
 import frontmatter
 
@@ -150,8 +150,8 @@ class BrandingRepository:
 
         # We extend the configured month & day with an arbitrary leap year, allowing a datetime object to exist.
         # This may raise errors if misconfigured. We let the caller handle such cases.
-        start_date = datetime.strptime(f"{start_date_raw} {ARBITRARY_YEAR}", DATE_FMT).date()
-        end_date = datetime.strptime(f"{end_date_raw} {ARBITRARY_YEAR}", DATE_FMT).date()
+        start_date = datetime.strptime(f"{start_date_raw} {ARBITRARY_YEAR}", DATE_FMT).replace(tzinfo=UTC).date()
+        end_date = datetime.strptime(f"{end_date_raw} {ARBITRARY_YEAR}", DATE_FMT).replace(tzinfo=UTC).date()
 
         return MetaFile(is_fallback=False, start_date=start_date, end_date=end_date, description=description)
 
@@ -218,7 +218,7 @@ class BrandingRepository:
 
         The current event may be None in the case that no event is active, and no fallback event is found.
         """
-        utc_now = datetime.utcnow()
+        utc_now = datetime.now(tz=UTC)
         log.debug(f"Finding active event for: {utc_now}.")
 
         # Construct an object in the arbitrary year for the purpose of comparison.

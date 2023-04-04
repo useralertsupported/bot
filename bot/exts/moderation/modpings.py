@@ -89,7 +89,7 @@ class ModPings(Cog):
         log.info("Scheduling modpings schedule for applicable moderators found in cache.")
         for mod_id, schedule in schedule_cache.items():
             start_timestamp, work_time = schedule.split("|")
-            start = datetime.datetime.fromtimestamp(float(start_timestamp))
+            start = datetime.datetime.fromtimestamp(float(start_timestamp), tz=datetime.UTC)
 
             mod = await self.bot.fetch_user(mod_id)
             self._modpings_scheduler.schedule_at(
@@ -220,7 +220,7 @@ class ModPings(Cog):
             )
             return
 
-        if start < datetime.datetime.utcnow():
+        if start < datetime.datetime.now(datetime.UTC):
             # The datetime has already gone for the day, so make it tomorrow
             # otherwise the scheduler would schedule it immediately
             start += datetime.timedelta(days=1)

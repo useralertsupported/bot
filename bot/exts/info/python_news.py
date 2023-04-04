@@ -1,6 +1,6 @@
 import re
 import typing as t
-from datetime import date, datetime
+from datetime import UTC, datetime
 
 import discord
 import feedparser
@@ -108,14 +108,15 @@ class PythonNews(Cog):
         data["entries"].reverse()
         for new in data["entries"]:
             try:
-                new_datetime = datetime.strptime(new["published"], "%a, %d %b %Y %X %Z")
+                # %Z doesn't actually set the tzinfo of the datetime object, manually set this to UTC
+                new_datetime = datetime.strptime(new["published"], "%a, %d %b %Y %X %Z").replace(tzinfo=UTC)
             except ValueError:
                 log.warning(f"Wrong datetime format passed in PEP new: {new['published']}")
                 continue
             pep_nr = new["title"].split(":")[0].split()[1]
             if (
                     pep_nr in pep_numbers
-                    or new_datetime.date() < date.today()
+                    or new_datetime.date() < datetime.now(tz=UTC)
             ):
                 continue
 
@@ -181,8 +182,8 @@ class PythonNews(Cog):
 
                 if (
                         thread_information["thread_id"] in existing_news["data"][maillist]
-                        or 'Re: ' in thread_information["subject"]
-                        or new_date.date() < date.today()
+                        or "Re: " in thread_information["subject"]
+                        or new_date.date() < datetime.now(tz=UTC).date()
                 ):
                     continue
 

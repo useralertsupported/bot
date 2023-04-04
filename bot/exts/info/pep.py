@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from email.parser import HeaderParser
 from io import StringIO
 
@@ -30,7 +30,7 @@ class PythonEnhancementProposals(Cog):
         self.bot = bot
         self.peps: dict[int, str] = {}
         # To avoid situations where we don't have last datetime, set this to now.
-        self.last_refreshed_peps: datetime = datetime.now()
+        self.last_refreshed_peps: datetime = datetime.now(tz=UTC)
 
     async def cog_load(self) -> None:
         """Carry out cog asynchronous initialisation."""
@@ -41,7 +41,7 @@ class PythonEnhancementProposals(Cog):
         # Wait until HTTP client is available
         await self.bot.wait_until_ready()
         log.trace("Started refreshing PEP URLs.")
-        self.last_refreshed_peps = datetime.now()
+        self.last_refreshed_peps = datetime.now(tz=UTC)
 
         async with self.bot.http_session.get(
             PEPS_LISTING_API_URL,
@@ -81,7 +81,7 @@ class PythonEnhancementProposals(Cog):
         """Validate is PEP number valid. When it isn't, return error embed, otherwise None."""
         if (
             pep_nr not in self.peps
-            and (self.last_refreshed_peps + timedelta(minutes=30)) <= datetime.now()
+            and (self.last_refreshed_peps + timedelta(minutes=30)) <= datetime.now(tz=UTC)
             and len(str(pep_nr)) < 5
         ):
             await self.refresh_peps_urls()

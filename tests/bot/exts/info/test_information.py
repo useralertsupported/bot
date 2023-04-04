@@ -1,7 +1,7 @@
 import textwrap
 import unittest
 import unittest.mock
-from datetime import datetime
+from datetime import UTC, datetime
 from textwrap import shorten
 
 import discord
@@ -290,7 +290,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         user.nick = None
         user.__str__ = unittest.mock.Mock(return_value="Mr. Hemlock")
         user.colour = 0
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
 
         embed = await self.cog.create_user_embed(ctx, user, False)
 
@@ -312,7 +312,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         user.nick = "Cat lover"
         user.__str__ = unittest.mock.Mock(return_value="Mr. Hemlock")
         user.colour = 0
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
 
         embed = await self.cog.create_user_embed(ctx, user, False)
 
@@ -333,7 +333,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
 
         # A `MockMember` has the @Everyone role by default; we add the Admins to that.
         user = helpers.MockMember(roles=[admins_role], colour=100)
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
 
         embed = await self.cog.create_user_embed(ctx, user, False)
 
@@ -360,7 +360,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         nomination_counts.return_value = ("Nominations", "nomination info")
 
         user = helpers.MockMember(id=314, roles=[moderators_role], colour=100)
-        user.created_at = user.joined_at = datetime.utcfromtimestamp(1)
+        user.created_at = user.joined_at = datetime.fromtimestamp(1, tz=UTC)
         embed = await self.cog.create_user_embed(ctx, user, False)
 
         infraction_counts.assert_called_once_with(user)
@@ -400,7 +400,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         user_messages.return_value = ("Messages", "user message counts")
 
         user = helpers.MockMember(id=314, roles=[moderators_role], colour=100)
-        user.created_at = user.joined_at = datetime.utcfromtimestamp(1)
+        user.created_at = user.joined_at = datetime.fromtimestamp(1, tz=UTC)
         embed = await self.cog.create_user_embed(ctx, user, False)
 
         infraction_counts.assert_called_once_with(user)
@@ -447,7 +447,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         moderators_role = helpers.MockRole(name='Moderators')
 
         user = helpers.MockMember(id=314, roles=[moderators_role], colour=100)
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
         embed = await self.cog.create_user_embed(ctx, user, False)
 
         self.assertEqual(embed.colour, discord.Colour(100))
@@ -465,7 +465,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         ctx = helpers.MockContext()
 
         user = helpers.MockMember(id=217, colour=discord.Colour.default())
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
         embed = await self.cog.create_user_embed(ctx, user, False)
 
         self.assertEqual(embed.colour, discord.Colour.og_blurple())
@@ -483,7 +483,7 @@ class UserEmbedTests(unittest.IsolatedAsyncioTestCase):
         ctx = helpers.MockContext()
 
         user = helpers.MockMember(id=217, colour=0)
-        user.created_at = user.joined_at = datetime.utcnow()
+        user.created_at = user.joined_at = datetime.now(tz=UTC)
         user.display_avatar.url = "avatar url"
         embed = await self.cog.create_user_embed(ctx, user, False)
 

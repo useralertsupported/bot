@@ -119,7 +119,7 @@ class ModLog(Cog, name="ModLog"):
             embed.set_author(name=title, icon_url=icon_url)
 
         embed.colour = colour
-        embed.timestamp = timestamp_override or datetime.utcnow()
+        embed.timestamp = timestamp_override or datetime.now(tz=UTC)
 
         if footer:
             embed.set_footer(text=footer)
